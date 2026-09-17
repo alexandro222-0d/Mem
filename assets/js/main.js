@@ -443,17 +443,17 @@ if (FINE) {
     b.classList.add('is-active');
   }));
 
-  /* маска телефона */
+  /* маска телефона: белорусский формат +375 (29) 123-45-67 */
   phone.addEventListener('input', () => {
-    let v = phone.value.replace(/\D/g, '');
-    if (v.startsWith('8')) v = '7' + v.slice(1);
-    if (!v.startsWith('7')) v = '7' + v;
-    v = v.slice(0, 11);
-    let out = '+7';
-    if (v.length > 1) out += ' (' + v.slice(1, 4);
-    if (v.length >= 5) out += ') ' + v.slice(4, 7);
-    if (v.length >= 8) out += '-' + v.slice(7, 9);
-    if (v.length >= 10) out += '-' + v.slice(9, 11);
+    let d = phone.value.replace(/\D/g, '');
+    while (d.startsWith('375')) d = d.slice(3);  // код страны, если его вводят вручную
+    if (d.startsWith('80')) d = d.slice(2);       // междугородний префикс 8-0XX
+    d = d.slice(0, 9);                            // код оператора (2) + номер (7)
+    if (!d) { phone.value = ''; return; }
+    let out = '+375 (' + d.slice(0, 2);
+    if (d.length >= 3) out += ') ' + d.slice(2, 5);
+    if (d.length >= 6) out += '-' + d.slice(5, 7);
+    if (d.length >= 8) out += '-' + d.slice(7, 9);
     phone.value = out;
   });
 
@@ -481,7 +481,7 @@ if (FINE) {
   function fillSummary() {
     const d = data();
     const human = new Date(d.date + 'T00:00:00').toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
-    summary.innerHTML = `<b>${d.service}</b> · мастер <b>${d.barber}</b><br>${human}, <b>${d.time}</b> · Большая Новодмитровская, 36с2`;
+    summary.innerHTML = `<b>${d.service}</b> · мастер <b>${d.barber}</b><br>${human}, <b>${d.time}</b> · улица Октябрьская, 16а`;
   }
 
   const validStep = () => {
@@ -489,7 +489,7 @@ if (FINE) {
     let ok = true;
     [form.querySelector('[name=name]'), phone].forEach(inp => {
       const wrap = inp.closest('.field');
-      const bad = inp.name === 'phone' ? inp.value.replace(/\D/g, '').length !== 11 : inp.value.trim().length < 2;
+      const bad = inp.name === 'phone' ? inp.value.replace(/\D/g, '').length !== 12 : inp.value.trim().length < 2;
       wrap.classList.toggle('is-error', bad);
       wrap.dataset.error = inp.name === 'phone' ? 'Введите полный номер' : 'Укажите имя';
       if (bad) ok = false;
