@@ -1,0 +1,35 @@
+Фотографии загружены с Unsplash (Unsplash License — бесплатное использование,
+в том числе коммерческое, без обязательной атрибуции; атрибуция оставлена из вежливости).
+
+локальный файл           исходник на images.unsplash.com
+------------------------ ----------------------------------------------
+hero-master.jpg          photo-1503951914875-452162b0f3f1
+hero-shave.jpg           photo-1517832606299-7ae9b720a186
+interior-main.jpg        photo-1585747860715-2ba37e788b70
+interior-row.jpg         photo-1560066984-138dadb4c035
+tools-wood.jpg           photo-1621605815971-fbc98d665033
+tools-comb.jpg           photo-1587909209111-5097ee578ec3
+work-scissors.jpg        photo-1622286342621-4bd786c2447c
+work-fade.jpg            photo-1599351431202-1e0f0137899a
+work-neck.jpg            photo-1493256338651-d82f7acb2b38
+work-razor.jpg           photo-1596728325488-58c87691e9af
+work-barber.jpg          photo-1567894340315-735d7c361db0
+work-dryer.jpg           photo-1605497788044-5a32c7078486
+work-tattoo.jpg          photo-1534297635766-a262cdcb8ee4
+work-shop.jpg            photo-1622287162716-f311baa1a2b8
+master-1.jpg             photo-1522075469751-3a6694fb2f61
+master-2.jpg             photo-1542327897-d73f4005b533
+master-3.jpg             photo-1618077360395-f3068be8e001
+master-4.jpg             photo-1519085360753-af0119f7cbe7
+client-1.jpg             photo-1506794778202-cad84cf45f1d
+client-2.jpg             photo-1500648767791-00dcc994a43e
+client-3.jpg             photo-1503443207922-dff7d543fd0e
+client-4.jpg             photo-1463453091185-61582044d556
+
+Полный адрес любого исходника: https://images.unsplash.com/<идентификатор>
+
+Шрифты: Oswald и Inter, Google Fonts, лицензия SIL Open Font License 1.1.
+Подмножества latin + cyrillic лежат в assets/fonts/.
+
+Люди на фотографиях не связаны с брендом КЛИНОК: бренд вымышленный,
+изображения используются как стоковый материал для демонстрации вёрстки.
