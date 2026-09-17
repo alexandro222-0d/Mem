@@ -237,7 +237,9 @@ h1,h2,h3,.h2{text-transform:uppercase;line-height:1.02;margin:0}
 
 /* ---------- БЕГУЩАЯ СТРОКА ---------- */
 .ticker{border-block:1px solid var(--line);background:var(--graphite);overflow:hidden;padding-block:18px}
-.ticker__row{display:flex;width:max-content;will-change:transform}
+.ticker__row{display:flex;width:max-content;will-change:transform;
+  animation:marquee 14s linear infinite}
+@keyframes marquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-33.3333%,0,0)}}
 .ticker__row span{
   display:flex;align-items:center;gap:26px;padding-right:26px;white-space:nowrap;
   font-family:'Oswald',sans-serif;font-size:clamp(22px,3.4vw,44px);text-transform:uppercase;letter-spacing:.06em;color:#2e2e34;
@@ -570,6 +572,7 @@ h1,h2,h3,.h2{text-transform:uppercase;line-height:1.02;margin:0}
   .pole{display:none}
 }
 @media (max-width:720px){
+  .ticker__row{animation-duration:10s}
   .header__phone{display:none}
   .form{position:relative;top:0}
   .hero__shot--sm{width:40%;inset:auto 4% -5% auto}
@@ -592,6 +595,7 @@ h1,h2,h3,.h2{text-transform:uppercase;line-height:1.02;margin:0}
   [data-reveal]{opacity:1;transform:none}
   .hero__title .ch{transform:none;opacity:1}
   .grain,.lamp{display:none}
+  .ticker__row{animation:none !important;transform:none !important}
 }
 
 /* ---------- РАЗБИВКА ЗАГОЛОВКОВ ПО СЛОВАМ ---------- */

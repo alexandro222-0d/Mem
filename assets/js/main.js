@@ -233,26 +233,8 @@ if (!REDUCED) {
 }
 
 /* ---------- 9. БЕГУЩАЯ СТРОКА ---------- */
-(() => {
-  const row = $('#ticker');
-  if (!row || REDUCED) return;
-  let x = 0, speed = 0.55, boost = 0, lastY = scrollY;
-  const width = () => row.firstElementChild.getBoundingClientRect().width;
-  addEventListener('scroll', () => {
-    boost = clamp((scrollY - lastY) * 0.2, -14, 14);
-    lastY = scrollY;
-  }, { passive: true });
-  const loop = () => {
-    boost = lerp(boost, 0, 0.06);
-    x -= speed + boost;
-    const w = width();
-    if (w && x <= -w) x += w;
-    if (x > 0) x -= w;
-    row.style.transform = `translate3d(${x}px,0,0)`;
-    requestAnimationFrame(loop);
-  };
-  requestAnimationFrame(loop);
-})();
+/* Движение целиком на CSS-анимации (.ticker__row): она живёт на композиторе,
+   поэтому не зависит ни от скролла, ни от загруженности главного потока. */
 
 /* ---------- 10. ПРЕВЬЮ В ПРАЙСЕ ---------- */
 if (FINE) {
