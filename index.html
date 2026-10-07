@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Сластория — торты на заказ в Гомеле</title>
+<meta name="description" content="Соберите свой торт онлайн: ярусы, начинка, декор, надпись. Цена считается сразу.">
+<meta name="theme-color" content="#7fb36a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&family=Marck+Script&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#7fb36a; --green-d:#4f8a3f; --green-dd:#2f5a26; --green-l:#e7f2df; --green-ll:#f3f8ef;
+  --cream:#fffaf3; --paper:#fbf6ee; --ink:#2b2a26; --muted:#6f6a60; --line:#ebe3d6;
+  --pink:#f4c9c4; --gold:#c9a35b; --choco:#5a3a2a;
+  --r:22px; --shadow:0 20px 50px -20px rgba(47,90,38,.25), 0 4px 14px -6px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{font-family:Manrope,system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+button,input,textarea,select{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.script{font-family:"Marck Script",cursive;font-weight:400}
+.serif{font-family:"Cormorant Garamond",Georgia,serif}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;line-height:1.05;letter-spacing:-.01em}
+h2{font-size:clamp(36px,5vw,56px)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green-d)}
+.eyebrow::before{content:"";width:28px;height:1.5px;background:currentColor}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;cursor:pointer;border-radius:999px;padding:16px 28px;font-weight:700;font-size:16px;transition:.25s;white-space:nowrap}
+.btn-primary{background:var(--green-d);color:#fff;box-shadow:0 12px 26px -10px rgba(79,138,63,.7)}
+.btn-primary:hover{background:var(--green-dd);transform:translateY(-2px)}
+.btn-ghost{background:#fff;color:var(--green-dd);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--green)}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(255,250,243,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:.3s}
+header.scrolled{border-color:var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-badge{width:46px;height:46px;border-radius:50%;background:var(--green);display:grid;place-items:center;color:#fff;font-family:"Marck Script";font-size:13px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.35)}
+.logo-text{font-family:"Marck Script";font-size:30px;color:var(--green-dd);line-height:1}
+.logo-sub{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.nav-links{display:flex;gap:30px;font-weight:600;font-size:15px}
+.nav-links a{opacity:.75;transition:.2s}.nav-links a:hover{opacity:1;color:var(--green-d)}
+.nav .btn{padding:12px 22px;font-size:15px}
+@media(max-width:860px){.nav-links{display:none}.nav .btn{padding:10px 16px;font-size:14px}.logo-sub{display:none}}
+
+/* hero */
+.hero{position:relative;padding:64px 0 90px;overflow:hidden}
+.hero::before{content:"";position:absolute;right:-180px;top:-120px;width:720px;height:720px;border-radius:50%;background:radial-gradient(circle,var(--green-l) 0%,rgba(231,242,223,0) 70%);z-index:-1}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(46px,7vw,92px);margin:22px 0 22px}
+.hero h1 .script{color:var(--green-d);font-size:1.08em;display:inline-block;transform:rotate(-3deg)}
+.hero p.lead{font-size:clamp(17px,1.6vw,20px);color:var(--muted);max-width:520px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.hero-stats{display:flex;gap:36px;margin-top:46px;flex-wrap:wrap}
+.hero-stats b{display:block;font-family:"Cormorant Garamond";font-size:40px;line-height:1;color:var(--green-dd)}
+.hero-stats span{font-size:14px;color:var(--muted)}
+.hero-art{position:relative;aspect-ratio:1;max-width:540px;margin-left:auto;width:100%}
+.hero-plate{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle at 50% 40%,#fff 0%,var(--green-ll) 60%,var(--green-l) 100%);box-shadow:var(--shadow)}
+.hero-art svg{position:relative;width:100%;height:100%}
+.float-card{position:absolute;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--shadow);font-size:13px;display:flex;align-items:center;gap:10px;animation:bob 6s ease-in-out infinite}
+.float-card b{display:block;font-size:15px}
+.float-card .ic{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--green-l);font-size:18px}
+.fc1{left:-4%;top:18%}.fc2{right:-2%;bottom:16%;animation-delay:-3s}
+@keyframes bob{50%{transform:translateY(-10px)}}
+@media(max-width:520px){.hero-stats{gap:18px;flex-wrap:nowrap}.hero-stats b{font-size:28px;white-space:nowrap}.hero-stats span{font-size:12px;line-height:1.3;display:block;margin-top:4px}}
+@media(max-width:900px){.hero{padding:30px 0 60px}.hero-grid{grid-template-columns:1fr}.hero-art{max-width:420px;margin:10px auto 0}.fc1{left:0}.fc2{right:0}}
+
+/* marquee */
+.marquee{background:var(--green-d);color:#fff;overflow:hidden;padding:16px 0;transform:rotate(-1deg);margin:0 -10px}
+.marquee-track{display:flex;gap:40px;width:max-content;animation:mq 32s linear infinite;font-family:"Cormorant Garamond";font-size:26px;font-style:italic}
+.marquee-track span{display:flex;align-items:center;gap:40px}
+.marquee-track span::after{content:"✿";font-style:normal;font-size:18px;opacity:.7}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+section{padding:110px 0}
+.sec-head{text-align:center;max-width:680px;margin:0 auto 56px}
+.sec-head h2{margin:16px 0 14px}
+.sec-head p{color:var(--muted);font-size:18px}
+
+/* how */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.step{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px 24px;position:relative;transition:.3s}
+.step:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.step-n{font-family:"Marck Script";font-size:48px;color:var(--green);line-height:1}
+.step h3{font-size:26px;margin:10px 0 8px}
+.step p{color:var(--muted);font-size:15px}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+
+/* builder */
+#builder{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.builder{display:grid;grid-template-columns:1fr 1.05fr;gap:36px;align-items:start}
+.preview{position:sticky;top:96px;background:#fff;border-radius:30px;box-shadow:var(--shadow);padding:22px;overflow:hidden}
+.preview-stage{position:relative;aspect-ratio:1/0.95;border-radius:22px;background:radial-gradient(ellipse at 50% 30%,#fff 0%,var(--green-ll) 70%);overflow:hidden}
+.preview-stage svg{width:100%;height:100%}
+.preview-tag{position:absolute;left:16px;bottom:14px;background:rgba(255,255,255,.9);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;color:var(--green-dd)}
+.price-box{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:20px 6px 4px;flex-wrap:wrap}
+.price-box small{display:block;color:var(--muted);font-size:13px;font-weight:600}
+.price{font-family:"Cormorant Garamond";font-weight:700;font-size:54px;line-height:1;color:var(--green-dd)}
+.price span{font-size:26px}
+.price-lines{list-style:none;margin:14px 6px 0;border-top:1px dashed var(--line);padding-top:12px;font-size:14px;color:var(--muted)}
+.price-lines li{display:flex;justify-content:space-between;padding:3px 0}
+.price-lines li b{color:var(--ink);font-weight:600}
+.bump{animation:bump .35s}
+@keyframes bump{40%{transform:scale(1.06)}}
+
+.opts{display:flex;flex-direction:column;gap:18px}
+.opt{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.opt-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:16px}
+.opt-h h3{font-size:28px;display:flex;align-items:center;gap:12px}
+.opt-h h3 i{font-style:normal;font-family:Manrope;font-size:12px;font-weight:800;width:26px;height:26px;border-radius:50%;background:var(--green-l);color:var(--green-dd);display:grid;place-items:center}
+.opt-h .hint{font-size:13px;color:var(--muted)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.chip{border:1.5px solid var(--line);background:var(--cream);border-radius:16px;padding:14px 12px;cursor:pointer;text-align:left;transition:.2s;position:relative}
+.chip:hover{border-color:var(--green)}
+.chip.on{border-color:var(--green-d);background:var(--green-ll);box-shadow:0 0 0 3px rgba(127,179,106,.18)}
+.chip b{display:block;font-size:15px}
+.chip small{color:var(--muted);font-size:12.5px}
+.chip .tick{position:absolute;right:10px;top:10px;width:20px;height:20px;border-radius:50%;background:var(--green-d);color:#fff;font-size:12px;display:none;place-items:center}
+.chip.on .tick{display:grid}
+.chip{padding-right:30px}.ins-type .chip{padding-right:14px}.ins-type .chip .tick{display:none!important}
+.fill-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fill{display:flex;gap:12px;align-items:center}
+.fill .sw{flex:none;width:44px;height:44px;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.fill .sw i{flex:1}
+.fill .pr{font-size:12.5px;color:var(--green-d);font-weight:700}
+.badge{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--pink);color:#8a3a33;border-radius:6px;padding:2px 6px;margin-left:4px;vertical-align:2px}
+.colors{display:flex;gap:12px;flex-wrap:wrap}
+.color{width:46px;height:46px;border-radius:50%;cursor:pointer;border:3px solid #fff;box-shadow:0 0 0 1.5px var(--line);transition:.2s}
+.color.on{box-shadow:0 0 0 2.5px var(--green-d);transform:scale(1.08)}
+.decor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.decor .em{font-size:24px;display:block;margin-bottom:4px}
+.weight-row{display:flex;align-items:center;gap:16px}
+.weight-row output{font-family:"Cormorant Garamond";font-weight:700;font-size:34px;color:var(--green-dd);min-width:96px;text-align:right}
+.weight-row output small{font-size:18px}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:8px;border-radius:9px;background:linear-gradient(90deg,var(--green-d) var(--p,30%),var(--line) var(--p,30%));outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:3px solid var(--green-d);box-shadow:0 4px 10px rgba(0,0,0,.15);cursor:grab}
+input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid var(--green-d);cursor:grab}
+.portions{font-size:13.5px;color:var(--muted);margin-top:10px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:700;color:var(--muted)}
+.input{width:100%;border:1.5px solid var(--line);background:var(--cream);border-radius:14px;padding:14px 16px;font-size:16px;outline:none;transition:.2s}
+.input:focus{border-color:var(--green-d);background:#fff}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ins-type{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.ins-type .chip{padding:10px 14px;border-radius:999px}
+.ins-type .chip b{font-size:14px}
+@media(max-width:980px){.builder{grid-template-columns:1fr}.preview{position:relative;top:0}}
+@media(max-width:560px){.seg{grid-template-columns:1fr 1fr 1fr}.chip{padding:12px 10px}.fill-grid{grid-template-columns:1fr}.decor-grid{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}.opt{padding:20px 16px}.price{font-size:46px}}
+
+/* sticky mobile bar */
+.mbar{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;background:var(--green-dd);color:#fff;border-radius:20px;padding:12px 12px 12px 20px;display:none;align-items:center;justify-content:space-between;box-shadow:0 20px 40px -10px rgba(0,0,0,.35);transform:translateY(140%);transition:.35s}
+.mbar.show{transform:none}
+.mbar svg{width:58px;height:46px;flex:none;margin-right:12px;background:#fff;border-radius:12px;margin-left:-8px}
+.mbar small{opacity:.75;font-size:12px;display:block}
+.mbar b{font-family:"Cormorant Garamond";font-size:30px;line-height:1}
+.mbar .btn{background:#fff;color:var(--green-dd);padding:13px 20px}
+@media(max-width:980px){.mbar{display:flex}}
+
+/* desserts */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{background:#fff;border-radius:28px;overflow:hidden;border:1px solid var(--line);transition:.35s}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.card-art{aspect-ratio:4/3;display:grid;place-items:center;position:relative}
+.card-art svg{width:72%}
+.card-body{padding:22px 24px 26px}
+.card-body h3{font-size:30px}
+.card-body p{color:var(--muted);font-size:14.5px;margin:6px 0 16px}
+.card-foot{display:flex;justify-content:space-between;align-items:center}
+.card-foot b{font-size:18px}
+.card-foot button{border:0;background:var(--green-l);color:var(--green-dd);font-weight:700;border-radius:999px;padding:10px 16px;cursor:pointer;transition:.2s}
+.card-foot button:hover{background:var(--green);color:#fff}
+@media(max-width:900px){.cards{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.cards{grid-template-columns:1fr}}
+
+/* owner view */
+.owner{background:var(--green-dd);color:#fff;border-radius:36px;padding:64px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;position:relative;overflow:hidden}
+.owner::after{content:"";position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(127,179,106,.25);right:-160px;top:-200px}
+.owner h2{color:#fff}
+.owner .eyebrow{color:#cfe6c3}
+.owner p{opacity:.8;font-size:17px;margin-top:16px}
+.owner ul{list-style:none;margin-top:24px;display:grid;gap:12px}
+.owner li{display:flex;gap:12px;align-items:flex-start}
+.owner li::before{content:"✓";flex:none;width:24px;height:24px;border-radius:50%;background:var(--green);display:grid;place-items:center;font-size:13px;font-weight:800}
+.phone{position:relative;z-index:1;background:#111;border-radius:40px;padding:12px;max-width:340px;margin:0 auto;box-shadow:0 40px 80px -20px rgba(0,0,0,.5)}
+.phone-in{background:#f0f2f5;border-radius:30px;overflow:hidden;color:var(--ink)}
+.phone-top{background:#fff;padding:18px 18px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #e6e6e6}
+.phone-top .logo-badge{width:34px;height:34px;font-size:10px}
+.phone-top b{font-size:14px}.phone-top small{display:block;font-size:11px;color:#8a8a8a}
+.msg{margin:16px 14px;background:#fff;border-radius:18px 18px 18px 6px;padding:14px 16px;font-size:13px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.msg .t{font-weight:800;color:var(--green-dd);margin-bottom:6px}
+.msg .ln{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed #eee;padding:3px 0}
+.msg .ln span:first-child{color:#8a8a8a}
+.msg .tot{font-weight:800;font-size:15px;margin-top:6px;display:flex;justify-content:space-between}
+.msg time{display:block;text-align:right;font-size:10px;color:#aaa;margin-top:6px}
+@media(max-width:900px){.owner{grid-template-columns:1fr;padding:40px 22px;border-radius:28px}}
+
+/* cafes */
+.cafes{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.cafe{background:#fff;border:1px solid var(--line);border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:14px}
+.cafe h3{font-size:32px}
+.cafe .meta{display:grid;gap:8px;color:var(--muted);font-size:15px}
+.cafe .meta div{display:flex;gap:10px}
+.cafe .btn{align-self:flex-start;margin-top:8px}
+.delivery{margin-top:24px;background:var(--green-l);border-radius:28px;padding:30px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.delivery b{font-family:"Cormorant Garamond";font-size:28px;display:block;color:var(--green-dd)}
+.delivery span{color:var(--muted);font-size:14.5px}
+@media(max-width:800px){.cafes,.delivery{grid-template-columns:1fr}}
+
+/* faq */
+.faq{max-width:800px;margin:0 auto;display:grid;gap:12px}
+details{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px 24px}
+summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:24px;line-height:1;color:var(--green-d);transition:.2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--muted);margin-top:10px}
+
+footer{background:#1f2a1c;color:#cfd8c9;padding:60px 0 110px}
+.foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+footer .logo-text{color:#fff}
+footer a:hover{color:#fff}
+.demo-note{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);font-size:13px;opacity:.6}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:100;background:rgba(31,42,28,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.sheet{background:var(--cream);border-radius:30px;max-width:520px;width:100%;max-height:92vh;overflow:auto;padding:34px 28px;position:relative;animation:pop .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.92);opacity:0}}
+.sheet .x{position:absolute;right:16px;top:16px;width:40px;height:40px;border-radius:50%;border:0;background:#fff;cursor:pointer;font-size:20px}
+.sheet h3{font-size:38px;text-align:center}
+.sheet .ok{width:74px;height:74px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:36px;margin:0 auto 16px}
+.sheet .sub{text-align:center;color:var(--muted);margin:8px 0 20px}
+.sheet .msg{margin:0 0 20px;border:1px solid var(--line)}
+.sheet .acts{display:grid;gap:10px}
+.toast{position:fixed;left:50%;top:20px;transform:translate(-50%,-200%);opacity:0;background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;z-index:200;font-weight:600;font-size:14px;transition:.35s}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.err{border-color:#d9776c!important;background:#fff4f2!important}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s,transform .8s}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <div class="wrap nav">
+    <a href="#" class="logo" aria-label="Сластория">
+      <div class="logo-badge">Сл</div>
+      <div><div class="logo-text">Сластория</div><div class="logo-sub">кондитерская</div></div>
+    </a>
+    <nav class="nav-links">
+      <a href="#builder">Конструктор</a>
+      <a href="#desserts">Десерты</a>
+      <a href="#cafes">Кафе</a>
+      <a href="#faq">Вопросы</a>
+    </nav>
+    <a href="#builder" class="btn btn-primary">Собрать торт</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Кондитерская · Гомель</span>
+      <h1>Торт вашей <span class="script">мечты</span> — за&nbsp;2&nbsp;минуты</h1>
+      <p class="lead">Выберите ярусы, начинку, декор и надпись — цена посчитается сразу. Никаких «а сколько будет?» в переписке: просто соберите и отправьте заказ.</p>
+      <div class="hero-cta">
+        <a href="#builder" class="btn btn-primary">Собрать свой торт →</a>
+        <a href="#desserts" class="btn btn-ghost">Готовые десерты</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>100%</b><span>натуральные продукты</span></div>
+        <div><b>2 кафе</b><span>в центре Гомеля</span></div>
+        <div><b>от 48 р.</b><span>за кг торта</span></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-plate"></div>
+      <svg viewBox="0 0 400 400" aria-hidden="true">
+        <ellipse cx="200" cy="330" rx="150" ry="20" fill="#000" opacity=".06"/>
+        <ellipse cx="200" cy="318" rx="160" ry="22" fill="#fff" stroke="#e6ddd0" stroke-width="2"/>
+        <!-- bottom tier -->
+        <rect x="80" y="210" width="240" height="100" rx="14" fill="#fff8ee"/>
+        <rect x="80" y="246" width="240" height="8" fill="#7a4b33" opacity=".85"/>
+        <rect x="80" y="270" width="240" height="6" fill="#f2b7b0" opacity=".9"/>
+        <ellipse cx="200" cy="210" rx="120" ry="16" fill="#fffdf8"/>
+        <!-- top tier -->
+        <rect x="120" y="130" width="160" height="86" rx="12" fill="#dcebd2"/>
+        <path d="M120 140 q10 28 20 0 q10 22 20 0 q10 30 20 0 q10 20 20 0 q10 26 20 0 q10 18 20 0 q10 28 20 0 q10 22 20 0 V130 H120Z" fill="#5a3a2a"/>
+        <ellipse cx="200" cy="130" rx="80" ry="12" fill="#5a3a2a"/>
+        <!-- berries -->
+        <g><circle cx="168" cy="122" r="9" fill="#d6455a"/><circle cx="188" cy="118" r="8" fill="#3b3f8f"/><circle cx="206" cy="121" r="9" fill="#d6455a"/><circle cx="226" cy="118" r="7" fill="#3b3f8f"/><circle cx="240" cy="124" r="8" fill="#d6455a"/>
+        <path d="M196 106 q8 -14 18 -6 q-6 10 -18 6z" fill="#7fb36a"/></g>
+        <!-- flowers bottom -->
+        <g fill="#f4c9c4"><circle cx="100" cy="212" r="12"/><circle cx="118" cy="204" r="9"/><circle cx="300" cy="212" r="12"/><circle cx="284" cy="204" r="9"/></g>
+        <g fill="#7fb36a"><ellipse cx="88" cy="220" rx="9" ry="4" transform="rotate(-25 88 220)"/><ellipse cx="312" cy="220" rx="9" ry="4" transform="rotate(25 312 220)"/></g>
+        <text x="200" y="182" text-anchor="middle" font-family="Marck Script" font-size="26" fill="#2f5a26">С любовью</text>
+      </svg>
+      <div class="float-card fc1"><div class="ic">🎂</div><div><b>2 яруса · 3 кг</b>Фисташка-малина</div></div>
+      <div class="float-card fc2"><div class="ic">✓</div><div><b>Итого 236 р.</b>посчитано сразу</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="marquee-track" id="mq"></div></div>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Как это работает</span>
+      <h2>Четыре шага до <span class="script" style="color:var(--green-d)">праздника</span></h2>
+      <p>Вы собираете торт — мы получаем готовый заказ со всеми деталями и сразу берём в работу.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="step-n">1</div><h3>Форма и вес</h3><p>Один, два или три яруса. Вес подскажет, на сколько гостей хватит.</p></div>
+      <div class="step reveal"><div class="step-n">2</div><h3>Начинка</h3><p>Наши фирменные вкусы: «Милка», «Мокко», «Кокосовый» и другие.</p></div>
+      <div class="step reveal"><div class="step-n">3</div><h3>Декор</h3><p>Ягоды, цветы, макаронс, подтёки, надпись — видно сразу на превью.</p></div>
+      <div class="step reveal"><div class="step-n">4</div><h3>Отправка</h3><p>Дата, самовывоз или доставка — и заказ уже у кондитера.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="builder">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Конструктор тортов</span>
+      <h2>Соберите <span class="script" style="color:var(--green-d)">свой</span> торт</h2>
+      <p>Меняйте параметры — торт и цена обновляются на глазах.</p>
+    </div>
+
+    <div class="builder">
+      <div class="preview" id="preview">
+        <div class="preview-stage">
+          <div class="preview-tag" id="pvTag">2 яруса · 3 кг</div>
+          <svg id="cake" viewBox="0 0 400 380" aria-label="Превью торта"></svg>
+        </div>
+        <div class="price-box">
+          <div><small>Стоимость торта</small><div class="price" id="price">0 <span>р.</span></div></div>
+          <button class="btn btn-primary" id="orderBtn">Оформить заказ</button>
+        </div>
+        <ul class="price-lines" id="lines"></ul>
+      </div>
+
+      <div class="opts">
+        <div class="opt">
+          <div class="opt-h"><h3><i>1</i>Ярусы</h3><span class="hint">форма торта</span></div>
+          <div class="seg" id="tiers"></div>
+        </div>
+
+        <div class="opt">
+          <div class="opt-h"><h3><i>2</i>Вес</h3><span class="hint" id="wRange"></span></div>
+          <div class="weight-row">
+            <input type="range" id="weight" min="1.5" max="4" step="0.5" value="3" aria-label="Вес торта">
+            <output id="wOut">3 <small>кг</small></output>
+          </div>
+          <div class="portions" id="portions"></div>
+        </div>
+
+        <div class="opt">
+          <div class="opt-h"><h3><i>3</i>Начинка</h3><span class="hint">цена за кг</span></div>
+          <div class="fill-grid" id="fills"></div>
+        </div>
+
+        <div class="opt">
+          <div class="opt-h"><h3><i>4</i>Цвет крема</h3><span class="hint" id="colorName"></span></div>
+          <div class="colors" id="colors"></div>
+        </div>
+
+        <div class="opt">
+          <div class="opt-h"><h3><i>5</i>Декор</h3><span class="hint">можно несколько</span></div>
+          <div class="decor-grid" id="decor"></div>
+        </div>
+
+        <div class="opt">
+          <div class="opt-h"><h3><i>6</i>Надпись</h3><span class="hint">до 24 символов</span></div>
+          <input class="input" id="ins" maxlength="24" placeholder="Например: С днём рождения, Аня!" autocomplete="off">
+          <div class="ins-type" id="insType"></div>
+        </div>
+
+        <div class="opt">
+          <div class="opt-h"><h3><i>7</i>Получение</h3><span class="hint">минимум за 2 дня</span></div>
+          <div class="seg" id="get" style="grid-template-columns:repeat(3,1fr)"></div>
+          <div class="row2" style="margin-top:14px">
+            <div class="field"><label for="date">Дата</label><input class="input" type="date" id="date"></div>
+            <div class="field" id="addrWrap" style="display:none"><label for="addr">Адрес доставки</label><input class="input" id="addr" placeholder="Улица, дом, кв."></div>
+          </div>
+          <div class="row2" style="margin-top:12px">
+            <div class="field"><label for="name">Ваше имя</label><input class="input" id="name" placeholder="Анна" autocomplete="name"></div>
+            <div class="field"><label for="tel">Телефон</label><input class="input" id="tel" type="tel" placeholder="+375 (29) 000-00-00" autocomplete="tel"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="desserts">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Из нашей витрины</span>
+      <h2>Любимые <span class="script" style="color:var(--green-d)">вкусы</span></h2>
+      <p>Те самые десерты, которые гости берут к кофе. Любой из них можно заказать целым тортом.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="owner reveal">
+      <div style="position:relative;z-index:1">
+        <span class="eyebrow">Для кондитерской</span>
+        <h2 style="margin-top:14px">Вот так к вам приходит <span class="script" style="color:#bfe0ad">заказ</span></h2>
+        <p>Клиент уже выбрал всё сам и видел цену. Вам остаётся подтвердить и начать печь.</p>
+        <ul>
+          <li>Меньше переписки: без десяти уточняющих вопросов</li>
+          <li>Заказы приходят и ночью, когда Директ молчит</li>
+          <li>Цены и начинки меняете сами — за минуту</li>
+          <li>Сайт продаёт и для двух кафе, и для доставки</li>
+        </ul>
+      </div>
+      <div class="phone">
+        <div class="phone-in">
+          <div class="phone-top"><div class="logo-badge">Сл</div><div><b>Новый заказ с сайта</b><small>сейчас</small></div></div>
+          <div class="msg" id="ownerMsg"></div>
+          <div style="height:10px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cafes" style="background:var(--paper);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Ждём в гости</span>
+      <h2>Наши <span class="script" style="color:var(--green-d)">кафе</span></h2>
+      <p>Заберите торт сами или приходите на кофе с десертом.</p>
+    </div>
+    <div class="cafes">
+      <div class="cafe reveal">
+        <h3>На Советской</h3>
+        <div class="meta">
+          <div>📍 ул. Советская, 2 · рядом с набережной</div>
+          <div>🕘 Ежедневно 9:00 – 22:00</div>
+          <div>📞 <a href="tel:+375296553033">+375 29 655-30-33</a></div>
+        </div>
+        <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://yandex.by/maps/?text=%D0%93%D0%BE%D0%BC%D0%B5%D0%BB%D1%8C%2C%20%D0%A1%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B0%D1%8F%202">Построить маршрут</a>
+      </div>
+      <div class="cafe reveal">
+        <h3>На 50 лет БССР</h3>
+        <div class="meta">
+          <div>📍 ул. 50 лет БССР, 7 · Старый Аэродром</div>
+          <div>🕘 Ежедневно 9:00 – 21:00</div>
+          <div>📞 <a href="tel:+375339900110">+375 33 990-01-10</a></div>
+        </div>
+        <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://yandex.by/maps/?text=%D0%93%D0%BE%D0%BC%D0%B5%D0%BB%D1%8C%2C%2050%20%D0%BB%D0%B5%D1%82%20%D0%91%D0%A1%D0%A1%D0%A0%207">Построить маршрут</a>
+      </div>
+    </div>
+    <div class="delivery reveal">
+      <div><b>Доставка по Гомелю</b><span>10 р., бесплатно при заказе от 150 р.</span></div>
+      <div><b>За 2 дня</b><span>минимальный срок заказа торта, к свадьбе — лучше за неделю</span></div>
+      <div><b>Бережно</b><span>везём в термобоксе, многоярусные — собираем на месте</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Частые вопросы</span>
+      <h2>Остались <span class="script" style="color:var(--green-d)">вопросы?</span></h2>
+    </div>
+    <div class="faq">
+      <details><summary>Цена на сайте окончательная?</summary><p>Да, если вы не добавляете ничего сверх выбранного. Итоговый вес может отличаться на ±100 г — пересчитываем честно, по факту.</p></details>
+      <details><summary>Можно ли принести свой эскиз?</summary><p>Конечно. Соберите похожий торт в конструкторе, а при подтверждении заказа пришлите картинку — кондитер уточнит детали.</p></details>
+      <details><summary>Как оплатить?</summary><p>Предоплата 50% после подтверждения заказа, остаток — при получении. Наличные, карта, ЕРИП.</p></details>
+      <details><summary>Из чего вы делаете торты?</summary><p>Только натуральные продукты: настоящие сливки, сливочное масло, бельгийский шоколад, свежие ягоды. Без растительных сливок и маргарина.</p></details>
+      <details><summary>Можно ли отменить заказ?</summary><p>Без потери предоплаты — за 48 часов до даты получения.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="logo-text">Сластория</div>
+        <p style="margin-top:10px;max-width:320px">Мы очень любим то, что делаем, и надеемся, вы почувствуете это в каждом кусочке 💚</p>
+      </div>
+      <div style="display:grid;gap:8px">
+        <a href="https://instagram.com/slastoriya.by" target="_blank" rel="noopener">Instagram · @slastoriya.by</a>
+        <a href="tel:+375296553033">+375 29 655-30-33</a>
+        <a href="tel:+375339900110">+375 33 990-01-10</a>
+      </div>
+    </div>
+    <div class="demo-note">Демо-макет сайта для кондитерской «Сластория». Цены и состав указаны для примера и легко меняются.</div>
+  </div>
+</footer>
+
+<div class="mbar" id="mbar"><svg id="mCake" viewBox="40 120 340 260" aria-hidden="true"></svg><div style="flex:1"><small>Ваш торт</small><b id="mPrice">0 р.</b></div><button class="btn" id="mOrder">Заказать</button></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="sheet">
+    <button class="x" id="mClose" aria-label="Закрыть">×</button>
+    <div class="ok">✓</div>
+    <h3>Заказ готов!</h3>
+    <p class="sub" id="mSub">Отправьте его нам — подтвердим в течение 15 минут.</p>
+    <div class="msg" id="mMsg"></div>
+    <div class="acts">
+      <a class="btn btn-primary" id="sendViber" href="#">Отправить в Viber</a>
+      <button class="btn btn-ghost" id="sendIg">Скопировать и открыть Instagram</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const fmt=n=>Math.round(n).toLocaleString('ru-RU');
+
+const TIERS=[
+  {id:1,name:'1 ярус',sub:'1,5–4 кг',min:1.5,max:4,def:2},
+  {id:2,name:'2 яруса',sub:'3–6 кг',min:3,max:6,def:3},
+  {id:3,name:'3 яруса',sub:'5–10 кг',min:5,max:10,def:6},
+];
+const FILLS=[
+  {id:'milka',name:'Милка',desc:'шоколадный бисквит, сметанно-сливочный крем',kg:52,c:['#5a3a2a','#fff3e6','#5a3a2a'],hit:1},
+  {id:'mocco',name:'Мокко',desc:'шоколадный бисквит, сметанно-шоколадный крем',kg:54,c:['#4a2f22','#a9775a','#4a2f22']},
+  {id:'coco',name:'Кокосовый',desc:'кокосовые коржи, сливочный крем',kg:54,c:['#f4ead8','#ffffff','#f4ead8']},
+  {id:'pist',name:'Фисташка-малина',desc:'фисташковый бисквит, малиновое конфи',kg:68,c:['#b9cf8c','#e0526b','#b9cf8c'],hit:1},
+  {id:'velvet',name:'Красный бархат',desc:'бархатный бисквит, крем-чиз',kg:58,c:['#a3283a','#fff8f0','#a3283a']},
+  {id:'honey',name:'Медовик',desc:'медовые коржи, сметанный крем',kg:48,c:['#d49a4a','#fff1d8','#d49a4a']},
+  {id:'snick',name:'Сникерс',desc:'карамель, арахис, нуга',kg:60,c:['#5a3a2a','#d8a15a','#5a3a2a']},
+  {id:'berry',name:'Ягодный йогурт',desc:'ванильный бисквит, йогурт, ягоды',kg:56,c:['#fff2dd','#c8456b','#fff2dd']},
+];
+const COLORS=[
+  {id:'white',name:'Сливочный',c:'#fff8ee',d:'#efe3d0'},
+  {id:'mint',name:'Фисташковый',c:'#dcebd2',d:'#bfd7ae'},
+  {id:'pink',name:'Пудровый',c:'#f6d9d4',d:'#e8bcb5'},
+  {id:'lav',name:'Лавандовый',c:'#e3dcf0',d:'#cbbfe2'},
+  {id:'choc',name:'Шоколадный',c:'#8a5a42',d:'#6e4532'},
+  {id:'sky',name:'Небесный',c:'#d7e8f2',d:'#b6d2e2'},
+];
+const DECOR=[
+  {id:'berries',name:'Свежие ягоды',em:'🍓',p:18},
+  {id:'drip',name:'Шоколадные подтёки',em:'🍫',p:8},
+  {id:'flowers',name:'Живые цветы',em:'🌸',p:25},
+  {id:'macaron',name:'Макаронс',em:'🧁',p:14},
+  {id:'gold',name:'Золотой декор',em:'✨',p:10},
+  {id:'topper',name:'Топпер',em:'🎉',p:15},
+];
+const INS=[{id:'cream',name:'Кремом',p:0},{id:'choco',name:'Шоколадная табличка',p:5},{id:'topper',name:'В топпере',p:12}];
+const GET=[
+  {id:'sov',name:'Советская, 2',sub:'самовывоз',p:0},
+  {id:'bssr',name:'50 лет БССР, 7',sub:'самовывоз',p:0},
+  {id:'del',name:'Доставка',sub:'10 р. / от 150 р. — 0',p:10},
+];
+const S={tier:2,w:3,fill:'pist',color:'mint',decor:new Set(['berries','drip']),insType:'cream',ins:'',get:'sov'};
+
+function chip(html,on){const b=document.createElement('button');b.type='button';b.className='chip'+(on?' on':'');b.innerHTML=html+'<span class="tick">✓</span>';return b}
+function renderOpts(){
+  const t=$('#tiers');t.innerHTML='';
+  TIERS.forEach(x=>{const b=chip(`<b>${x.name}</b><small>${x.sub}</small>`,S.tier===x.id);b.onclick=()=>{S.tier=x.id;S.w=x.def;syncWeight();renderOpts();update()};t.appendChild(b)});
+  const f=$('#fills');f.innerHTML='';
+  FILLS.forEach(x=>{const b=chip(`<div class="fill"><div class="sw">${x.c.map(c=>`<i style="background:${c}"></i>`).join('')}</div><div><b>${x.name}${x.hit?'<span class="badge">хит</span>':''}</b><small>${x.desc}</small><div class="pr">${x.kg} р./кг</div></div></div>`,S.fill===x.id);b.onclick=()=>{S.fill=x.id;renderOpts();update()};f.appendChild(b)});
+  const c=$('#colors');c.innerHTML='';
+  COLORS.forEach(x=>{const b=document.createElement('button');b.type='button';b.className='color'+(S.color===x.id?' on':'');b.style.background=x.c;b.title=x.name;b.setAttribute('aria-label',x.name);b.onclick=()=>{S.color=x.id;renderOpts();update()};c.appendChild(b)});
+  $('#colorName').textContent=COLORS.find(x=>x.id===S.color).name;
+  const d=$('#decor');d.innerHTML='';
+  DECOR.forEach(x=>{const b=chip(`<div class="decor"><span class="em">${x.em}</span><b>${x.name}</b><small>+${x.p} р.</small></div>`,S.decor.has(x.id));b.onclick=()=>{S.decor.has(x.id)?S.decor.delete(x.id):S.decor.add(x.id);renderOpts();update()};d.appendChild(b)});
+  const it=$('#insType');it.innerHTML='';
+  INS.forEach(x=>{const b=chip(`<b>${x.name}${x.p?' · +'+x.p+' р.':''}</b>`,S.insType===x.id);b.onclick=()=>{S.insType=x.id;renderOpts();update()};it.appendChild(b)});
+  const g=$('#get');g.innerHTML='';
+  GET.forEach(x=>{const b=chip(`<b>${x.name}</b><small>${x.sub}</small>`,S.get===x.id);b.onclick=()=>{S.get=x.id;$('#addrWrap').style.display=x.id==='del'?'flex':'none';renderOpts();update()};g.appendChild(b)});
+}
+function syncWeight(){
+  const t=TIERS.find(x=>x.id===S.tier),r=$('#weight');
+  r.min=t.min;r.max=t.max;r.value=S.w;
+  $('#wRange').textContent=`от ${t.min} до ${t.max} кг`;
+}
+$('#weight').addEventListener('input',e=>{S.w=+e.target.value;update()});
+$('#ins').addEventListener('input',e=>{S.ins=e.target.value;update()});
+
+function calc(){
+  const f=FILLS.find(x=>x.id===S.fill);
+  const base=f.kg*S.w;
+  const tierFee=S.tier===2?15:S.tier===3?35:0;
+  const dec=[...S.decor].map(id=>DECOR.find(x=>x.id===id));
+  const decSum=dec.reduce((a,x)=>a+x.p*(x.id==='berries'||x.id==='flowers'?Math.max(1,S.tier*.7):1),0);
+  const insP=S.ins.trim()?INS.find(x=>x.id===S.insType).p:0;
+  const sub=base+tierFee+decSum+insP;
+  const del=S.get==='del'?(sub>=150?0:10):0;
+  return {f,base,tierFee,dec,decSum,insP,del,total:sub+del};
+}
+
+function update(){
+  const c=calc(),t=TIERS.find(x=>x.id===S.tier);
+  const r=$('#weight');r.style.setProperty('--p',((S.w-t.min)/(t.max-t.min)*100)+'%');
+  $('#wOut').innerHTML=`${String(S.w).replace('.',',')} <small>кг</small>`;
+  const p=Math.round(S.w*8);
+  $('#portions').textContent=`≈ ${p} кусочков по 120 г — хватит на ${Math.round(p*.85)}–${p} гостей`;
+  $('#pvTag').textContent=`${t.name} · ${String(S.w).replace('.',',')} кг · ${c.f.name}`;
+  const pe=$('#price');pe.innerHTML=`${fmt(c.total)} <span>р.</span>`;pe.classList.remove('bump');void pe.offsetWidth;pe.classList.add('bump');
+  $('#mPrice').textContent=fmt(c.total)+' р.';
+  const L=[[`${c.f.name}, ${String(S.w).replace('.',',')} кг × ${c.f.kg} р.`,c.base]];
+  if(c.tierFee)L.push([`Сборка ярусов`,c.tierFee]);
+  c.dec.forEach(x=>L.push([x.name,x.p*(x.id==='berries'||x.id==='flowers'?Math.max(1,S.tier*.7):1)]));
+  if(S.ins.trim())L.push([`Надпись (${INS.find(x=>x.id===S.insType).name.toLowerCase()})`,c.insP]);
+  if(S.get==='del')L.push(['Доставка',c.del]);
+  $('#lines').innerHTML=L.map(([a,b])=>`<li><span>${a}</span><b>${b?fmt(b)+' р.':'бесплатно'}</b></li>`).join('');
+  drawCake();renderOwner();
+}
+
+/* ---------- SVG cake ---------- */
+function drawCake(){
+  const col=COLORS.find(x=>x.id===S.color),f=FILLS.find(x=>x.id===S.fill);
+  const n=S.tier,scale=.85+((S.w-TIERS[n-1].min)/(TIERS[n-1].max-TIERS[n-1].min))*.15;
+  const widths=[[250],[260,180],[270,200,135]][n-1].map(w=>w*scale);
+  const H=n===1?120:n===2?92:72;
+  const cx=200,baseY=330;
+  let s=`<defs>
+    <linearGradient id="shade" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".10"/><stop offset=".25" stop-color="#fff" stop-opacity=".18"/><stop offset=".7" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient>
+  </defs>
+  <ellipse cx="200" cy="${baseY+18}" rx="175" ry="18" fill="#000" opacity=".06"/>
+  <ellipse cx="200" cy="${baseY+8}" rx="170" ry="22" fill="#fff" stroke="#e6ddd0" stroke-width="2"/>`;
+  let y=baseY;const tops=[];
+  widths.forEach((w,i)=>{
+    const x=cx-w/2,top=y-H,ry=w*.065;
+    s+=`<g class="tier" style="animation:pop .4s ${i*.08}s both">`;
+    s+=`<path d="M${x} ${top} V${y} A${w/2} ${ry} 0 0 0 ${x+w} ${y} V${top}Z" fill="${col.c}"/>`;
+    s+=`<path d="M${x} ${top} V${y} A${w/2} ${ry} 0 0 0 ${x+w} ${y} V${top}Z" fill="url(#shade)"/>`;
+    if(S.decor.has('drip')){
+      let d=`M${x} ${top}`;const seg=Math.round(w/18);
+      for(let k=0;k<seg;k++){const len=10+((k*37+i*13)%5)*6;const sx2=x+k*w/seg;d+=` L${sx2} ${top+4} Q${sx2+w/seg/2} ${top+len*2} ${sx2+w/seg} ${top+4}`}
+      d+=` L${x+w} ${top} Z`;s+=`<path d="${d}" fill="#4a2b1e"/>`;
+    }
+    s+=`<ellipse cx="${cx}" cy="${top}" rx="${w/2}" ry="${ry}" fill="${S.decor.has('drip')?'#4a2b1e':col.c}"/>`;
+    if(!S.decor.has('drip'))s+=`<ellipse cx="${cx}" cy="${top}" rx="${w/2}" ry="${ry}" fill="#fff" opacity=".25"/>`;
+    // piping border
+    for(let k=0;k<Math.round(w/14);k++){s+=`<circle cx="${x+7+k*14}" cy="${y+ry*.55-Math.sin(k/(w/14)*Math.PI)*ry*.9}" r="5.5" fill="${col.c}" stroke="${col.d}" stroke-width="1"/>`}
+    if(S.decor.has('gold')){s+=`<path d="M${x+6} ${top+H*.55} Q${cx} ${top+H*.55+ry*1.2} ${x+w-6} ${top+H*.55}" stroke="#c9a35b" stroke-width="4" fill="none" stroke-dasharray="2 7" stroke-linecap="round"/>`}
+    s+='</g>';
+    tops.push({top,w,ry,x});y=top;
+  });
+  const T=tops[tops.length-1];
+  // slice on the plate shows the chosen filling
+  {const sx=cx+widths[0]/2-6,sy=baseY+18,lh=46;
+   s+=`<g transform="translate(${sx} ${sy})"><ellipse cx="22" cy="2" rx="30" ry="6" fill="#000" opacity=".07"/>`;
+   s+=`<path d="M-4 -${lh} L42 -${lh-10} L42 0 L-4 -6Z" fill="${f.c[0]}"/>`;
+   for(let k=0;k<3;k++){const yy=-lh+8+k*13;s+=`<path d="M-4 ${yy} L42 ${yy+9} L42 ${yy+14} L-4 ${yy+5}Z" fill="${f.c[1]}"/>`}
+   s+=`<path d="M-4 -${lh} L42 -${lh-10} L50 -${lh-6} L4 -${lh+4}Z" fill="${S.decor.has('drip')?'#4a2b1e':col.c}"/>`;
+   s+=`<path d="M42 -${lh-10} L50 -${lh-6} L50 -4 L42 0Z" fill="${col.d}"/></g>`;}
+  // macarons around lower tier
+  if(S.decor.has('macaron')){
+    const B=tops[0];const mc=['#f4c9c4','#bfd7ae','#e3dcf0','#f6e3b0'];
+    [-.38,-.14,.12,.36].forEach((p,k)=>{const mx=cx+p*B.w,my=B.top+B.ry*.4+(n>1?-4:0);s+=`<g><ellipse cx="${mx}" cy="${my}" rx="13" ry="8" fill="${mc[k]}"/><rect x="${mx-12}" y="${my-3}" width="24" height="5" fill="#fff8ee"/><ellipse cx="${mx}" cy="${my-6}" rx="13" ry="7" fill="${mc[k]}"/></g>`});
+  }
+  // berries on top
+  if(S.decor.has('berries')){
+    const pts=[[-.3,0],[-.15,-.4],[0,.2],[.14,-.35],[.3,.05],[-.05,-.6],[.22,.5],[-.24,.5]];
+    pts.forEach(([px,py],k)=>{const bx=cx+px*T.w,by=T.top+py*T.ry-5;const red=k%2===0;s+=red?`<path d="M${bx-8} ${by-4} Q${bx} ${by+16} ${bx+8} ${by-4} Q${bx} ${by-10} ${bx-8} ${by-4}Z" fill="#d6455a"/><path d="M${bx-5} ${by-6} l5 3 l5 -3" stroke="#5f9e4c" stroke-width="3" fill="none"/>`:`<circle cx="${bx}" cy="${by}" r="7" fill="#3b3f8f"/><circle cx="${bx-2}" cy="${by-2}" r="2" fill="#fff" opacity=".4"/>`});
+  }
+  // flowers
+  if(S.decor.has('flowers')){
+    const fl=(fx,fy,r,c)=>{let g='';for(let a=0;a<5;a++){const an=a*72*Math.PI/180;g+=`<circle cx="${fx+Math.cos(an)*r*.6}" cy="${fy+Math.sin(an)*r*.6}" r="${r*.55}" fill="${c}"/>`}return g+`<circle cx="${fx}" cy="${fy}" r="${r*.35}" fill="#f6e3b0"/>`};
+    const B=tops[0];
+    s+=`<ellipse cx="${B.x+10}" cy="${B.top+14}" rx="14" ry="5" fill="#7fb36a" transform="rotate(-30 ${B.x+10} ${B.top+14})"/>`;
+    s+=fl(B.x+18,B.top+4,16,'#f4c9c4')+fl(B.x+38,B.top+12,11,'#fff')+fl(B.x+B.w-22,B.top+6,14,'#e9a8b8');
+    if(n>1)s+=fl(T.x+T.w-14,T.top+2,13,'#f4c9c4');
+  }
+  // topper
+  if(S.decor.has('topper')){
+    s+=`<line x1="${cx-30}" y1="${T.top-4}" x2="${cx-30}" y2="${T.top-70}" stroke="#c9a35b" stroke-width="2"/><line x1="${cx+30}" y1="${T.top-4}" x2="${cx+30}" y2="${T.top-70}" stroke="#c9a35b" stroke-width="2"/>`;
+    const txt=S.insType==='topper'&&S.ins.trim()?esc(S.ins.trim().slice(0,14)):'С праздником';
+    s+=`<text x="${cx}" y="${T.top-62}" text-anchor="middle" font-family="Marck Script" font-size="24" fill="#c9a35b">${txt}</text>`;
+  }
+  // inscription
+  const ins=S.ins.trim();
+  if(ins&&S.insType!=='topper'){
+    const B=tops[0],ty=B.top+(n===1?H*.5:H*.55);
+    const fs=Math.min(26,Math.max(13,(B.w*.62)/Math.max(6,ins.length)*1.7));
+    if(S.insType==='choco'){
+      s+=`<rect x="${cx-B.w*.32}" y="${ty-fs*.95}" width="${B.w*.64}" height="${fs*1.5}" rx="8" fill="#4a2b1e"/>`;
+      s+=`<text x="${cx-B.w*.04}" y="${ty+fs*.15}" text-anchor="middle" font-family="Marck Script" font-size="${fs}" fill="#fff8ee">${esc(ins)}</text>`;
+    }else{
+      s+=`<text x="${cx-B.w*.04}" y="${ty}" text-anchor="middle" font-family="Marck Script" font-size="${fs}" fill="${S.color==='choc'?'#fff8ee':'#2f5a26'}">${esc(ins)}</text>`;
+    }
+  }
+  const minY=T.top-(S.decor.has('topper')?78:S.decor.has('berries')?20:12),by=baseY+30;
+  if(minY<14){const k=(by-14)/(by-minY);const i=s.indexOf('</defs>')+7;s=s.slice(0,i)+`<g transform="translate(200 ${by}) scale(${k.toFixed(3)}) translate(-200 -${by})">`+s.slice(i)+'</g>'}
+  $('#cake').innerHTML=s;$('#mCake').innerHTML=s;
+}
+function esc(t){return t.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+
+/* ---------- order text ---------- */
+function orderRows(demo){
+  const c=calc(),t=TIERS.find(x=>x.id===S.tier),g=GET.find(x=>x.id===S.get);
+  const d=$('#date').value?new Date($('#date').value).toLocaleDateString('ru-RU',{day:'numeric',month:'long',weekday:'short'}):'—';
+  return {c,rows:[
+    ['Торт',`${t.name}, ${String(S.w).replace('.',',')} кг`],
+    ['Начинка',c.f.name],
+    ['Крем',COLORS.find(x=>x.id===S.color).name],
+    ['Декор',c.dec.length?c.dec.map(x=>x.name).join(', '):'без декора'],
+    ['Надпись',S.ins.trim()?`«${S.ins.trim()}»`:'—'],
+    ['Получение',S.get==='del'?('Доставка'+($('#addr').value?': '+$('#addr').value:'')):'Самовывоз, '+g.name],
+    ['Дата',d],
+    ['Клиент',[$('#name').value,$('#tel').value].filter(Boolean).join(', ')||(demo?'Анна, +375 29 123-45-67':'—')],
+  ]};
+}
+function msgHTML(num,demo){
+  const {c,rows}=orderRows(demo);
+  return `<div class="t">🎂 Заказ №${num}</div>${rows.map(([a,b])=>`<div class="ln"><span>${a}</span><span>${esc(String(b))}</span></div>`).join('')}<div class="tot"><span>Итого</span><span>${fmt(c.total)} р.</span></div>`;
+}
+function msgText(num){
+  const {c,rows}=orderRows();
+  return `Здравствуйте! Хочу заказать торт (заказ №${num} с сайта):\n`+rows.map(([a,b])=>`${a}: ${b}`).join('\n')+`\nИтого: ${fmt(c.total)} р.`;
+}
+function renderOwner(){$('#ownerMsg').innerHTML=msgHTML(1247,true)+`<time>${new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})} ✓✓</time>`}
+
+/* ---------- order flow ---------- */
+const dateIn=$('#date');
+(()=>{const d=new Date();d.setDate(d.getDate()+2);const iso=d.toISOString().slice(0,10);dateIn.min=iso;dateIn.value=iso})();
+['#date','#addr','#name','#tel'].forEach(id=>$(id).addEventListener('input',()=>{$(id).classList.remove('err');renderOwner()}));
+
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2600)}
+let num=0;
+function order(){
+  const need=['#name','#tel'];if(S.get==='del')need.push('#addr');
+  const bad=need.filter(id=>!$(id).value.trim());
+  if(bad.length){bad.forEach(id=>$(id).classList.add('err'));$(bad[0]).scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>$(bad[0]).focus({preventScroll:true}),400);toast('Заполните контакты, чтобы мы могли связаться');return}
+  num=1200+Math.floor(Math.random()*800);
+  $('#mMsg').innerHTML=msgHTML(num);
+  $('#sendViber').href='viber://forward?text='+encodeURIComponent(msgText(num));
+  $('#modal').classList.add('open');document.body.style.overflow='hidden';
+}
+$('#orderBtn').onclick=order;$('#mOrder').onclick=order;
+const closeM=()=>{$('#modal').classList.remove('open');document.body.style.overflow=''};
+$('#mClose').onclick=closeM;$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeM()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+$('#sendIg').onclick=async()=>{try{await navigator.clipboard.writeText(msgText(num));toast('Заказ скопирован — вставьте его в Директ')}catch(e){toast('Откройте Директ и опишите заказ')}setTimeout(()=>window.open('https://ig.me/m/slastoriya.by','_blank'),600)};
+
+/* ---------- desserts ---------- */
+const DESS=[
+  {name:'Милка',desc:'Шоколадный бисквит, сметанно-сливочный крем, шоколадная заливка',p:'52 р./кг',bg:'#f3e9df',fill:'milka',top:'#5a3a2a',l:['#5a3a2a','#fff3e6']},
+  {name:'Мокко',desc:'Шоколадный бисквит, сметанно-шоколадный крем, паутинка из глазури',p:'54 р./кг',bg:'#efe4da',fill:'mocco',top:'#4a2f22',l:['#4a2f22','#a9775a'],web:1},
+  {name:'Кокосовый',desc:'Кокосовые коржи, нежный сливочный крем, кокосовая посыпка',p:'54 р./кг',bg:'#eef5e8',fill:'coco',top:'#fffdf8',l:['#f4ead8','#ffffff'],coco:1},
+];
+$('#cards').innerHTML=DESS.map((d,i)=>`<article class="card reveal"><div class="card-art" style="background:${d.bg}">
+<svg viewBox="0 0 200 160"><ellipse cx="100" cy="140" rx="80" ry="10" fill="#000" opacity=".07"/>
+<path d="M30 60 L100 30 L170 60 L170 120 L100 150 L30 120Z" fill="${d.l[0]}"/>
+<path d="M30 60 L100 90 L100 150 L30 120Z" fill="${d.l[0]}"/>
+${[0,1,2].map(k=>`<path d="M30 ${72+k*16} L100 ${102+k*16} L100 ${108+k*16} L30 ${78+k*16}Z" fill="${d.l[1]}"/>`).join('')}
+<path d="M100 90 L170 60 L170 120 L100 150Z" fill="${d.l[0]}" opacity=".85"/>
+<path d="M30 60 L100 30 L170 60 L100 90Z" fill="${d.top}"/>
+${d.web?'<path d="M60 58 Q80 48 100 60 T140 58 M70 66 Q95 56 120 70 M80 50 Q100 44 125 52" stroke="#fff3e6" stroke-width="2" fill="none" opacity=".8"/>':''}
+${d.coco?Array.from({length:26},(_,k)=>`<circle cx="${45+(k*37)%110}" cy="${44+(k*23)%38}" r="1.8" fill="#e8dcc6"/>`).join(''):''}
+<circle cx="112" cy="50" r="7" fill="#d6455a"/><path d="M112 43 q4 -8 9 -4" stroke="#7fb36a" stroke-width="3" fill="none"/>
+</svg></div><div class="card-body"><h3>${d.name}</h3><p>${d.desc}</p><div class="card-foot"><b>${d.p}</b><button data-f="${d.fill}">Тортом →</button></div></div></article>`).join('');
+document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{S.fill=b.dataset.f;S.tier=1;S.w=2;S.color=b.dataset.f==='coco'?'white':'choc';S.decor=new Set(b.dataset.f==='coco'?['berries']:['drip','berries']);syncWeight();renderOpts();update();$('#builder').scrollIntoView({behavior:'smooth'});toast('«'+FILLS.find(x=>x.id===S.fill).name+'» в конструкторе')});
+
+/* ---------- misc ---------- */
+const words=['Торты на заказ','Натуральные продукты','Бенто-торты','Свадебные торты','Десерты к кофе','Доставка по Гомелю','С любовью в каждом кусочке'];
+$('#mq').innerHTML=[0,1].map(()=>`<span>${words.join('</span><span>')}</span>`).join('');
+addEventListener('scroll',()=>$('#hdr').classList.toggle('scrolled',scrollY>10),{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const bio=new IntersectionObserver(es=>es.forEach(e=>$('#mbar').classList.toggle('show',e.isIntersecting)),{threshold:.05});
+bio.observe($('#builder'));
+syncWeight();renderOpts();update();
+document.fonts&&document.fonts.ready.then(drawCake);
+</script>
+</body>
+</html>
