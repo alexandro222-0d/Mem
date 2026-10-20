@@ -1,10 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Три поколения — банкетный зал в Лиде</title>
 <meta name="description" content="Усадьба «Три поколения» в Лиде: свадьбы, юбилеи, корпоративы. Три зала, летняя веранда, закрытая территория с фонтаном и собственная кухня.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%228%22 fill=%22%23161C13%22/%3E%3Cg fill=%22none%22 stroke=%22%23D4BC93%22 stroke-width=%221.6%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M20 35V11%22/%3E%3Cpath d=%22M20 11c0-4 2.5-7 0-8.5C17.5 4 20 7 20 11z%22/%3E%3Cpath d=%22M20 21c-3-1-8-1-10.5-5 4.5-1.5 9 1 10.5 5z%22/%3E%3Cpath d=%22M20 17c3-1 8-1 10.5-5-4.5-1.5-9 1-10.5 5z%22/%3E%3Cpath d=%22M20 28c-2 0-6 0-8-3 3.5-1 6.5.5 8 3z%22/%3E%3Cpath d=%22M20 25c2 0 6 0 8-3-3.5-1-6.5.5-8 3z%22/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -119,7 +120,6 @@
   .marquee figure { position: relative; width: 340px; height: 440px; flex: none; overflow: hidden; }
   .marquee figure:nth-child(even) { margin-top: 50px; height: 390px; }
   .marquee img { width: 100%; height: 100%; object-fit: cover; }
-  .marquee figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 50px 22px 18px; color: var(--ivory); background: linear-gradient(0deg, rgba(22,28,19,.85), transparent); font-family: var(--serif); font-size: 22px; line-height: 1.15; }
 
   /* ---------- свадьба ---------- */
   .wedding { padding: 130px 0 120px; background: var(--pine-900); overflow: hidden; text-align: center; }
@@ -323,13 +323,13 @@
       <p>положительных отзывов о еде на Яндекс Картах. Банкетное меню собираем под формат и бюджет.</p>
     </div>
   </div>
-  <div class="marquee" aria-label="Блюда банкетного меню">
-    <figure><img src="img/dish-herring.jpg" alt=""><figcaption>Сельдь на бородинском со свекольным муссом</figcaption></figure>
-    <figure><img src="img/dish-salad.jpg" alt=""><figcaption>Салат с лисичками</figcaption></figure>
-    <figure><img src="img/dish-rolls.jpg" alt=""><figcaption>Закусочные рулетики</figcaption></figure>
-    <figure><img src="img/dish-canape.jpg" alt=""><figcaption>Канапе к фуршету</figcaption></figure>
-    <figure><img src="img/dish-cake-pearl.jpg" alt=""><figcaption>Свадебный торт с жемчугом</figcaption></figure>
-    <figure><img src="img/dish-cake.jpg" alt="" style="object-position:50% 70%"><figcaption>Торт со свечами</figcaption></figure>
+  <div class="marquee">
+    <figure><img src="img/dish-herring.jpg" alt="Сельдь на бородинском хлебе"></figure>
+    <figure><img src="img/dish-salad.jpg" alt="Салат с лисичками"></figure>
+    <figure><img src="img/dish-rolls.jpg" alt="Закусочные рулетики"></figure>
+    <figure><img src="img/dish-canape.jpg" alt="Канапе"></figure>
+    <figure><img src="img/dish-cake-pearl.jpg" alt="Свадебный торт с жемчугом"></figure>
+    <figure><img src="img/dish-cake.jpg" alt="Молодожёны задувают свечи на торте" style="object-position:50% 70%"></figure>
   </div>
 </section>
 
@@ -349,7 +349,7 @@
     <ul class="steps reveal">
       <li><span class="num">01</span><h3>Регистрация</h3><p>Выездная церемония под цветочной аркой на территории усадьбы.</p></li>
       <li><span class="num">02</span><h3>Фотосессия</h3><p>У фонтана днём и на аллее фонарей после заката, без переездов.</p></li>
-      <li><span class="num">03</span><h3>Банкет</h3><p>В зале или на летней веранде, администратор ведёт весь вечер.</p></li>
+      <li><span class="num">03</span><h3>Банкет</h3><p>В зале или на летней веранде, с внимательными официантами и администратором.</p></li>
     </ul>
     <a href="#book" class="btn btn-rose reveal">Обсудить свадьбу <svg><use href="#arrow"/></svg></a>
   </div>
@@ -370,8 +370,8 @@
     <form class="reveal" onsubmit="event.preventDefault();this.querySelector('.form-done').style.display='block';this.querySelector('button').disabled=true;">
       <h3>Проверим вашу <span class="accent">дату</span></h3>
       <p>Перезвоним, расскажем о свободных датах и пришлём банкетное меню.</p>
-      <label>Имя<input required placeholder="Анна"></label>
-      <label>Телефон<input required type="tel" placeholder="+375"></label>
+      <label>Имя<input type="text" required placeholder="Анна" autocomplete="name"></label>
+      <label>Телефон<input required type="tel" placeholder="+375" autocomplete="tel"></label>
       <label>Дата<input type="date"></label>
       <label>Гостей<input type="number" min="1" placeholder="40"></label>
       <label class="full">Повод
@@ -387,7 +387,7 @@
   <div class="wrap">
     <div class="foot">
       <a href="#" class="logo"><svg><use href="#sprig"/></svg><b>ТРИ ПОКОЛЕНИЯ</b><small>усадьба · банкетный зал · Лида</small></a>
-      <div><small class="lbl">Телефон</small><a href="tel:+375339905929">+375 33 990-59-29</a></div>
+      <div><small class="lbl">Телефон</small><a href="tel:+375339905929">+375&nbsp;33&nbsp;990&#8209;59&#8209;29</a></div>
       <div><small class="lbl">Адрес</small><a href="https://yandex.by/maps/org/tri_pokoleniya/108229742063/" target="_blank" rel="noopener">Лида, ул. Жукова, 6, корп. 5</a></div>
       <div><small class="lbl">Instagram</small><a href="https://instagram.com/tri_pokolenia" target="_blank" rel="noopener">@tri_pokolenia</a></div>
     </div>
