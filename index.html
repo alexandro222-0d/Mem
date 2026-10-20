@@ -68,7 +68,7 @@
   .burger { display: none; background: none; border: 0; color: var(--ivory); width: 40px; height: 40px; cursor: pointer; }
 
   /* ---------- hero ---------- */
-  .hero { position: relative; min-height: max(760px, 100vh); display: flex; flex-direction: column; overflow: hidden; }
+  .hero { position: relative; min-height: max(760px, 100vh); min-height: max(760px, 100svh); display: flex; flex-direction: column; overflow: hidden; }
   .hero-img { position: absolute; inset: 0 0 0 38%; overflow: hidden; }
   .hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; animation: slowzoom 18s ease-out both; }
   @keyframes slowzoom { from { transform: scale(1.08); } to { transform: scale(1); } }
@@ -96,13 +96,13 @@
   .tabs button { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 44px 1fr; padding: 20px 0; border-bottom: 1px solid var(--line-dark); transition: .3s; }
   .tabs .n { font-size: 12px; letter-spacing: .18em; color: var(--brass); padding-top: 9px; }
   .tabs .t { font-family: var(--serif); font-size: 30px; line-height: 1.1; opacity: .45; transition: .3s; }
-  .tabs .d { grid-column: 2; font-size: 14px; font-weight: 300; opacity: .8; max-height: 0; overflow: hidden; transition: max-height .5s ease, margin .5s; }
+  .tabs .d { grid-column: 2; font-size: 14px; line-height: 1.6; font-weight: 300; opacity: 0; height: 0; overflow: hidden; transition: height .4s ease, margin .4s ease, opacity .4s ease; }
   .tabs button:hover .t { opacity: .8; }
   .tabs button[aria-selected="true"] .t { opacity: 1; color: var(--ivory); }
   .tabs button[aria-selected="true"] .t::after { content: " —"; color: var(--rose); }
-  .tabs button[aria-selected="true"] .d { max-height: 90px; margin-top: 8px; }
+  .tabs button[aria-selected="true"] .d { height: 4.8em; margin-top: 8px; opacity: .8; }
   .stage { position: relative; min-height: 600px; overflow: hidden; background: var(--pine-900); }
-  .stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1s ease, transform 6s ease; }
+  .stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.05); transition: opacity .6s ease, transform 4s ease; }
   .stage img.on { opacity: 1; transform: scale(1); }
   .stage::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgba(212,188,147,.25); pointer-events: none; }
   .stage-frame { position: absolute; inset: 18px; border: 1px solid rgba(245,241,234,.35); z-index: 2; pointer-events: none; }
@@ -114,7 +114,7 @@
   .kitchen-stat { display: flex; gap: 22px; align-items: center; justify-content: flex-end; }
   .kitchen-stat strong { font-family: var(--serif); font-size: 84px; font-weight: 500; line-height: .9; color: var(--rose-deep); }
   .kitchen-stat p { max-width: 240px; color: var(--ink-soft); font-size: 15px; }
-  .marquee { display: flex; gap: 18px; width: max-content; animation: marquee 50s linear infinite; padding-bottom: 120px; }
+  .marquee { display: flex; gap: 18px; width: max-content; animation: marquee 34s linear infinite; padding-bottom: 120px; }
   .marquee:hover { animation-play-state: paused; }
   @keyframes marquee { to { transform: translateX(calc(-50% - 9px)); } }
   .marquee figure { position: relative; width: 340px; height: 440px; flex: none; overflow: hidden; }
@@ -152,9 +152,9 @@
   .score strong { font-family: var(--serif); font-size: 76px; font-weight: 500; line-height: .9; }
   .score .stars { color: var(--brass); letter-spacing: 3px; }
   .score span { display: block; font-size: 13px; color: var(--ink-soft); }
-  .quotes { position: relative; min-height: 210px; }
-  .quote { position: absolute; inset: 0; opacity: 0; transition: opacity .8s ease; }
-  .quote.on { opacity: 1; position: relative; }
+  .quotes { display: grid; }
+  .quote { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .6s ease, visibility .6s; }
+  .quote.on { opacity: 1; visibility: visible; }
   .quote p { font-family: var(--serif); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.3; }
   .quote p::before { content: "“"; color: var(--rose); font-size: 1.6em; line-height: 0; vertical-align: -.35em; margin-right: 4px; }
   .quote footer { margin-top: 18px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
@@ -220,14 +220,13 @@
     .stage { min-height: 340px; }
     .marquee figure { width: 250px; height: 330px; }
     .marquee figure:nth-child(even) { margin-top: 36px; height: 294px; }
-    .marquee { padding-bottom: 80px; animation-duration: 40s; }
+    .marquee { padding-bottom: 80px; animation-duration: 26s; }
     .kitchen-stat strong { font-size: 64px; }
     .trio { grid-template-columns: 1fr 1fr; gap: 12px; margin: 40px 0; }
     .trio figure:nth-child(2) { grid-column: 1/-1; grid-row: 1; height: 360px; }
     .trio figure:nth-child(1), .trio figure:nth-child(3) { height: 220px; }
     .steps { grid-template-columns: 1fr; }
     .steps li { border-left: 0; padding: 22px 0; border-bottom: 1px solid var(--line-dark); }
-    .quotes { min-height: 230px; }
     form { grid-template-columns: 1fr; padding: 30px 22px; }
     .foot { grid-template-columns: 1fr; gap: 26px; }
   }
@@ -407,7 +406,7 @@
     tabs.forEach((t, k) => t.setAttribute('aria-selected', k === i));
     shots.forEach((s, k) => s.classList.toggle('on', k === i));
   }
-  function auto() { clearInterval(timer); timer = setInterval(() => show((cur + 1) % tabs.length), 5500); }
+  function auto() { clearInterval(timer); timer = setInterval(() => show((cur + 1) % tabs.length), 3500); }
   tabs.forEach(t => t.addEventListener('click', () => { show(+t.dataset.i); auto(); }));
   auto();
 
@@ -420,7 +419,7 @@
     quotes.forEach((el, k) => el.classList.toggle('on', k === i));
     dots.forEach((el, k) => el.classList.toggle('on', k === i));
   }
-  function qauto() { clearInterval(qt); qt = setInterval(() => quote((q + 1) % quotes.length), 6500); }
+  function qauto() { clearInterval(qt); qt = setInterval(() => quote((q + 1) % quotes.length), 5000); }
   dots.forEach((d, k) => d.addEventListener('click', () => { quote(k); qauto(); }));
   qauto();
 
