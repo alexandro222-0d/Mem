@@ -15,7 +15,6 @@
     --pine-900: #161C13;
     --pine-800: #1F2719;
     --pine-700: #2C3524;
-    --moss: #5B6648;
     --ivory: #F5F1EA;
     --pearl: #EAE4DA;
     --linen: #DCD3C5;
@@ -25,23 +24,23 @@
     --rose-deep: #B9837A;
     --ink: #1D1F19;
     --ink-soft: #55574D;
+    --line-dark: rgba(245,241,234,.14);
     --serif: "Cormorant Garamond", Georgia, serif;
     --sans: "Manrope", system-ui, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { font-family: var(--sans); color: var(--ink); background: var(--ivory); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--sans); color: var(--ivory); background: var(--pine-900); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
   img { display: block; max-width: 100%; }
   a { color: inherit; text-decoration: none; }
   .wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
 
-  .eyebrow { font-size: 12px; letter-spacing: .24em; text-transform: uppercase; font-weight: 500; }
+  .eyebrow { font-size: 12px; letter-spacing: .24em; text-transform: uppercase; font-weight: 500; color: var(--brass-soft); }
   .serif { font-family: var(--serif); font-weight: 500; line-height: 1.02; letter-spacing: .01em; }
   .accent { color: var(--rose); font-style: italic; }
   .sprig { display: flex; align-items: center; gap: 10px; color: var(--brass); margin: 22px 0; }
   .sprig::before { content: ""; width: 36px; height: 1px; background: currentColor; }
-  .center .sprig { justify-content: center; }
-  .center .sprig::after { content: ""; width: 36px; height: 1px; background: currentColor; }
+  .h2 { font-size: clamp(38px, 5vw, 64px); text-transform: uppercase; }
 
   .btn { display: inline-flex; align-items: center; gap: 18px; padding: 16px 26px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; border: 1px solid transparent; transition: .25s; cursor: pointer; font-family: var(--sans); }
   .btn-rose { background: var(--rose); color: var(--pine-900); }
@@ -50,8 +49,12 @@
   .btn-line:hover { background: var(--ivory); color: var(--pine-900); }
   .btn svg { width: 16px; height: 16px; }
 
+  /* появление при прокрутке */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s ease, transform .9s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
   /* ---------- шапка ---------- */
-  header { position: absolute; inset: 0 0 auto; z-index: 10; color: var(--ivory); }
+  header { position: absolute; inset: 0 0 auto; z-index: 10; }
   .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 0; }
   .logo { display: flex; flex-direction: column; align-items: center; text-align: center; line-height: 1; }
   .logo svg { width: 34px; height: 30px; color: var(--brass-soft); margin-bottom: 6px; }
@@ -61,171 +64,176 @@
   .menu a { padding-bottom: 6px; border-bottom: 1px solid transparent; transition: .2s; }
   .menu a:hover { border-color: var(--rose); }
   .nav .btn { padding: 13px 22px; }
+  .burger { display: none; background: none; border: 0; color: var(--ivory); width: 40px; height: 40px; cursor: pointer; }
 
   /* ---------- hero ---------- */
-  .hero { position: relative; min-height: 760px; background: var(--pine-900); color: var(--ivory); overflow: hidden; }
-  .hero-img { position: absolute; inset: 0 0 0 38%; }
-  .hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-  .hero-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--pine-900) 0%, rgba(22,28,19,.82) 22%, rgba(22,28,19,.15) 60%, rgba(22,28,19,.05)), linear-gradient(0deg, rgba(22,28,19,.55), transparent 35%); }
-  .hero-text { position: relative; padding: 200px 0 90px; max-width: 600px; }
+  .hero { position: relative; min-height: max(760px, 100vh); display: flex; flex-direction: column; overflow: hidden; }
+  .hero-img { position: absolute; inset: 0 0 0 38%; overflow: hidden; }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; animation: slowzoom 18s ease-out both; }
+  @keyframes slowzoom { from { transform: scale(1.08); } to { transform: scale(1); } }
+  .hero-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--pine-900) 0%, rgba(22,28,19,.82) 22%, rgba(22,28,19,.15) 60%, rgba(22,28,19,.05)), linear-gradient(0deg, var(--pine-900) 2%, rgba(22,28,19,.4) 22%, transparent 45%); }
+  .hero-text { position: relative; padding: 190px 0 60px; flex: 1; }
+  .hero-text > * { max-width: 600px; }
   .hero h1 { font-size: clamp(36px, 7vw, 92px); margin-top: 22px; text-transform: uppercase; }
   .hero p.lead { font-size: 17px; max-width: 420px; opacity: .9; font-weight: 300; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 38px; }
-  .rating { display: inline-flex; align-items: center; gap: 14px; margin-top: 46px; padding-top: 22px; border-top: 1px solid rgba(245,241,234,.18); }
-  .rating strong { font-family: var(--serif); font-size: 44px; font-weight: 500; line-height: 1; }
-  .rating .stars { color: var(--brass-soft); letter-spacing: 3px; font-size: 14px; }
-  .rating span { font-size: 13px; opacity: .75; display: block; }
+  .hero-facts { position: relative; list-style: none; display: grid; grid-template-columns: auto repeat(3, 1fr); border-top: 1px solid var(--line-dark); }
+  .hero-facts li { padding: 26px 28px; border-left: 1px solid var(--line-dark); display: flex; gap: 14px; align-items: center; }
+  .hero-facts li:first-child { border-left: 0; padding-left: 0; }
+  .hero-facts strong { font-family: var(--serif); font-size: 46px; font-weight: 500; line-height: 1; }
+  .hero-facts .stars { color: var(--brass-soft); letter-spacing: 3px; font-size: 13px; }
+  .hero-facts b { display: block; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; }
+  .hero-facts span { font-size: 13px; opacity: .7; }
+  .hero-facts svg { width: 30px; height: 30px; color: var(--brass-soft); flex: none; }
 
-  /* ---------- факты ---------- */
-  .facts { background: var(--pine-800); color: var(--ivory); }
-  .facts ul { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); }
-  .facts li { display: flex; gap: 16px; align-items: center; padding: 30px 26px; border-left: 1px solid rgba(245,241,234,.12); }
-  .facts li:first-child { border-left: 0; padding-left: 0; }
-  .facts svg { width: 34px; height: 34px; flex: none; color: var(--brass-soft); }
-  .facts b { display: block; font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; }
-  .facts span { font-size: 13.5px; opacity: .7; }
+  section { position: relative; }
 
-  section { padding: 110px 0; }
-  .head { text-align: center; margin-bottom: 56px; }
-  .head .eyebrow { color: var(--rose-deep); }
-  .head h2 { font-size: clamp(36px, 4.6vw, 56px); text-transform: uppercase; }
-  .head p { max-width: 560px; margin: 18px auto 0; color: var(--ink-soft); }
-
-  /* ---------- залы ---------- */
-  .halls-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 22px; }
-  .hall figure { overflow: hidden; aspect-ratio: 4/5; background: var(--linen); }
-  .hall:first-child figure { aspect-ratio: auto; height: 100%; max-height: 520px; min-height: 100%; }
-  .hall img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
-  .hall:hover img { transform: scale(1.04); }
-  .hall { display: grid; grid-template-rows: 1fr auto; }
-  .hall-body { display: flex; gap: 14px; padding: 22px 6px 0; }
-  .hall-body svg { width: 30px; height: 30px; flex: none; color: var(--rose-deep); }
-  .hall-body h3 { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
-  .hall-body p { font-size: 14px; color: var(--ink-soft); }
+  /* ---------- пространства ---------- */
+  .spaces { padding: 120px 0; background: var(--pine-800); }
+  .spaces-grid { display: grid; grid-template-columns: 380px 1fr; gap: 60px; align-items: stretch; }
+  .tabs { list-style: none; margin-top: 40px; border-top: 1px solid var(--line-dark); }
+  .tabs button { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 44px 1fr; padding: 20px 0; border-bottom: 1px solid var(--line-dark); transition: .3s; }
+  .tabs .n { font-size: 12px; letter-spacing: .18em; color: var(--brass); padding-top: 9px; }
+  .tabs .t { font-family: var(--serif); font-size: 30px; line-height: 1.1; opacity: .45; transition: .3s; }
+  .tabs .d { grid-column: 2; font-size: 14px; font-weight: 300; opacity: .8; max-height: 0; overflow: hidden; transition: max-height .5s ease, margin .5s; }
+  .tabs button:hover .t { opacity: .8; }
+  .tabs button[aria-selected="true"] .t { opacity: 1; color: var(--ivory); }
+  .tabs button[aria-selected="true"] .t::after { content: " —"; color: var(--rose); }
+  .tabs button[aria-selected="true"] .d { max-height: 90px; margin-top: 8px; }
+  .stage { position: relative; min-height: 600px; overflow: hidden; background: var(--pine-900); }
+  .stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1s ease, transform 6s ease; }
+  .stage img.on { opacity: 1; transform: scale(1); }
+  .stage::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgba(212,188,147,.25); pointer-events: none; }
+  .stage-frame { position: absolute; inset: 18px; border: 1px solid rgba(245,241,234,.35); z-index: 2; pointer-events: none; }
 
   /* ---------- кухня ---------- */
-  .menu-sec { background: var(--pearl); }
-  .dishes { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 260px; gap: 16px; }
-  .dish { position: relative; overflow: hidden; }
-  .dish img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
-  .dish:hover img { transform: scale(1.05); }
-  .dish figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 20px 16px; color: var(--ivory); background: linear-gradient(0deg, rgba(22,28,19,.82), transparent); font-family: var(--serif); font-size: 21px; line-height: 1.15; }
-  .dish.tall { grid-row: span 2; }
-  .dish.wide { grid-column: span 2; }
-  .menu-note { display: flex; justify-content: space-between; align-items: center; gap: 30px; margin-top: 46px; padding-top: 34px; border-top: 1px solid var(--linen); }
-  .menu-note p { max-width: 640px; color: var(--ink-soft); }
-  .menu-note .btn-rose { background: var(--pine-800); color: var(--ivory); }
-  .menu-note .btn-rose:hover { background: var(--rose-deep); }
+  .kitchen { padding: 120px 0 0; background: var(--ivory); color: var(--ink); overflow: hidden; }
+  .kitchen-head { display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: end; margin-bottom: 60px; }
+  .kitchen .eyebrow { color: var(--rose-deep); }
+  .kitchen-stat { display: flex; gap: 22px; align-items: center; justify-content: flex-end; }
+  .kitchen-stat strong { font-family: var(--serif); font-size: 84px; font-weight: 500; line-height: .9; color: var(--rose-deep); }
+  .kitchen-stat p { max-width: 240px; color: var(--ink-soft); font-size: 15px; }
+  .marquee { display: flex; gap: 18px; width: max-content; animation: marquee 50s linear infinite; padding-bottom: 120px; }
+  .marquee:hover { animation-play-state: paused; }
+  @keyframes marquee { to { transform: translateX(calc(-50% - 9px)); } }
+  .marquee figure { position: relative; width: 340px; height: 440px; flex: none; overflow: hidden; }
+  .marquee figure:nth-child(even) { margin-top: 50px; height: 390px; }
+  .marquee img { width: 100%; height: 100%; object-fit: cover; }
+  .marquee figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 50px 22px 18px; color: var(--ivory); background: linear-gradient(0deg, rgba(22,28,19,.85), transparent); font-family: var(--serif); font-size: 22px; line-height: 1.15; }
 
-  /* ---------- свадьбы ---------- */
-  .wedding { background: var(--pine-800); color: var(--ivory); position: relative; overflow: hidden; }
-  .wedding-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 70px; align-items: center; }
-  .wedding h2 { font-size: clamp(40px, 5.4vw, 70px); text-transform: uppercase; margin-top: 18px; }
-  .wedding .eyebrow { color: var(--brass-soft); }
-  .wedding p { opacity: .82; font-weight: 300; max-width: 440px; }
-  .wedding ul { list-style: none; margin: 28px 0 38px; display: grid; gap: 12px; }
-  .wedding li { display: flex; gap: 14px; align-items: baseline; font-size: 15px; }
-  .wedding li::before { content: ""; width: 7px; height: 7px; transform: rotate(45deg); background: var(--rose); flex: none; translate: 0 -2px; }
-  .collage { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 250px 250px; gap: 14px; }
-  .collage img { width: 100%; height: 100%; object-fit: cover; }
-  .collage .c1 { grid-row: span 2; }
-  .collage .c3 { object-position: 50% 20%; }
+  /* ---------- свадьба ---------- */
+  .wedding { padding: 130px 0 120px; background: var(--pine-900); overflow: hidden; text-align: center; }
+  .wedding-bg { position: absolute; inset: 0 0 auto; height: 70%; }
+  .wedding-bg img { width: 100%; height: 100%; object-fit: cover; opacity: .38; }
+  .wedding-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, var(--pine-900) 5%, rgba(22,28,19,.4) 60%, var(--pine-900)); }
+  .wedding .wrap { position: relative; }
+  .wedding .sprig { justify-content: center; }
+  .wedding .sprig::after { content: ""; width: 36px; height: 1px; background: currentColor; }
+  .wedding h2 { font-size: clamp(42px, 6vw, 80px); text-transform: uppercase; }
+  .trio { display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: 22px; align-items: end; margin: 60px 0 56px; }
+  .trio figure { overflow: hidden; }
+  .trio img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
+  .trio figure:hover img { transform: scale(1.04); }
+  .trio figure:nth-child(1) { height: 400px; }
+  .trio figure:nth-child(2) { height: 540px; }
+  .trio figure:nth-child(3) { height: 400px; }
+  .steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); text-align: left; border-top: 1px solid var(--line-dark); margin-bottom: 48px; }
+  .steps li { padding: 28px 30px 0; border-left: 1px solid var(--line-dark); }
+  .steps li:first-child { border-left: 0; padding-left: 0; }
+  .steps .num { color: var(--brass-soft); font-size: 12px; letter-spacing: .2em; }
+  .steps h3 { font-family: var(--serif); font-weight: 500; font-size: 28px; margin: 6px 0; }
+  .steps p { opacity: .72; font-weight: 300; font-size: 15px; }
 
-  /* ---------- территория ---------- */
-  .estate { position: relative; padding: 0; color: var(--ivory); background: var(--pine-900); }
-  .estate-band { position: relative; min-height: 640px; display: flex; align-items: flex-end; }
-  .estate-band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-  .estate-band::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, var(--pine-900) 8%, rgba(22,28,19,.9) 42%, rgba(22,28,19,.3) 66%, rgba(22,28,19,.05)); }
-  .estate-text .eyebrow { text-shadow: 0 1px 12px rgba(0,0,0,.7); }
-  .estate-text { position: relative; z-index: 2; padding-bottom: 70px; }
-  .estate h2 { font-size: clamp(38px, 5vw, 64px); text-transform: uppercase; max-width: 760px; }
-  .estate-row { display: grid; grid-template-columns: 1fr 1.3fr; gap: 60px; padding: 30px 0 110px; align-items: center; }
-  .estate-row img { width: 100%; aspect-ratio: 4/5; object-fit: cover; }
-  .estate-points { display: grid; grid-template-columns: 1fr 1fr; gap: 38px 40px; }
-  .estate-points h3 { font-family: var(--serif); font-weight: 500; font-size: 28px; margin-bottom: 8px; }
-  .estate-points p { opacity: .75; font-weight: 300; font-size: 15px; }
-  .estate-points .num { color: var(--brass-soft); font-size: 12px; letter-spacing: .2em; margin-bottom: 10px; display: block; }
-
-  /* ---------- отзывы ---------- */
-  .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-  .review { background: #fff; padding: 38px 34px; border: 1px solid var(--pearl); display: flex; flex-direction: column; }
-  .review .q { font-family: var(--serif); font-size: 70px; line-height: .5; color: var(--rose); height: 30px; }
-  .review p { font-family: var(--serif); font-size: 21px; line-height: 1.4; flex: 1; }
-  .review footer { margin-top: 26px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--ink-soft); }
-  .review .stars { color: var(--brass); letter-spacing: 2px; }
-  .reviews-link { text-align: center; margin-top: 36px; font-size: 14px; color: var(--ink-soft); }
-  .reviews-link a { border-bottom: 1px solid var(--rose-deep); color: var(--ink); }
-
-  /* ---------- бронь ---------- */
-  .book { background: var(--pine-900); color: var(--ivory); position: relative; overflow: hidden; }
-  .book-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-  .book h2 { font-size: clamp(40px, 5.2vw, 66px); text-transform: uppercase; margin-top: 18px; }
-  .book .eyebrow { color: var(--brass-soft); }
-  .contacts { margin-top: 40px; display: grid; gap: 22px; }
-  .contacts > div { display: flex; gap: 16px; }
-  .contacts svg { width: 22px; height: 22px; color: var(--brass-soft); flex: none; margin-top: 2px; }
-  .contacts small { display: block; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; opacity: .55; }
-  .contacts a, .contacts p { font-size: 17px; }
-  .contacts a:hover { color: var(--rose); }
-  form { background: var(--ivory); color: var(--ink); padding: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  form h3 { grid-column: 1/-1; font-family: var(--serif); font-weight: 500; font-size: 32px; }
-  label { display: grid; gap: 7px; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
+  /* ---------- финал: отзывы + заявка ---------- */
+  .final { padding: 120px 0; background: var(--ivory); color: var(--ink); }
+  .final-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .final .eyebrow { color: var(--rose-deep); }
+  .score { display: flex; align-items: center; gap: 18px; margin: 26px 0 34px; }
+  .score strong { font-family: var(--serif); font-size: 76px; font-weight: 500; line-height: .9; }
+  .score .stars { color: var(--brass); letter-spacing: 3px; }
+  .score span { display: block; font-size: 13px; color: var(--ink-soft); }
+  .quotes { position: relative; min-height: 210px; }
+  .quote { position: absolute; inset: 0; opacity: 0; transition: opacity .8s ease; }
+  .quote.on { opacity: 1; position: relative; }
+  .quote p { font-family: var(--serif); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.3; }
+  .quote p::before { content: "“"; color: var(--rose); font-size: 1.6em; line-height: 0; vertical-align: -.35em; margin-right: 4px; }
+  .quote footer { margin-top: 18px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
+  .dots { display: flex; gap: 10px; margin-top: 26px; }
+  .dots button { width: 28px; height: 3px; border: 0; background: var(--linen); cursor: pointer; transition: .3s; }
+  .dots button.on { background: var(--rose-deep); width: 48px; }
+  form { background: var(--pine-800); color: var(--ivory); padding: 46px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  form h3 { grid-column: 1/-1; font-family: var(--serif); font-weight: 500; font-size: 36px; line-height: 1.1; }
+  form h3 + p { grid-column: 1/-1; font-size: 14px; opacity: .7; margin: -6px 0 6px; font-weight: 300; }
+  label { display: grid; gap: 7px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--brass-soft); }
   label.full { grid-column: 1/-1; }
-  input, select { font: 16px var(--sans); color: var(--ink); padding: 13px 14px; border: 1px solid var(--linen); background: #fff; border-radius: 0; width: 100%; appearance: none; }
-  input:focus, select:focus { outline: 2px solid var(--rose); outline-offset: -1px; }
-  form .btn { grid-column: 1/-1; justify-content: center; background: var(--pine-800); color: var(--ivory); }
-  form .btn:hover { background: var(--rose-deep); }
-  .form-done { grid-column: 1/-1; font-family: var(--serif); font-size: 22px; color: var(--rose-deep); display: none; }
+  input, select { font: 16px var(--sans); color: var(--ivory); padding: 13px 0; border: 0; border-bottom: 1px solid rgba(245,241,234,.3); background: transparent; border-radius: 0; width: 100%; appearance: none; color-scheme: dark; }
+  input::placeholder { color: rgba(245,241,234,.4); }
+  select option { color: var(--ink); }
+  input:focus, select:focus { outline: 0; border-color: var(--rose); }
+  form .btn { grid-column: 1/-1; justify-content: center; margin-top: 10px; }
+  .form-done { grid-column: 1/-1; font-family: var(--serif); font-size: 22px; color: var(--rose); display: none; }
 
   /* ---------- подвал ---------- */
-  .strip { background: var(--pine-800); color: var(--ivory); border-top: 1px solid rgba(245,241,234,.1); }
-  .strip ul { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); }
-  .strip li { display: flex; align-items: center; gap: 16px; padding: 28px 24px; border-left: 1px solid rgba(245,241,234,.12); }
-  .strip li:first-child { border-left: 0; padding-left: 0; }
-  .strip svg { width: 32px; height: 32px; color: var(--brass-soft); flex: none; }
-  .strip b { display: block; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; }
-  .strip span { font-size: 13px; opacity: .65; }
-  .copy { background: var(--pine-900); color: rgba(245,241,234,.5); font-size: 12.5px; padding: 22px 0; }
-  .copy .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-
-  .burger { display: none; background: none; border: 0; color: var(--ivory); width: 40px; height: 40px; cursor: pointer; }
+  footer.site { background: var(--pine-900); padding: 60px 0 28px; }
+  .foot { display: grid; grid-template-columns: 1.2fr repeat(3, 1fr); gap: 40px; padding-bottom: 46px; border-bottom: 1px solid var(--line-dark); }
+  .foot .logo { align-items: flex-start; text-align: left; }
+  .foot small.lbl { display: block; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--brass-soft); margin-bottom: 8px; }
+  .foot a, .foot p { font-size: 16px; }
+  .foot a:hover { color: var(--rose); }
+  .copy { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 24px; font-size: 12.5px; color: rgba(245,241,234,.45); }
 
   /* ---------- адаптив ---------- */
   @media (max-width: 1080px) {
     .menu { gap: 22px; }
     .nav .btn { display: none; }
-    .facts ul, .strip ul { grid-template-columns: 1fr 1fr; }
-    .facts li:nth-child(3), .strip li:nth-child(3) { border-left: 0; padding-left: 0; }
-    .halls-grid { grid-template-columns: 1fr 1fr; }
-    .hall:first-child { grid-column: 1/-1; }
-    .hall:first-child figure { aspect-ratio: 16/9; height: auto; }
-    .dishes { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 220px; }
-    .wedding-grid, .book-grid, .estate-row { grid-template-columns: 1fr; gap: 50px; }
+    .hero-facts { grid-template-columns: 1fr 1fr; }
+    .hero-facts li:nth-child(3) { border-left: 0; padding-left: 0; }
+    .hero-facts li:nth-child(n+3) { border-top: 1px solid var(--line-dark); }
+    .spaces-grid, .final-grid { grid-template-columns: 1fr; gap: 50px; }
+    .stage { min-height: 460px; }
+    .kitchen-head { grid-template-columns: 1fr; gap: 30px; }
+    .kitchen-stat { justify-content: flex-start; }
+    .foot { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 760px) {
-    section { padding: 76px 0; }
+    .spaces, .kitchen, .final { padding-top: 80px; }
+    .spaces, .final { padding-bottom: 80px; }
+    .wedding { padding: 90px 0 80px; }
     .menu { display: none; position: absolute; top: 88px; left: 16px; right: 16px; flex-direction: column; gap: 0; background: var(--pine-900); padding: 8px 20px; }
     .menu.open { display: flex; }
-    .menu li a { display: block; padding: 14px 0; border-bottom: 1px solid rgba(245,241,234,.1); }
+    .menu li a { display: block; padding: 14px 0; border-bottom: 1px solid var(--line-dark); }
     .burger { display: block; }
     .logo { align-items: flex-start; text-align: left; }
     .logo b { font-size: 23px; }
     .hero { min-height: 0; }
     .hero-img { inset: 0 0 auto; height: 460px; }
+    .hero-text > * { max-width: none; }
     .hero-img img { object-position: 72% 20%; }
     .hero-img::after { background: linear-gradient(0deg, var(--pine-900) 30%, rgba(22,28,19,.55) 65%, rgba(22,28,19,.35)); }
-    .hero-text { padding: 330px 0 60px; }
-    .facts ul, .strip ul { grid-template-columns: 1fr; }
-    .facts li, .strip li { border-left: 0; padding: 18px 0; border-top: 1px solid rgba(245,241,234,.1); }
-    .facts li:first-child, .strip li:first-child { border-top: 0; }
-    .halls-grid, .reviews-grid { grid-template-columns: 1fr; }
-    .dish.wide { grid-column: span 2; }
-    .collage { grid-template-rows: 190px 190px; }
-    .estate-band { min-height: 480px; }
-    .estate-band > img { object-position: 30% 30%; }
-    .estate-points { grid-template-columns: 1fr; gap: 28px; }
-    .menu-note { flex-direction: column; align-items: flex-start; }
-    form { grid-template-columns: 1fr; padding: 28px 22px; }
+    .hero-text { padding: 330px 0 40px; }
+    .hero-facts li { padding: 18px 14px; }
+    .hero-facts li:nth-child(odd) { padding-left: 0; }
+    .hero-facts strong { font-size: 38px; }
+    .hero-facts svg { display: none; }
+    .tabs { margin-top: 28px; }
+    .tabs .t { font-size: 25px; }
+    .stage { min-height: 340px; }
+    .marquee figure { width: 250px; height: 330px; }
+    .marquee figure:nth-child(even) { margin-top: 36px; height: 294px; }
+    .marquee { padding-bottom: 80px; animation-duration: 40s; }
+    .kitchen-stat strong { font-size: 64px; }
+    .trio { grid-template-columns: 1fr 1fr; gap: 12px; margin: 40px 0; }
+    .trio figure:nth-child(2) { grid-column: 1/-1; grid-row: 1; height: 360px; }
+    .trio figure:nth-child(1), .trio figure:nth-child(3) { height: 220px; }
+    .steps { grid-template-columns: 1fr; }
+    .steps li { border-left: 0; padding: 22px 0; border-bottom: 1px solid var(--line-dark); }
+    .quotes { min-height: 230px; }
+    form { grid-template-columns: 1fr; padding: 30px 22px; }
+    .foot { grid-template-columns: 1fr; gap: 26px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee, .hero-img img { animation: none; }
+    .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
@@ -236,16 +244,8 @@
   <symbol id="sprig" viewBox="0 0 40 34"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M20 33V9"/><path d="M20 9c0-4 2.5-7 0-8.5C17.5 2 20 5 20 9z"/><path d="M20 19c-3-1-8-1-10.5-5 4.5-1.5 9 1 10.5 5z"/><path d="M20 15c3-1 8-1 10.5-5-4.5-1.5-9 1-10.5 5z"/><path d="M20 26c-2 0-6 0-8-3 3.5-1 6.5.5 8 3z"/><path d="M20 23c2 0 6 0 8-3-3.5-1-6.5.5-8 3z"/></g></symbol>
   <symbol id="arrow" viewBox="0 0 16 16"><path d="M1 8h13M9 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
   <symbol id="i-hall" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 28h24M6 28V12l10-7 10 7v16"/><path d="M12 28v-8a4 4 0 0 1 8 0v8"/><path d="M16 9v3"/></g></symbol>
-  <symbol id="i-veranda" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 13c4-7 22-7 26 0"/><path d="M3 13h26M6 13v15M26 13v15M16 13v15M3 28h26"/><path d="M6 21h20"/></g></symbol>
   <symbol id="i-fountain" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 22h24v3a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"/><path d="M16 22V10M12 16c0-4 4-6 4-6s4 2 4 6"/><path d="M16 10c-3-4-8-3-9 1M16 10c3-4 8-3 9 1"/></g></symbol>
   <symbol id="i-chef" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M10 21v6h12v-6"/><path d="M10 21c-4 0-6-3-6-6s3-6 6-5c1-4 4-6 6-6s5 2 6 6c3-1 6 2 6 5s-2 6-6 6z"/><path d="M10 24h12"/></g></symbol>
-  <symbol id="i-rings" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="19" r="7"/><circle cx="20" cy="19" r="7"/><path d="M10 8l2-3 2 3-2 2z"/></g></symbol>
-  <symbol id="i-cake" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 28h22M7 28V18h18v10M10 18v-5h12v5"/><path d="M16 13V9M16 6.5c-1 1-1 2.5 0 2.5s1-1.5 0-2.5z"/><path d="M7 22c3 2 6-2 9 0s6 2 9 0"/></g></symbol>
-  <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></g></symbol>
-  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
-  <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></g></symbol>
-  <symbol id="i-heart" viewBox="0 0 32 32"><path d="M16 27S4 19.5 4 11.5A6 6 0 0 1 16 9a6 6 0 0 1 12 2.5C28 19.5 16 27 16 27z" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
-  <symbol id="i-cal" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.2"><rect x="5" y="7" width="22" height="20" rx="2"/><path d="M5 13h22M11 4v6M21 4v6"/><path d="M10 18h2M15 18h2M20 18h2M10 22h2M15 22h2"/></g></symbol>
 </svg>
 
 <header>
@@ -256,11 +256,9 @@
       <small>усадьба · банкетный зал · Лида</small>
     </a>
     <ul class="menu" id="menu">
-      <li><a href="#halls">Залы</a></li>
-      <li><a href="#menu">Кухня</a></li>
+      <li><a href="#spaces">Залы</a></li>
+      <li><a href="#kitchen">Кухня</a></li>
       <li><a href="#wedding">Свадьбы</a></li>
-      <li><a href="#estate">Территория</a></li>
-      <li><a href="#reviews">Отзывы</a></li>
       <li><a href="#book">Контакты</a></li>
     </ul>
     <a href="#book" class="btn btn-line">Забронировать дату</a>
@@ -270,192 +268,169 @@
   </div>
 </header>
 
-<section class="hero" style="padding:0">
+<section class="hero">
   <div class="hero-img"><img src="img/hero-ceremony.jpg" alt="Выездная регистрация под цветочной аркой в усадьбе «Три поколения»"></div>
-  <div class="wrap">
-    <div class="hero-text">
-      <div class="eyebrow">Свадьбы · Юбилеи · Корпоративы</div>
-      <h1 class="serif">Праздник,<br>который запомнят <span class="accent">три&nbsp;поколения</span></h1>
-      <div class="sprig"><svg width="20" height="17"><use href="#sprig"/></svg></div>
-      <p class="lead">Усадьба на закрытой территории в Лиде: три зала, летняя веранда, аллея фонарей и своя кухня.</p>
-      <div class="hero-cta">
-        <a href="#book" class="btn btn-rose">Выбрать дату <svg><use href="#arrow"/></svg></a>
-        <a href="#halls" class="btn btn-line">Смотреть залы</a>
-      </div>
-      <div class="rating">
-        <strong>4,8</strong>
-        <div><div class="stars">★★★★★</div><span>62 оценки на Яндекс Картах</span></div>
-      </div>
+  <div class="wrap hero-text">
+    <div class="eyebrow" style="color:var(--ivory)">Свадьбы · Юбилеи · Корпоративы</div>
+    <h1 class="serif">Праздник,<br>который запомнят <span class="accent">три&nbsp;поколения</span></h1>
+    <div class="sprig"><svg width="20" height="17"><use href="#sprig"/></svg></div>
+    <p class="lead">Усадьба на закрытой территории в Лиде: три зала, летняя веранда, аллея фонарей и своя кухня.</p>
+    <div class="hero-cta">
+      <a href="#book" class="btn btn-rose">Выбрать дату <svg><use href="#arrow"/></svg></a>
+      <a href="#spaces" class="btn btn-line">Смотреть залы</a>
     </div>
   </div>
-</section>
-
-<div class="facts">
-  <ul class="wrap">
-    <li><svg><use href="#i-hall"/></svg><div><b>Три зала</b><span>от камерного ужина до свадьбы</span></div></li>
-    <li><svg><use href="#i-veranda"/></svg><div><b>Летняя веранда</b><span>банкет на свежем воздухе</span></div></li>
-    <li><svg><use href="#i-fountain"/></svg><div><b>Своя территория</b><span>фонтан и аллея фонарей</span></div></li>
+  <ul class="wrap hero-facts">
+    <li><strong>4,8</strong><div><div class="stars">★★★★★</div><span>62 оценки, Яндекс</span></div></li>
+    <li><svg><use href="#i-hall"/></svg><div><b>Три зала</b><span>и летняя веранда</span></div></li>
+    <li><svg><use href="#i-fountain"/></svg><div><b>Своя усадьба</b><span>фонтан и аллея фонарей</span></div></li>
     <li><svg><use href="#i-chef"/></svg><div><b>Своя кухня</b><span>меню под ваш праздник</span></div></li>
   </ul>
-</div>
+</section>
 
-<section id="halls">
-  <div class="wrap">
-    <div class="head center">
-      <div class="eyebrow">Залы</div>
+<section class="spaces" id="spaces">
+  <div class="wrap spaces-grid">
+    <div class="reveal">
+      <div class="eyebrow">Пространства</div>
       <div class="sprig"><svg width="20" height="17"><use href="#sprig"/></svg></div>
-      <h2 class="serif">Светлые залы для вашего дня</h2>
+      <h2 class="serif h2">Всё для праздника <span class="accent">в одном месте</span></h2>
+      <ul class="tabs" role="tablist">
+        <li><button role="tab" aria-selected="true" data-i="0"><span class="n">01</span><span class="t">Большой зал</span><span class="d">Люстры, белые стулья кросс-бэк и место для танцев. Для свадеб и больших юбилеев.</span></button></li>
+        <li><button role="tab" aria-selected="false" data-i="1"><span class="n">02</span><span class="t">Общий стол</span><span class="d">Один длинный стол на всех, круглые столы или П-образная рассадка — под ваш формат.</span></button></li>
+        <li><button role="tab" aria-selected="false" data-i="2"><span class="n">03</span><span class="t">Фуршетная зона</span><span class="d">Встреча гостей с живыми цветами и закусками, пока молодожёны на фотосессии.</span></button></li>
+        <li><button role="tab" aria-selected="false" data-i="3"><span class="n">04</span><span class="t">Территория</span><span class="d">Закрытая усадьба у соснового леса: фонтан, балюстрада, вечерняя аллея фонарей.</span></button></li>
+      </ul>
     </div>
-    <div class="halls-grid">
-      <article class="hall">
-        <figure><img src="img/hall-main.jpg" alt="Большой банкетный зал с белыми стульями и люстрами" loading="lazy"></figure>
-        <div class="hall-body"><svg><use href="#i-hall"/></svg><div><h3>Большой зал</h3><p>Люстры, белые стулья кросс-бэк, зеркальный пол и место для танцев. Для свадеб и больших юбилеев.</p></div></div>
-      </article>
-      <article class="hall">
-        <figure><img src="img/hall-long-table.jpg" alt="Длинный банкетный стол на всех гостей" loading="lazy"></figure>
-        <div class="hall-body"><svg><use href="#i-cake"/></svg><div><h3>Один длинный стол</h3><p>Рассадка под формат: один общий стол, круглые столы или П-образная.</p></div></div>
-      </article>
-      <article class="hall">
-        <figure><img src="img/hall-buffet.jpg" alt="Фуршетная зона с живыми цветами" loading="lazy"></figure>
-        <div class="hall-body"><svg><use href="#i-rings"/></svg><div><h3>Фуршет и welcome</h3><p>Отдельная зона встречи гостей с живыми цветами и закусками.</p></div></div>
-      </article>
+    <div class="stage reveal">
+      <img class="on" src="img/sp-hall.jpg" alt="Большой банкетный зал">
+      <img src="img/sp-table.jpg" alt="Длинный банкетный стол" loading="lazy">
+      <img src="img/sp-buffet.jpg" alt="Фуршетная зона с живыми цветами" loading="lazy">
+      <img src="img/estate-night.jpg" alt="Вечерняя аллея фонарей в усадьбе" loading="lazy">
+      <div class="stage-frame"></div>
     </div>
   </div>
 </section>
 
-<section class="menu-sec" id="menu">
-  <div class="wrap">
-    <div class="head center">
+<section class="kitchen" id="kitchen">
+  <div class="wrap kitchen-head reveal">
+    <div>
       <div class="eyebrow">Кухня</div>
       <div class="sprig"><svg width="20" height="17"><use href="#sprig"/></svg></div>
-      <h2 class="serif">Гости вспомнят вкус</h2>
-      <p>В отзывах чаще всего хвалят именно кухню: 100% положительных отзывов о еде на Яндекс Картах.</p>
+      <h2 class="serif h2">Гости <span class="accent" style="color:var(--rose-deep)">вспомнят вкус</span></h2>
     </div>
-    <div class="dishes">
-      <figure class="dish tall"><img src="img/dish-salad.jpg" alt="Салат с лисичками" loading="lazy"><figcaption>Салат с&nbsp;лисичками</figcaption></figure>
-      <figure class="dish wide"><img src="img/dish-herring.jpg" alt="Сельдь на бородинском хлебе со свекольным муссом" loading="lazy"><figcaption>Сельдь на&nbsp;бородинском со&nbsp;свекольным муссом</figcaption></figure>
-      <figure class="dish tall"><img src="img/dish-canape.jpg" alt="Канапе" loading="lazy"><figcaption>Канапе к&nbsp;фуршету</figcaption></figure>
-      <figure class="dish"><img src="img/dish-rolls.jpg" alt="Закусочные рулетики" loading="lazy"><figcaption>Закусочные рулетики</figcaption></figure>
-      <figure class="dish"><img src="img/dish-platter.jpg" alt="Холодные закуски" loading="lazy"><figcaption>Холодные закуски</figcaption></figure>
+    <div class="kitchen-stat">
+      <strong>100%</strong>
+      <p>положительных отзывов о еде на Яндекс Картах. Банкетное меню собираем под формат и бюджет.</p>
     </div>
-    <div class="menu-note">
-      <p>Банкетное меню собираем под формат и бюджет: фуршет, банкет, детский стол. Пришлём варианты меню с ценами в мессенджер.</p>
-      <a href="#book" class="btn btn-rose">Получить меню <svg><use href="#arrow"/></svg></a>
-    </div>
+  </div>
+  <div class="marquee" aria-label="Блюда банкетного меню">
+    <figure><img src="img/dish-herring.jpg" alt=""><figcaption>Сельдь на бородинском со свекольным муссом</figcaption></figure>
+    <figure><img src="img/dish-salad.jpg" alt=""><figcaption>Салат с лисичками</figcaption></figure>
+    <figure><img src="img/dish-rolls.jpg" alt=""><figcaption>Закусочные рулетики</figcaption></figure>
+    <figure><img src="img/dish-canape.jpg" alt=""><figcaption>Канапе к фуршету</figcaption></figure>
+    <figure><img src="img/dish-platter.jpg" alt=""><figcaption>Холодные закуски</figcaption></figure>
+    <figure><img src="img/dish-table.jpg" alt=""><figcaption>Банкетный стол</figcaption></figure>
   </div>
 </section>
 
 <section class="wedding" id="wedding">
-  <div class="wrap wedding-grid">
-    <div>
-      <div class="eyebrow">Свадьба в усадьбе</div>
-      <h2 class="serif">Ваш день.<br><span class="accent">Наша усадьба.</span></h2>
-      <div class="sprig"><svg width="20" height="17"><use href="#sprig"/></svg></div>
-      <p>Регистрация, фотосессия и банкет в одном месте, без переездов между площадками.</p>
-      <ul>
-        <li>Выездная регистрация под цветочной аркой</li>
-        <li>Фотосессия у фонтана и на вечерней аллее фонарей</li>
-        <li>Банкет в зале или на летней веранде</li>
-        <li>Администратор ведёт праздник от встречи гостей до торта</li>
-      </ul>
-      <a href="#book" class="btn btn-rose">Обсудить свадьбу <svg><use href="#arrow"/></svg></a>
-    </div>
-    <div class="collage">
-      <img class="c1" src="img/wedding-bouquet.jpg" alt="Невеста с белым букетом" loading="lazy">
-      <img src="img/wedding-emotion.jpg" alt="Невеста — чёрно-белый портрет" loading="lazy">
-      <img class="c3" src="img/night-couple.jpg" alt="Молодожёны на вечерней аллее фонарей" loading="lazy">
-    </div>
-  </div>
-</section>
-
-<section class="estate" id="estate">
-  <div class="estate-band">
-    <img src="img/estate-night.jpg" alt="Вечерняя аллея фонарей и веранда усадьбы" loading="lazy">
-    <div class="wrap estate-text">
-      <div class="eyebrow" style="color:var(--brass-soft)">Территория</div>
-      <div class="sprig"><svg width="20" height="17"><use href="#sprig"/></svg></div>
-      <h2 class="serif">Тихая усадьба <span class="accent">у соснового леса</span></h2>
-    </div>
-  </div>
-  <div class="wrap estate-row">
-    <img src="img/estate-fountain.jpg" alt="Фонтан и аллея с балюстрадой" loading="lazy">
-    <div class="estate-points">
-      <div><span class="num">01</span><h3>Закрытая территория</h3><p>Праздник только для ваших гостей, без случайных посетителей.</p></div>
-      <div><span class="num">02</span><h3>Фонтан и аллея</h3><p>Белая балюстрада, скульптуры и газон, готовая локация для фото.</p></div>
-      <div><span class="num">03</span><h3>Вечерние фонари</h3><p>После заката аллея светится тёплым светом, лучшие кадры дня получаются здесь.</p></div>
-      <div><span class="num">04</span><h3>Летняя веранда</h3><p>Банкет или фуршет на открытом воздухе в тёплый сезон.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="reviews">
+  <div class="wedding-bg"><img src="img/estate-night.jpg" alt="" loading="lazy"></div>
   <div class="wrap">
-    <div class="head center">
-      <div class="eyebrow">Отзывы</div>
+    <div class="reveal">
+      <div class="eyebrow">Свадьба в усадьбе</div>
       <div class="sprig"><svg width="20" height="17"><use href="#sprig"/></svg></div>
-      <h2 class="serif">Что говорят гости</h2>
+      <h2 class="serif">Ваш день. <span class="accent">Наша усадьба.</span></h2>
     </div>
-    <div class="reviews-grid">
-      <article class="review">
-        <div class="q">“</div>
-        <p>Юбилей в усадьбе «Три поколения» прошёл идеально! Вкуснейшая кухня, от которой все гости были в восторге, и прекрасное обслуживание.</p>
-        <footer><span>Карина К., юбилей</span><span class="stars">★★★★★</span></footer>
-      </article>
-      <article class="review">
-        <div class="q">“</div>
-        <p>Официанты всегда начеку, всё время на виду, не нужно искать. Всё белое: скатерти, салфетки, всё новое и чистое.</p>
-        <footer><span>Валентина Н.</span><span class="stars">★★★★★</span></footer>
-      </article>
-      <article class="review">
-        <div class="q">“</div>
-        <p>Кухня просто огонь, подача и сервировка на высоте. Территория закрытая, очень красивая. Тихое, спокойное место для отдыха.</p>
-        <footer><span>Ольга Г.</span><span class="stars">★★★★★</span></footer>
-      </article>
+    <div class="trio reveal">
+      <figure><img src="img/wedding-emotion.jpg" alt="Невеста — чёрно-белый портрет" loading="lazy" style="object-position:60% 30%"></figure>
+      <figure><img src="img/wedding-bouquet.jpg" alt="Невеста с белым букетом" loading="lazy"></figure>
+      <figure><img src="img/night-couple.jpg" alt="Молодожёны на вечерней аллее фонарей" loading="lazy" style="object-position:50% 25%"></figure>
     </div>
-    <p class="reviews-link">Все отзывы на <a href="https://yandex.by/maps/org/tri_pokoleniya/108229742063/reviews/" target="_blank" rel="noopener">Яндекс Картах</a></p>
+    <ul class="steps reveal">
+      <li><span class="num">01</span><h3>Регистрация</h3><p>Выездная церемония под цветочной аркой на территории усадьбы.</p></li>
+      <li><span class="num">02</span><h3>Фотосессия</h3><p>У фонтана днём и на аллее фонарей после заката, без переездов.</p></li>
+      <li><span class="num">03</span><h3>Банкет</h3><p>В зале или на летней веранде, администратор ведёт весь вечер.</p></li>
+    </ul>
+    <a href="#book" class="btn btn-rose reveal">Обсудить свадьбу <svg><use href="#arrow"/></svg></a>
   </div>
 </section>
 
-<section class="book" id="book">
-  <div class="wrap book-grid">
-    <div>
-      <div class="eyebrow">Бронирование</div>
-      <h2 class="serif">Проверим<br>вашу <span class="accent">дату</span></h2>
-      <div class="sprig"><svg width="20" height="17"><use href="#sprig"/></svg></div>
-      <p style="opacity:.8;font-weight:300;max-width:420px">Оставьте заявку: перезвоним, расскажем о свободных датах, залах и пришлём банкетное меню.</p>
-      <div class="contacts">
-        <div><svg><use href="#i-phone"/></svg><div><small>Телефон</small><a href="tel:+375339905929">+375 33 990-59-29</a></div></div>
-        <div><svg><use href="#i-pin"/></svg><div><small>Адрес</small><a href="https://yandex.by/maps/org/tri_pokoleniya/108229742063/" target="_blank" rel="noopener">Лида, ул. Жукова, 6, корп. 5</a></div></div>
-        <div><svg><use href="#i-ig"/></svg><div><small>Instagram</small><a href="https://instagram.com/tri_pokolenia" target="_blank" rel="noopener">@tri_pokolenia</a></div></div>
+<section class="final" id="book">
+  <div class="wrap final-grid">
+    <div class="reveal">
+      <div class="eyebrow">Отзывы гостей</div>
+      <div class="score"><strong>4,8</strong><div><div class="stars">★★★★★</div><span>62 оценки на <a href="https://yandex.by/maps/org/tri_pokoleniya/108229742063/reviews/" target="_blank" rel="noopener" style="border-bottom:1px solid var(--rose-deep)">Яндекс Картах</a></span></div></div>
+      <div class="quotes">
+        <blockquote class="quote on"><p>Юбилей в усадьбе прошёл идеально! Вкуснейшая кухня, от которой все гости были в восторге, и прекрасное обслуживание.</p><footer>Карина К.</footer></blockquote>
+        <blockquote class="quote"><p>Официанты всегда начеку, не нужно искать. Всё белое: скатерти, салфетки, всё новое и чистое.</p><footer>Валентина Н.</footer></blockquote>
+        <blockquote class="quote"><p>Кухня просто огонь, подача и сервировка на высоте. Территория закрытая, очень красивая.</p><footer>Ольга Г.</footer></blockquote>
       </div>
+      <div class="dots"><button class="on" aria-label="Отзыв 1"></button><button aria-label="Отзыв 2"></button><button aria-label="Отзыв 3"></button></div>
     </div>
-    <form onsubmit="event.preventDefault();this.querySelector('.form-done').style.display='block';this.querySelector('button').disabled=true;">
-      <h3>Заявка на праздник</h3>
-      <label>Ваше имя<input required placeholder="Анна"></label>
-      <label>Телефон<input required type="tel" placeholder="+375 __ ___-__-__"></label>
+    <form class="reveal" onsubmit="event.preventDefault();this.querySelector('.form-done').style.display='block';this.querySelector('button').disabled=true;">
+      <h3>Проверим вашу <span class="accent">дату</span></h3>
+      <p>Перезвоним, расскажем о свободных датах и пришлём банкетное меню.</p>
+      <label>Имя<input required placeholder="Анна"></label>
+      <label>Телефон<input required type="tel" placeholder="+375"></label>
       <label>Дата<input type="date"></label>
       <label>Гостей<input type="number" min="1" placeholder="40"></label>
       <label class="full">Повод
         <select><option>Свадьба</option><option>Юбилей</option><option>День рождения</option><option>Корпоратив</option><option>Другое</option></select>
       </label>
-      <button class="btn" type="submit">Отправить заявку <svg><use href="#arrow"/></svg></button>
+      <button class="btn btn-rose" type="submit">Отправить заявку <svg><use href="#arrow"/></svg></button>
       <p class="form-done">Спасибо! Перезвоним в течение дня.</p>
     </form>
   </div>
 </section>
 
-<div class="strip">
-  <ul class="wrap">
-    <li><svg><use href="#i-rings"/></svg><div><b>Свадьбы</b><span>регистрация и банкет</span></div></li>
-    <li><svg><use href="#i-cake"/></svg><div><b>Юбилеи</b><span>для всей семьи</span></div></li>
-    <li><svg><use href="#i-cal"/></svg><div><b>Корпоративы</b><span>и конференции</span></div></li>
-    <li><svg><use href="#i-heart"/></svg><div><b>С заботой</b><span>о каждом госте</span></div></li>
-  </ul>
-</div>
-<div class="copy"><div class="wrap"><span>© Усадьба «Три поколения», Лида</span><span>Банкетный зал · Свадьбы · Юбилеи · Корпоративы</span></div></div>
+<footer class="site">
+  <div class="wrap">
+    <div class="foot">
+      <a href="#" class="logo"><svg><use href="#sprig"/></svg><b>ТРИ ПОКОЛЕНИЯ</b><small>усадьба · банкетный зал · Лида</small></a>
+      <div><small class="lbl">Телефон</small><a href="tel:+375339905929">+375 33 990-59-29</a></div>
+      <div><small class="lbl">Адрес</small><a href="https://yandex.by/maps/org/tri_pokoleniya/108229742063/" target="_blank" rel="noopener">Лида, ул. Жукова, 6, корп. 5</a></div>
+      <div><small class="lbl">Instagram</small><a href="https://instagram.com/tri_pokolenia" target="_blank" rel="noopener">@tri_pokolenia</a></div>
+    </div>
+    <div class="copy"><span>© Усадьба «Три поколения», Лида</span><span>Свадьбы · Юбилеи · Корпоративы · Конференции</span></div>
+  </div>
+</footer>
 
 <script>
   document.querySelectorAll('#menu a').forEach(a => a.addEventListener('click', () => document.getElementById('menu').classList.remove('open')));
+
+  // переключатель пространств
+  const tabs = [...document.querySelectorAll('.tabs button')];
+  const shots = [...document.querySelectorAll('.stage img')];
+  let cur = 0, timer;
+  function show(i) {
+    cur = i;
+    tabs.forEach((t, k) => t.setAttribute('aria-selected', k === i));
+    shots.forEach((s, k) => s.classList.toggle('on', k === i));
+  }
+  function auto() { clearInterval(timer); timer = setInterval(() => show((cur + 1) % tabs.length), 5500); }
+  tabs.forEach(t => t.addEventListener('click', () => { show(+t.dataset.i); auto(); }));
+  auto();
+
+  // отзывы
+  const quotes = [...document.querySelectorAll('.quote')];
+  const dots = [...document.querySelectorAll('.dots button')];
+  let q = 0, qt;
+  function quote(i) {
+    q = i;
+    quotes.forEach((el, k) => el.classList.toggle('on', k === i));
+    dots.forEach((el, k) => el.classList.toggle('on', k === i));
+  }
+  function qauto() { clearInterval(qt); qt = setInterval(() => quote((q + 1) % quotes.length), 6500); }
+  dots.forEach((d, k) => d.addEventListener('click', () => { quote(k); qauto(); }));
+  qauto();
+
+  // бесконечная лента блюд: дублируем карточки
+  const m = document.querySelector('.marquee');
+  m.innerHTML += m.innerHTML;
+
+  // появление блоков при прокрутке
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 </body>
 </html>
