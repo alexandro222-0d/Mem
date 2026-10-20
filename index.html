@@ -337,7 +337,6 @@
     <figure><img src="img/dish-cake-pearl.jpg" alt="Свадебный торт с жемчугом"></figure>
     <figure><img src="img/detail-cake-feed.jpg" alt="Молодожёны угощают друг друга тортом"></figure>
     <figure><img src="img/detail-plan.jpg" alt="План рассадки гостей"></figure>
-    <figure><img src="img/dish-cake.jpg" alt="Молодожёны задувают свечи на торте" style="object-position:50% 70%"></figure>
     <figure><img src="img/detail-candle.jpg" alt="Семейный очаг"></figure>
   </div>
 </section>
@@ -351,7 +350,7 @@
       <h2 class="serif">Ваш день. <span class="accent">Наша усадьба.</span></h2>
     </div>
     <div class="trio reveal">
-      <figure><img src="img/wedding-emotion.jpg" srcset="img/wedding-emotion.jpg 1080w, img/wedding-emotion@2x.jpg 2160w" sizes="(max-width: 760px) 50vw, 33vw" alt="Невеста — чёрно-белый портрет" loading="lazy" style="object-position:60% 30%"></figure>
+      <figure><img src="img/wedding-kiss.jpg" srcset="img/wedding-kiss.jpg 810w, img/wedding-kiss@2x.jpg 1620w" sizes="(max-width: 760px) 50vw, 33vw" alt="Молодожёны — чёрно-белый портрет" loading="lazy" style="object-position:50% 35%"></figure>
       <figure><img src="img/wedding-bouquet.jpg" srcset="img/wedding-bouquet.jpg 1080w, img/wedding-bouquet@2x.jpg 2160w" sizes="(max-width: 760px) 100vw, 40vw" alt="Невеста с белым букетом" loading="lazy"></figure>
       <figure><img src="img/night-couple.jpg" srcset="img/night-couple.jpg 1080w, img/night-couple@2x.jpg 2160w" sizes="(max-width: 760px) 50vw, 33vw" alt="Молодожёны на вечерней аллее фонарей" loading="lazy" style="object-position:50% 25%"></figure>
     </div>
@@ -436,7 +435,7 @@
 
   // бесконечная лента блюд: дублируем карточки
   const m = document.querySelector('.marquee');
-  m.innerHTML += m.innerHTML;
+  m.innerHTML = m.innerHTML.repeat(4);
 
   // появление блоков при прокрутке
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
