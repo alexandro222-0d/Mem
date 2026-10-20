@@ -80,7 +80,7 @@
   /* ---------- hero ---------- */
   .hero { position: relative; min-height: max(760px, 100vh); min-height: max(760px, 100svh); display: flex; flex-direction: column; overflow: hidden; }
   .hero-img { position: absolute; inset: 0 0 0 38%; overflow: hidden; }
-  .hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; animation: slowzoom 18s ease-out both; }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: 45% 40%; animation: slowzoom 18s ease-out both; }
   @keyframes slowzoom { from { transform: scale(1.08); } to { transform: scale(1); } }
   .hero-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--pine-900) 0%, rgba(22,28,19,.82) 22%, rgba(22,28,19,.15) 60%, rgba(22,28,19,.05)), linear-gradient(0deg, var(--pine-900) 2%, rgba(22,28,19,.4) 22%, transparent 45%); }
   .hero-text { position: relative; padding: 190px 0 60px; flex: 1; }
@@ -219,7 +219,7 @@
     .hero { min-height: 0; }
     .hero-img { inset: 0 0 auto; height: 460px; }
     .hero-text > * { max-width: none; }
-    .hero-img img { object-position: 72% 20%; }
+    .hero-img img { object-position: 45% 30%; }
     .hero-img::after { background: linear-gradient(0deg, var(--pine-900) 30%, rgba(22,28,19,.55) 65%, rgba(22,28,19,.35)); }
     .hero-text { padding: 330px 0 40px; }
     .hero-facts li { padding: 18px 14px; }
@@ -279,7 +279,7 @@
 </header>
 
 <section class="hero">
-  <div class="hero-img"><img src="img/hero-ceremony.jpg" srcset="img/hero-ceremony.jpg 1080w, img/hero-ceremony@2x.jpg 2160w" sizes="(max-width: 760px) 100vw, 62vw" alt="Выездная регистрация под цветочной аркой в усадьбе «Три поколения»"></div>
+  <div class="hero-img"><img src="img/hero-family.jpg" srcset="img/hero-family.jpg 1080w, img/hero-family@2x.jpg 2160w" sizes="(max-width: 760px) 100vw, 62vw" alt="Гости обнимаются на танцполе под хрустальной люстрой"></div>
   <div class="wrap hero-text">
     <div class="eyebrow" style="color:var(--ivory)">Свадьбы · Юбилеи · Корпоративы</div>
     <h1 class="serif">Праздник,<br>который запомнят <span class="accent">три&nbsp;поколения</span></h1>
@@ -306,14 +306,14 @@
       <h2 class="serif h2">Всё для праздника <span class="accent">в одном месте</span></h2>
       <ul class="tabs" role="tablist">
         <li><button role="tab" aria-selected="true" data-i="0"><span class="n">01</span><span class="t">Банкетный зал</span><span class="d">Хрустальные люстры, тёплый свет и&nbsp;место для&nbsp;всех гостей. Для свадеб и&nbsp;больших юбилеев.</span></button></li>
-        <li><button role="tab" aria-selected="false" data-i="1"><span class="n">02</span><span class="t">Танцпол</span><span class="d">Панорамные окна в&nbsp;сад и&nbsp;простор для&nbsp;первого танца.</span></button></li>
+        <li><button role="tab" aria-selected="false" data-i="1"><span class="n">02</span><span class="t">Танцпол</span><span class="d">Хрустальная люстра, панорамные окна в&nbsp;сад и&nbsp;простор для&nbsp;танцев.</span></button></li>
         <li><button role="tab" aria-selected="false" data-i="2"><span class="n">03</span><span class="t">Летняя веранда</span><span class="d">Светлая галерея под&nbsp;арочной крышей для&nbsp;welcome-зоны, фото и&nbsp;банкета в&nbsp;тёплый сезон.</span></button></li>
         <li><button role="tab" aria-selected="false" data-i="3"><span class="n">04</span><span class="t">Регистрация</span><span class="d">Выездная церемония среди сосен и&nbsp;фонарей прямо на&nbsp;территории усадьбы.</span></button></li>
       </ul>
     </div>
     <div class="stage reveal">
       <img class="on" src="img/sp-hall.jpg" srcset="img/sp-hall.jpg 1080w, img/sp-hall@2x.jpg 2160w" sizes="(max-width: 1080px) 100vw, 760px" alt="Банкетный зал с хрустальной люстрой">
-      <img src="img/sp-dance.jpg" srcset="img/sp-dance.jpg 1080w, img/sp-dance@2x.jpg 2160w" sizes="(max-width: 1080px) 100vw, 760px" alt="Первый танец в дыму у панорамных окон">
+      <img src="img/sp-dance.jpg" srcset="img/sp-dance.jpg 1080w, img/sp-dance@2x.jpg 2160w" sizes="(max-width: 1080px) 100vw, 760px" alt="Танцы под хрустальной люстрой">
       <img src="img/sp-veranda.jpg" srcset="img/sp-veranda.jpg 1080w, img/sp-veranda@2x.jpg 2160w" sizes="(max-width: 1080px) 100vw, 760px" alt="Молодожёны на летней веранде">
       <img src="img/sp-ceremony.jpg" srcset="img/sp-ceremony.jpg 1080w, img/sp-ceremony@2x.jpg 2160w" sizes="(max-width: 1080px) 100vw, 760px" alt="Выездная регистрация под цветочной аркой">
       <div class="stage-frame"></div>
