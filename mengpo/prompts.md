@@ -82,3 +82,24 @@ a huge round bronze mirror on a carved stand to the side, incense smoke. No peop
 **PROP_TABLET**: `STYLE + vertical dark stone tablet with a red square seal at the top, blank surface, faint mist around it, centered.`
 **PROP_MIRROR**: `STYLE + huge round bronze mirror on a carved dark wood stand, its surface glowing faint teal, centered.`
 **MIRROR_HAND**: `STYLE + inside a round bronze mirror frame: a man's hand holding a calligraphy brush, crossing out a line in a book, a red thread tied on his wrist.`
+
+## Серия 2 — новые картинки
+**CHAR_SCRIBE** (писарь Цуй)
+```
+STYLE + thin nervous underworld scribe in dark grey official robe, small round spectacles, ink-stained fingers,
+holding a large open book half covering his face, hunched posture, full body, plain dark background.
+```
+**PROP_KNOTS**: `STYLE + extreme close-up of a pale wrist with a thin red thread tied around it, seven small knots along the thread, dark background.` (сделай также версии с 6, 5, 4… узелками, а для серии 2 отдельный кадр, где один узелок наполовину развязан)
+**BG_FESTIVAL**
+```
+STYLE + Lantern Festival at night, thousands of glowing paper lanterns floating over a calm river,
+warm gold and red light, small stone bridge, dreamy soft atmosphere. No people.
+```
+**LAN_YOUNG**: `STYLE + the same girl as CHAR_LAN but 17 years old, festive light pink hanfu, holding a paper lantern, smiling.` (прикладывай CHAR_LAN как референс)
+**WEI_MEMORY**
+```
+STYLE + young Chinese man in dark green robe seen from behind / three-quarter back view, face not visible,
+reaching up and catching a floating paper lantern, red thread on his wrist, warm festival light.
+```
+**MEMORY_BURN**: `STYLE + the Lantern Festival scene inside a round bronze mirror frame, the image burning away from the edges like paper, glowing ember edges, ash floating.`
+**BG_CORRIDOR**: `STYLE + long dark underworld corridor with red pillars and hanging paper lanterns, mist on the floor, vanishing point in the center. No people.`
