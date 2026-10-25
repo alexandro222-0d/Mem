@@ -324,13 +324,14 @@
   S.thread = (p, o) => ({
     bg: `<rect width="1080" height="1920" fill="#14121a"/><circle cx="540" cy="900" r="700" fill="url(#gWarm)" opacity=".5"/>`,
     mid: ``,
-    fg: `${wrist(p, 7, o.fist)}${o.close || o.fist ? "" : tag(90, 760, "7 УЗЕЛКОВ", "#ff5a63")}${dust(p, 20, 300, 1500)}`,
+    fg: `${wrist(p, o.n || 7, o.fist)}${o.close || o.fist ? "" : tag(90, 760, "7 УЗЕЛКОВ", "#ff5a63")}${dust(p, 20, 300, 1500)}`,
   });
   A.thread = (tl, p, st, d, o) => {
     tl.fromTo(`#${p}-tglow`, { opacity: 0.35 }, { opacity: 0.8, duration: d / 2, yoyo: true, repeat: 1, ease: "sine.inOut" }, st);
     tl.fromTo(`#${p}-knots circle`, { scale: 0.6, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.3, stagger: 0.07, ease: "back.out(3)" }, st + 0.2);
     if (!o.close && !o.fist) tagIn(tl, p, st + 0.8);
     if (o.close) tl.fromTo(`#${p}-cam`, { scale: 1 }, { scale: 1.3, transformOrigin: "40% 68%", duration: d, ease: "sine.inOut" }, st);
+    if (o.unravel) tl.to(`#${p}-k0`, { scale: 0, opacity: 0, transformOrigin: "50% 50%", duration: 0.35, ease: "back.in(2)" }, st + d * 0.5);
     if (o.fist) tl.fromTo(`#${p}-hand`, { scale: 1.06 }, { scale: 1, transformOrigin: "60% 60%", duration: 0.3, ease: "power3.out" }, st + 0.3);
   };
 
@@ -561,6 +562,88 @@
     tl.fromTo(`#${p}-cA`, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, transformOrigin: "50% 50%", duration: 0.4, ease: "back.out(2)" }, st + 0.3);
     tl.fromTo(`#${p}-cB`, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, transformOrigin: "50% 50%", duration: 0.4, ease: "back.out(2)" }, st + 0.45);
     tl.fromTo(`#${p}-search`, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, st + 0.9);
+  };
+
+  // ---------- серия 2 «Зеркало» ----------
+  S.festival = (p, o) => ({
+    bg: `<rect width="1080" height="1920" fill="url(#gNight)"/><circle cx="540" cy="640" r="640" fill="url(#gWarm)" opacity=".8"/>
+      <rect x="0" y="1040" width="1080" height="880" fill="url(#gRiver)" opacity=".6"/>
+      <path d="M180,1080 Q540,980 900,1080 L940,1120 Q540,1030 140,1120 Z" fill="#2b2a2c"/>`,
+    mid: Array.from({ length: 16 }, (_, i) => lantern(`${p}-f${i}`, 60 + ((i * 67) % 960), 180 + ((i * 113) % 760), 0.55 + (i % 3) * 0.12)).join(""),
+    fg: `${o.fly ? lantern(p + "-fl", 520, 980, 1.6) : ""}${dust(p, 30, 300, 1700, "#ffd9a8")}`,
+  });
+  A.festival = (tl, p, st, d, o) => {
+    if (o.fly) tl.to(`#${p}-fl`, { y: -1200, x: 180, duration: d * 0.9, ease: "power1.in" }, st + 0.3);
+    tl.fromTo(`#${p}-cam`, { scale: 1 }, { scale: 1.08, transformOrigin: "50% 40%", duration: d, ease: "none" }, st);
+  };
+
+  S.weiMemory = (p, o) => ({
+    bg: `<rect width="1080" height="1920" fill="url(#gNight)"/><circle cx="540" cy="700" r="640" fill="url(#gWarm)"/>`,
+    mid: `${lantern(p + "-l1", 760, 600, 0.9)}${lantern(p + "-l2", 260, 420, 0.7)}`,
+    fg: `<g transform="translate(470 1880) scale(1.6)"><g id="${p}-fig">
+        <path d="M-120,0 L-150,-520 Q0,-600 150,-520 L120,0 Z" fill="#1d3b2c"/>
+        <path d="M-70,-520 Q0,-560 70,-520 L40,-640 Q0,-660 -40,-640 Z" fill="#1d3b2c"/>
+        <circle cx="0" cy="-700" r="46" fill="#0d0f10"/>
+        <line id="${p}-arm" x1="60" y1="-500" x2="180" y2="-800" stroke="#1d3b2c" stroke-width="54" stroke-linecap="round"/>
+        <line x1="170" y1="-790" x2="196" y2="-776" stroke="#c4262e" stroke-width="8"/>
+      </g></g>${dust(p, 20, 300, 1600, "#ffd9a8")}`,
+  });
+  A.weiMemory = (tl, p, st, d, o) => {
+    tl.fromTo(`#${p}-arm`, { rotation: -6, svgOrigin: "60 -500" }, { rotation: o.catch ? 6 : 2, svgOrigin: "60 -500", duration: d, ease: "sine.inOut" }, st);
+    if (o.catch) tl.fromTo(`#${p}-l1`, { y: -220 }, { y: 0, duration: 0.5, ease: "power2.out" }, st);
+    tl.fromTo(`#${p}-cam`, { scale: 1 }, { scale: o.close ? 1.2 : 1.06, transformOrigin: "50% 60%", duration: d, ease: "none" }, st);
+  };
+
+  S.memoryBurn = (p, o) => {
+    const f = S.festival(p + "-m", {});
+    return {
+      bg: `<rect width="1080" height="1920" fill="#0b0d12"/>`,
+      mid: `<defs><mask id="${p}-msk"><circle cx="540" cy="900" r="380" fill="#fff"/></mask></defs>
+        <g mask="url(#${p}-msk)"><circle id="${p}-hole" cx="540" cy="900" r="380" fill="none"/>
+          <g transform="translate(540 900) scale(.5) translate(-540 -960)">${f.bg}${f.mid}</g></g>
+        <circle cx="540" cy="900" r="390" fill="none" stroke="#b08a4a" stroke-width="30"/>
+        <circle cx="540" cy="900" r="372" fill="none" stroke="#ff7a3a" stroke-width="6" opacity=".7"/>`,
+      fg: `<g id="${p}-ash">${Array.from({ length: 22 }, (_, i) => `<circle class="dd" cx="${200 + ((i * 97) % 680)}" cy="${600 + ((i * 131) % 700)}" r="${2 + (i % 4)}" fill="#ffb26b" opacity=".6"/>`).join("")}</g>`,
+    };
+  };
+  A.memoryBurn = (tl, p, st, d, o) => {
+    tl.fromTo(`#${p}-msk circle`, { attr: { r: 380 } }, { attr: { r: o.face ? 70 : 150 }, duration: d, ease: "power1.in" }, st);
+    tl.fromTo(`#${p}-ash`, { opacity: 0 }, { opacity: 1, duration: d * 0.5 }, st);
+  };
+
+  S.scribe = (p, o) => ({
+    bg: `<rect width="1080" height="1920" fill="#0e0f12"/><circle cx="540" cy="860" r="600" fill="url(#gTeal)" opacity=".25"/>`,
+    mid: `<rect x="0" y="1260" width="1080" height="660" fill="#2a1d16"/><rect x="0" y="1250" width="1080" height="20" fill="#4a3426"/>`,
+    fg: `<g transform="translate(540 1260)">
+        <path d="M-240,-640 Q-250,-200 -210,0 L210,0 Q250,-200 240,-640 Z" fill="#4b4b52"/>
+        <path d="M-120,-660 Q0,-720 120,-660 L110,-560 L-110,-560 Z" fill="#3b3d44"/>
+        <circle cx="0" cy="-700" r="86" fill="#e0c6a4"/>
+        <path d="M-86,-710 Q0,-790 86,-710 L86,-740 Q0,-800 -86,-740 Z" fill="#1f1d20"/>
+        <g><circle cx="-32" cy="-700" r="22" fill="none" stroke="#c9c9c9" stroke-width="5"/><circle cx="32" cy="-700" r="22" fill="none" stroke="#c9c9c9" stroke-width="5"/></g>
+        <g id="${p}-book" transform="translate(0 ${o.hide ? 0 : 300})"><rect x="-190" y="-820" width="380" height="250" rx="12" fill="#efe2c0"/><rect x="-190" y="-820" width="380" height="20" fill="#5a4630"/><line x1="0" y1="-800" x2="0" y2="-580" stroke="#b9a684" stroke-width="4"/></g>
+        <path d="M190,-120 L240,-100" stroke="#e0c6a4" stroke-width="22" stroke-linecap="round"/>
+        <circle id="${p}-ink" cx="236" cy="-104" r="18" fill="#0b0b0b" opacity="${o.ink ? 1 : 0}"/>
+      </g>${dust(p, 20, 300, 1600)}`,
+  });
+  A.scribe = (tl, p, st, d, o) => {
+    if (o.hide) tl.fromTo(`#${p}-book`, { y: 300 }, { y: 0, duration: 0.5, ease: "power2.out" }, st);
+    tl.fromTo(`#${p}-cam`, { scale: 1 }, { scale: 1.1, transformOrigin: "50% 50%", duration: d, ease: "none" }, st);
+  };
+
+  S.corridor = (p, o) => ({
+    bg: `<rect width="1080" height="1920" fill="#0c0606"/><polygon points="540,820 0,0 1080,0" fill="#2a0c0c" opacity=".8"/>`,
+    mid: `<path d="M0,0 L220,380 L220,1540 L0,1920 Z" fill="#1a0a0a"/><path d="M1080,0 L860,380 L860,1540 L1080,1920 Z" fill="#1a0a0a"/>
+      <path d="M220,380 L860,380 L860,1540 L220,1540 Z" fill="#120707"/><path d="M0,1920 L220,1540 L860,1540 L1080,1920 Z" fill="#2d1b14"/>
+      <path d="M0,0 L220,380 L860,380 L1080,0 Z" fill="#0d0505"/>
+      <rect x="180" y="380" width="36" height="1160" fill="#8e1a20"/><rect x="864" y="380" width="36" height="1160" fill="#8e1a20"/>
+      <circle cx="540" cy="1000" r="300" fill="url(#gWarm)" opacity=".4"/>
+      ${lantern(p + "-c1", 540, 300, 0.8)}${lantern(p + "-c2", 400, 420, 0.5)}${lantern(p + "-c3", 680, 420, 0.5)}`,
+    fg: `<g filter="url(#blur30)" opacity=".5"><ellipse cx="540" cy="1700" rx="700" ry="120" fill="#6d5a52"/></g>
+      ${o.black ? `<g id="${p}-blk" transform="translate(540 1240) scale(.5)"><path d="M-100,0 L-70,-520 L70,-520 L100,0 Z" fill="#050505"/><circle cx="0" cy="-580" r="50" fill="#050505"/></g>` : ""}`,
+  });
+  A.corridor = (tl, p, st, d, o) => {
+    tl.fromTo(`#${p}-cam`, { scale: 1 }, { scale: 1.12, transformOrigin: "50% 50%", duration: d, ease: "none" }, st);
+    if (o.black) tl.fromTo(`#${p}-blk`, { opacity: 0 }, { opacity: 1, duration: 0.4 }, st);
   };
 
   // ---------- анимационные помощники ----------
