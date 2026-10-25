@@ -228,7 +228,7 @@
   });
   A.bridgeWide = (tl, p, st, d, o) => {
     flowAnim(tl, p, st, d, -220); steamLoop(tl, p, 5, st, d, 90); fogAnim(tl, p, st, d);
-    tl.fromTo(`#${p}-head`, { rotation: 0 }, { rotation: 3, transformOrigin: "50% 100%", duration: d, ease: "sine.inOut" }, st);
+    tl.fromTo(`#${p}-head`, { rotation: 0 }, { rotation: 3, svgOrigin: "0 -405", duration: d, ease: "sine.inOut" }, st);
     if (o.far) tl.fromTo(`#${p}-cam`, { scale: 1.25, y: 120 }, { scale: 1.05, y: 0, duration: d, ease: "power1.out" }, st);
   };
 
@@ -249,7 +249,7 @@
   });
   A.mpClose = (tl, p, st, d, o) => {
     steamLoop(tl, p, 4, st, d, 140);
-    tl.fromTo(`#${p}-head`, { rotation: -2 }, { rotation: 3, transformOrigin: "50% 100%", duration: d, ease: "sine.inOut" }, st);
+    tl.fromTo(`#${p}-head`, { rotation: -2 }, { rotation: 3, svgOrigin: "0 -405", duration: d, ease: "sine.inOut" }, st);
     tl.fromTo(`#${p}-bowl`, { y: o.push ? 0 : 50 }, { y: o.push ? -60 : -20, scale: o.push ? 1.18 : 1, transformOrigin: "50% 50%", duration: d, ease: "power2.out" }, st);
     if (!o.eyes && !o.push) tl.to(`#${p}-shadow`, { opacity: 0.6, duration: 0.6 }, st + d * 0.55);
     if (o.eyes) tl.fromTo(`#${p}-cam`, { scale: 1 }, { scale: 1.15, transformOrigin: "50% 30%", duration: d, ease: "power1.in" }, st);
@@ -266,7 +266,7 @@
   });
   A.lanBridge = (tl, p, st, d, o) => {
     flowAnim(tl, p, st, d, 160); steamLoop(tl, p, 3, st, d, 30);
-    tl.fromTo(`#${p}-head`, { x: 0, rotation: 0 }, { x: -10, rotation: -4, transformOrigin: "50% 100%", duration: 0.8, ease: "sine.inOut" }, st);
+    tl.fromTo(`#${p}-head`, { x: 0, rotation: 0 }, { x: -10, rotation: -4, svgOrigin: "0 -800", duration: 0.8, ease: "sine.inOut" }, st);
     if (o.refuse) {
       const h = st + 0.55;
       tl.fromTo(`#${p}-armL`, { rotation: 0, svgOrigin: "-150 -760" }, { rotation: 50, svgOrigin: "-150 -760", duration: 0.4, ease: "back.out(1.6)" }, h);
@@ -297,7 +297,7 @@
   });
   A.house = (tl, p, st, d, o) => {
     rainAnim(tl, p, st, d);
-    tl.fromTo(`#${p}-head`, { rotation: -2 }, { rotation: 2, transformOrigin: "50% 100%", duration: d, ease: "sine.inOut" }, st);
+    tl.fromTo(`#${p}-head`, { rotation: -2 }, { rotation: 2, svgOrigin: "0 -800", duration: d, ease: "sine.inOut" }, st);
     flicker(tl, `#${p}-glow`, st, d, 0.75, 1);
   };
 
@@ -352,9 +352,9 @@
     fg: `<g transform="translate(540 1980) scale(1.25)">${lanFront(p, o.mood)}</g>${dust(p, 20, 300, 1500)}`,
   });
   A.lanFront = (tl, p, st, d, o) => {
-    tl.fromTo(`#${p}-head`, { rotation: -1.5 }, { rotation: 1.5, transformOrigin: "50% 90%", duration: d, ease: "sine.inOut" }, st);
+    tl.fromTo(`#${p}-head`, { rotation: -1.5 }, { rotation: 1.5, svgOrigin: "0 -500", duration: d, ease: "sine.inOut" }, st);
     if (o.mood === "fear") { tl.fromTo([`#${p}-pl`, `#${p}-pr`], { x: 0 }, { x: -5, duration: 0.15, yoyo: true, repeat: Math.max(1, Math.floor(d / 0.3)), ease: "none" }, st); tl.fromTo(`#${p}-cam`, { scale: 1 }, { scale: 1.12, transformOrigin: "50% 40%", duration: d, ease: "power1.in" }, st); }
-    if (o.mood === "turn") { tl.fromTo(`#${p}-head`, { x: 0 }, { x: -50, rotation: -8, transformOrigin: "50% 90%", duration: 0.5, ease: "power3.out" }, st + 0.2); tl.to([`#${p}-pl`, `#${p}-pr`], { x: -14, duration: 0.2 }, st + 0.2); }
+    if (o.mood === "turn") { tl.fromTo(`#${p}-head`, { x: 0 }, { x: -50, rotation: -8, svgOrigin: "0 -500", duration: 0.5, ease: "power3.out" }, st + 0.2); tl.to([`#${p}-pl`, `#${p}-pr`], { x: -14, duration: 0.2 }, st + 0.2); }
     if (o.mood === "smile") tl.fromTo(`#${p}-cam`, { scale: 1.06 }, { scale: 1, duration: d, ease: "sine.out" }, st);
   };
 
@@ -367,7 +367,7 @@
   });
   A.uchanyDoor = (tl, p, st, d, o) => {
     rainAnim(tl, p, st, d);
-    tl.fromTo(`#${p}-W-head`, { rotation: 0 }, { rotation: 4, transformOrigin: "50% 100%", duration: d, ease: "sine.inOut" }, st);
+    tl.fromTo(`#${p}-W-head`, { rotation: 0 }, { rotation: 4, svgOrigin: "0 -940", duration: d, ease: "sine.inOut" }, st);
     if (!o.close && !o.hats) tl.fromTo([`#${p}-w`, `#${p}-b`], { opacity: 0 }, { opacity: 1, duration: 0.6, stagger: 0.2 }, st);
     if (o.close) tl.fromTo(`#${p}-cam`, { scale: 1.1 }, { scale: 1.2, transformOrigin: "50% 45%", duration: d, ease: "none" }, st);
     if (o.hats) tl.fromTo(`#${p}-cam`, { scale: 1.25 }, { scale: 1.4, transformOrigin: "50% 33%", duration: d, ease: "sine.inOut" }, st);
@@ -380,7 +380,7 @@
   });
   A.whiteClose = (tl, p, st, d, o) => {
     rainAnim(tl, p, st, d);
-    tl.fromTo(`#${p}-W-head`, { rotation: -2 }, { rotation: 3, transformOrigin: "50% 100%", duration: d, ease: "sine.inOut" }, st);
+    tl.fromTo(`#${p}-W-head`, { rotation: -2 }, { rotation: 3, svgOrigin: "0 -940", duration: d, ease: "sine.inOut" }, st);
     tl.fromTo(`#${p}-W-tongue`, { scaleY: 0.95 }, { scaleY: 1.06, transformOrigin: "50% 0%", duration: d / 2, yoyo: true, repeat: 1, ease: "sine.inOut" }, st);
     if (o.hat) { tl.fromTo(`#${p}-cam`, { y: 300, scale: 1.0 }, { y: 360, scale: 1.05, duration: d, ease: "sine.inOut" }, st); tagIn(tl, p, st + 0.6); }
     if (o.push) { tl.fromTo(`#${p}-cam`, { scale: 1 }, { scale: 1.35, transformOrigin: "50% 40%", duration: d, ease: "power2.in" }, st); }
@@ -474,7 +474,7 @@
   A.lanRoad = (tl, p, st, d, o) => {
     if (o.call) { tl.fromTo(`#${p}-echo`, { opacity: 0.8, scale: 0.6 }, { opacity: 0, scale: 1.4, transformOrigin: "540px 2000px", duration: 1.2, ease: "power2.out" }, st + 0.6); }
     if (!o.stop) tl.fromTo(`#${p}-lan`, { y: 0 }, { y: -10, duration: 0.35, yoyo: true, repeat: Math.floor(d / 0.35), ease: "sine.inOut" }, st);
-    tl.fromTo(`#${p}-head`, { rotation: 0 }, { rotation: o.stop ? 6 : 2, transformOrigin: "50% 100%", duration: d, ease: "sine.inOut" }, st);
+    tl.fromTo(`#${p}-head`, { rotation: 0 }, { rotation: o.stop ? 6 : 2, svgOrigin: "0 -800", duration: d, ease: "sine.inOut" }, st);
     if (o.close) tl.fromTo(`#${p}-cam`, { scale: 1 }, { scale: 1.12, transformOrigin: "45% 50%", duration: d, ease: "none" }, st);
   };
 
@@ -605,7 +605,8 @@
       tl.fromTo(`#${p}-L-bg`, { scale: 1 }, { scale: 1.04, duration: d, ease: "none" }, st);
       tl.fromTo(`#${p}-L-mid`, { scale: 1 }, { scale: 1.07, duration: d, ease: "none" }, st);
       tl.fromTo(`#${p}-L-fg`, { scale: 1, x: 0 }, { scale: 1.11, x: -12, duration: d, ease: "none" }, st);
-      tl.fromTo(`#${p}-in`, { scale: 1.05 }, { scale: 1, duration: 0.45, ease: "power3.out" }, st);
+      tl.fromTo(`#${p}-in`, { scale: 1.12 }, { scale: 1, duration: 0.3, ease: "power4.out" }, st);
+      if (i > 0) tl.fromTo("#flash", { opacity: 0.12 }, { opacity: 0, duration: 0.25, ease: "power2.out", immediateRender: false }, st);
       lanternAnim(tl, p, st, d); dustAnim(tl, p, st, d);
       A[sh.scene](tl, p, st, d, o);
     });
