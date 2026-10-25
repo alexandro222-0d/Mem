@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="ru" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Inter"; src: url("assets/Inter-Bold.otf"); font-weight: 700; }
+@font-face { font-family: "Inter"; src: url("assets/Inter-ExtraBold.otf"); font-weight: 800; }
+@font-face { font-family: "TitleSerif"; src: url("assets/LiberationSerif-Bold.ttf"); font-weight: 700; }
+:root {
+  --ink: #f4efe6; --gold: #f2c14e; --red: #e5383b; --teal: #7fd6c8;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #07090d; }
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Inter", sans-serif; }
+.clip { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+.layer { position: absolute; inset: 0; width: 1080px; height: 1920px; transform-origin: 50% 55%; }
+.layer svg { width: 1080px; height: 1920px; display: block; }
+.shot { position: absolute; inset: 0; transform-origin: 50% 50%; }
+
+/* HUD */
+#hud { position: absolute; top: 150px; left: 0; width: 1080px; height: 110px; z-index: 20; }
+.plaque { position: absolute; top: 0; height: 84px; padding: 0 28px; border-radius: 18px;
+  background: rgba(10, 12, 18, 0.72); border: 2px solid rgba(229, 56, 59, 0.55);
+  display: flex; align-items: center; gap: 18px; color: var(--ink); font-weight: 800; font-size: 30px; letter-spacing: 0.06em; }
+#plq-knots { left: 48px; }
+#plq-court { right: 48px; }
+.plaque .lbl { opacity: 0.75; font-size: 24px; }
+.knots { display: flex; align-items: center; gap: 10px; position: relative; }
+.knots::before { content: ""; position: absolute; left: -6px; right: -6px; top: 50%; height: 3px; background: #c0262c; }
+.knot { width: 18px; height: 18px; border-radius: 50%; background: var(--red); box-shadow: 0 0 10px rgba(229,56,59,.9); position: relative; }
+
+/* poll */
+#poll { position: absolute; left: 110px; top: 330px; width: 860px; padding: 34px 40px 38px; z-index: 21;
+  background: rgba(12, 14, 20, 0.86); border-radius: 28px; border: 2px solid rgba(242, 193, 78, 0.5);
+  box-shadow: 0 30px 80px rgba(0,0,0,.6); color: var(--ink); }
+#poll .head { font-size: 24px; font-weight: 800; letter-spacing: .14em; color: var(--gold); }
+#poll .q { font-size: 50px; font-weight: 800; margin: 14px 0 26px; }
+.opt { position: relative; height: 84px; border-radius: 16px; background: rgba(255,255,255,.07); margin-top: 16px; overflow: hidden; }
+.opt .bar { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; transform-origin: 0 50%; transform: scaleX(0); }
+#bar-yes { background: rgba(127, 214, 200, .45); }
+#bar-no { background: rgba(229, 56, 59, .6); }
+.opt .t { position: absolute; left: 26px; top: 0; bottom: 0; display: flex; align-items: center; font-size: 36px; font-weight: 800; }
+.opt .p { position: absolute; right: 26px; top: 0; bottom: 0; display: flex; align-items: center; font-size: 36px; font-weight: 800; opacity: 0; }
+
+/* subtitles */
+#subs { position: absolute; left: 60px; right: 60px; top: 1400px; height: 220px; z-index: 22; }
+.line { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-weight: 800; font-size: 76px; line-height: 1.12;
+  color: #fff; text-shadow: 0 6px 0 rgba(0,0,0,.55), 0 0 30px rgba(0,0,0,.8); opacity: 0; }
+.w { display: inline-block; margin: 0 10px; opacity: 0; transform-origin: 50% 80%; }
+
+/* overlays */
+#flash { position: absolute; inset: 0; background: #e5383b; opacity: 0; z-index: 25; mix-blend-mode: screen; }
+#vignette { position: absolute; inset: 0; z-index: 26; pointer-events: none;
+  background: radial-gradient(ellipse 75% 60% at 50% 48%, rgba(0,0,0,0) 55%, rgba(0,0,0,.72) 100%); }
+#grain { position: absolute; inset: 0; z-index: 27; opacity: .10; mix-blend-mode: overlay; }
+#title { position: absolute; inset: 0; z-index: 30; opacity: 0; background: rgba(5,6,9,.82);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+#title .s1 { font-family: "TitleSerif", serif; font-size: 132px; color: var(--gold); letter-spacing: .04em; text-shadow: 0 0 40px rgba(242,193,78,.45); }
+#title .rule { width: 520px; height: 3px; background: rgba(242,193,78,.6); margin: 26px 0; }
+#title .s2 { font-family: "TitleSerif", serif; font-size: 48px; color: var(--ink); letter-spacing: .18em; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="13.2" data-width="1080" data-height="1920">
+
+  <!-- SHOT A: мост, Мэн По у котла -->
+  <section id="shotA" class="clip" data-start="0" data-duration="4.75" data-track-index="0">
+    <div class="shot" id="camA">
+      <div class="layer" id="A-bg"><svg viewBox="0 0 1080 1920" id="A-bg-svg"></svg></div>
+      <div class="layer" id="A-mid"><svg viewBox="0 0 1080 1920" id="A-mid-svg"></svg></div>
+      <div class="layer" id="A-fg"><svg viewBox="0 0 1080 1920" id="A-fg-svg"></svg></div>
+    </div>
+  </section>
+
+  <!-- SHOT B: крупно Мэн По с чашей -->
+  <section id="shotB" class="clip" data-start="4.75" data-duration="4.35" data-track-index="0">
+    <div class="shot" id="camB">
+      <div class="layer" id="B-bg"><svg viewBox="0 0 1080 1920" id="B-bg-svg"></svg></div>
+      <div class="layer" id="B-mid"><svg viewBox="0 0 1080 1920" id="B-mid-svg"></svg></div>
+      <div class="layer" id="B-fg"><svg viewBox="0 0 1080 1920" id="B-fg-svg"></svg></div>
+    </div>
+  </section>
+
+  <!-- SHOT C: Лань со спины отказывается -->
+  <section id="shotC" class="clip" data-start="9.1" data-duration="4.1" data-track-index="0">
+    <div class="shot" id="camC">
+      <div class="layer" id="C-bg"><svg viewBox="0 0 1080 1920" id="C-bg-svg"></svg></div>
+      <div class="layer" id="C-mid"><svg viewBox="0 0 1080 1920" id="C-mid-svg"></svg></div>
+      <div class="layer" id="C-fg"><svg viewBox="0 0 1080 1920" id="C-fg-svg"></svg></div>
+    </div>
+  </section>
+
+  <div id="hud" class="clip" data-start="0" data-duration="12" data-track-index="1" style="height:110px;bottom:auto">
+    <div class="plaque" id="plq-knots"><span class="lbl">УЗЕЛКИ</span><div class="knots" id="knots"></div></div>
+    <div class="plaque" id="plq-court"><span class="lbl">СУД</span><span>0/10</span></div>
+  </div>
+
+  <div id="poll" class="clip" data-start="0" data-duration="4.75" data-track-index="2" style="height:400px;width:860px;bottom:auto;right:auto;inset:auto;left:110px;top:330px">
+    <div class="head">ГОЛОСОВАНИЕ · ЧАСТЬ 1</div>
+    <div class="q">Она выпьет суп?</div>
+    <div class="opt"><div class="bar" id="bar-yes"></div><div class="t">ДА</div><div class="p" id="p-yes">31%</div></div>
+    <div class="opt"><div class="bar" id="bar-no"></div><div class="t">НЕТ</div><div class="p" id="p-no">69%</div></div>
+  </div>
+
+  <div id="subs" class="clip" data-start="0" data-duration="12" data-track-index="3" style="height:220px;bottom:auto"></div>
+
+  <div id="flash" class="clip" data-start="9.1" data-duration="4.1" data-track-index="4"></div>
+  <div id="vignette" class="clip" data-start="0" data-duration="13.2" data-track-index="5"></div>
+  <svg id="grain" class="clip" data-start="0" data-duration="13.2" data-track-index="6" viewBox="0 0 1080 1920">
+    <filter id="grainF"><feTurbulence id="turb" type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="1" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+    <rect width="1080" height="1920" filter="url(#grainF)"/>
+  </svg>
+
+  <div id="title" class="clip" data-start="11.9" data-duration="1.3" data-track-index="7">
+    <div class="s1">НЕ ПЕЙ СУП</div>
+    <div class="rule"></div>
+    <div class="s2">ЧАСТЬ 1 · СУП</div>
+  </div>
+
+  <audio id="a-voice" src="assets/voice.mp3" data-start="0" data-duration="13.2" data-track-index="10" data-volume="1"></audio>
+  <audio id="a-drone" src="assets/sfx/drone.wav" data-start="0" data-duration="13" data-track-index="11" data-volume="0.35"></audio>
+  <audio id="a-boil" src="assets/sfx/boil.wav" data-start="0.1" data-duration="6" data-track-index="12" data-volume="0.22"></audio>
+  <audio id="a-wh1" src="assets/sfx/whoosh.wav" data-start="0.95" data-duration="0.7" data-track-index="13" data-volume="0.35"></audio>
+  <audio id="a-t1" src="assets/sfx/tick.wav" data-start="1.40" data-duration="0.04" data-track-index="14" data-volume="0.5"></audio>
+  <audio id="a-t2" src="assets/sfx/tick.wav" data-start="1.65" data-duration="0.04" data-track-index="15" data-volume="0.5"></audio>
+  <audio id="a-t3" src="assets/sfx/tick.wav" data-start="1.90" data-duration="0.04" data-track-index="16" data-volume="0.5"></audio>
+  <audio id="a-t4" src="assets/sfx/tick.wav" data-start="2.15" data-duration="0.04" data-track-index="17" data-volume="0.5"></audio>
+  <audio id="a-wh2" src="assets/sfx/whoosh.wav" data-start="4.35" data-duration="0.7" data-track-index="18" data-volume="0.3"></audio>
+  <audio id="a-wh3" src="assets/sfx/whoosh.wav" data-start="8.85" data-duration="0.7" data-track-index="19" data-volume="0.3"></audio>
+  <audio id="a-boom" src="assets/sfx/boom.wav" data-start="10.18" data-duration="1.6" data-track-index="20" data-volume="0.9"></audio>
+  <audio id="a-gong" src="assets/sfx/gong.wav" data-start="11.9" data-duration="1.3" data-track-index="21" data-volume="0.55"></audio>
+</div>
+
+<script>
+// ---------- deterministic helpers ----------
+let _seed = 7;
+const rnd = () => { _seed = (_seed * 16807) % 2147483647; return (_seed - 1) / 2147483646; };
+const NS = "http://www.w3.org/2000/svg";
+const put = (id, html) => { document.getElementById(id).insertAdjacentHTML("beforeend", html); };
+
+const DEFS = `
+<defs>
+  <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1119"/><stop offset=".55" stop-color="#16202e"/><stop offset="1" stop-color="#1d2a33"/></linearGradient>
+  <linearGradient id="gRiver" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a161c"/><stop offset="1" stop-color="#22050a"/></linearGradient>
+  <radialGradient id="gLant" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff6a3d" stop-opacity=".55"/><stop offset="1" stop-color="#ff6a3d" stop-opacity="0"/></radialGradient>
+  <radialGradient id="gTeal" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7fd6c8" stop-opacity=".35"/><stop offset="1" stop-color="#7fd6c8" stop-opacity="0"/></radialGradient>
+  <radialGradient id="gWarm" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffb26b" stop-opacity=".45"/><stop offset="1" stop-color="#ffb26b" stop-opacity="0"/></radialGradient>
+  <radialGradient id="gRedGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff2b3a" stop-opacity=".9"/><stop offset="1" stop-color="#ff2b3a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1210"/><stop offset="1" stop-color="#2e1d16"/></linearGradient>
+  <filter id="blur30" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="30"/></filter>
+  <filter id="blur8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+</defs>`;
+
+// lantern: outer placement, inner #id swings
+const lantern = (id, x, y, s) => `
+<g transform="translate(${x} ${y}) scale(${s})"><g id="${id}">
+  <line x1="0" y1="-90" x2="0" y2="0" stroke="#2a1a12" stroke-width="4"/>
+  <circle class="lglow" cx="0" cy="40" r="130" fill="url(#gLant)"/>
+  <rect x="-12" y="-6" width="24" height="10" fill="#2a1a12"/>
+  <rect x="-34" y="2" width="68" height="78" rx="28" fill="#c4262e"/>
+  <rect x="-34" y="2" width="68" height="78" rx="28" fill="none" stroke="#8e1a20" stroke-width="3"/>
+  <line x1="-20" y1="12" x2="-20" y2="72" stroke="#8e1a20" stroke-width="3"/><line x1="20" y1="12" x2="20" y2="72" stroke="#8e1a20" stroke-width="3"/>
+  <rect x="-12" y="78" width="24" height="10" fill="#2a1a12"/>
+  <line x1="0" y1="88" x2="0" y2="118" stroke="#d9a03a" stroke-width="4"/>
+</g></g>`;
+
+// Мэн По (origin = feet centre, ~560 tall)
+const mengpo = (p) => `
+<g id="${p}-body">
+  <path d="M-150,0 L-96,-370 Q0,-410 96,-370 L150,0 Z" fill="#5b3a29"/>
+  <path d="M-150,0 L-96,-370 Q-40,-392 -20,-388 L-40,0 Z" fill="#4c3022"/>
+  <path d="M-72,-6 L-58,-300 L58,-300 L72,-6 Z" fill="#7a5640"/>
+  <rect x="-62" y="-312" width="124" height="20" rx="8" fill="#3b261b"/>
+  <rect x="-24" y="-410" width="48" height="40" fill="#e3c4a6"/>
+  <g id="${p}-head">
+    <circle cx="0" cy="-458" r="64" fill="#e9cfb4"/>
+    <path d="M-64,-470 Q-60,-540 0,-540 Q60,-540 64,-470 Q40,-505 0,-505 Q-40,-505 -64,-470 Z" fill="#b9b4ad"/>
+    <circle cx="0" cy="-552" r="32" fill="#a9a39b"/>
+    <rect x="-4" y="-600" width="8" height="40" rx="3" fill="#6b4a32"/>
+    <g id="${p}-eyes"><path d="M-34,-458 Q-24,-448 -14,-458" stroke="#3a2a22" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M14,-458 Q24,-448 34,-458" stroke="#3a2a22" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+    <path d="M-40,-476 L-14,-472 M14,-472 L40,-476" stroke="#9c958e" stroke-width="5" stroke-linecap="round"/>
+    <path d="M-44,-438 Q-38,-430 -30,-436 M30,-436 Q38,-430 44,-438" stroke="#c9a68a" stroke-width="3" fill="none"/>
+    <circle cx="-36" cy="-432" r="9" fill="#e7a99a" opacity=".6"/><circle cx="36" cy="-432" r="9" fill="#e7a99a" opacity=".6"/>
+    <path d="M-12,-422 Q0,-414 12,-422" stroke="#7a3b32" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </g>
+</g>`;
+
+// котёл (origin = base centre)
+const pot = (p) => `
+<g id="${p}-pot">
+  <ellipse cx="0" cy="-8" rx="150" ry="22" fill="#000" opacity=".35"/>
+  <path d="M-150,-150 Q-150,-10 0,-10 Q150,-10 150,-150 Z" fill="#23272d"/>
+  <path d="M-150,-150 Q-150,-10 0,-10 Q-60,-40 -90,-150 Z" fill="#1a1d22"/>
+  <ellipse cx="0" cy="-150" rx="150" ry="30" fill="#30353c"/>
+  <ellipse cx="0" cy="-148" rx="128" ry="22" fill="#c9a36a"/>
+  <ellipse cx="-30" cy="-152" rx="50" ry="8" fill="#e6c48a" opacity=".7"/>
+  <rect x="-170" y="-150" width="22" height="16" rx="5" fill="#30353c"/><rect x="148" y="-150" width="22" height="16" rx="5" fill="#30353c"/>
+</g>`;
+
+const steam = (p, n, x0, y0, w, h) => {
+  let s = "";
+  for (let i = 0; i < n; i++) {
+    const x = x0 + (i - (n - 1) / 2) * (w / n);
+    s += `<path id="${p}-st${i}" d="M${x},${y0} q-26,-${h*0.25} 0,-${h*0.5} q26,-${h*0.25} 0,-${h*0.5}" stroke="#bfeee6" stroke-width="16" stroke-linecap="round" fill="none" opacity="0" filter="url(#blur8)"/>`;
+  }
+  return s;
+};
+
+// Лань со спины (origin = feet centre, ~1150 tall)
+const lan = (p) => `
+<g id="${p}">
+  <path d="M-240,0 L-150,-760 Q0,-812 150,-760 L240,0 Z" fill="#7fa3bb"/>
+  <path d="M-240,0 L-150,-760 Q-90,-790 -60,-792 L-90,0 Z" fill="#6c90a8"/>
+  <path d="M-20,-760 L-30,0 M60,-700 L80,0" stroke="#6a8ea6" stroke-width="6"/>
+  <rect x="-156" y="-560" width="312" height="34" rx="8" fill="#5f8299"/><path d="M-10,-545 l-30,90 M10,-545 l30,90" stroke="#5f8299" stroke-width="14" stroke-linecap="round"/>
+  <rect x="-30" y="-850" width="60" height="70" fill="#e3c4a6"/>
+  <g id="${p}-armR"><path d="M150,-760 Q200,-700 205,-400 L150,-396 Q150,-640 120,-740 Z" fill="#7fa3bb"/><circle cx="182" cy="-372" r="26" fill="#e9cfb4"/></g>
+  <g id="${p}-head">
+    <circle cx="0" cy="-920" r="96" fill="#111216"/>
+    <path d="M-80,-960 Q-40,-1000 20,-990" stroke="#2a2b33" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <circle cx="0" cy="-1022" r="56" fill="#111216"/>
+    <line x1="-78" y1="-1050" x2="82" y2="-996" stroke="#d22d2d" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="86" cy="-994" r="12" fill="#f2c14e"/>
+  </g>
+  <g id="${p}-armL">
+    <path d="M-150,-760 Q-200,-700 -205,-400 L-150,-396 Q-150,-640 -120,-740 Z" fill="#7fa3bb"/>
+    <circle cx="-182" cy="-372" r="26" fill="#e9cfb4"/>
+    <circle id="${p}-threadGlow" cx="-180" cy="-402" r="46" fill="url(#gRedGlow)" opacity=".5"/>
+    <path d="M-206,-404 Q-180,-394 -154,-404" stroke="#ff2b3a" stroke-width="7" fill="none" stroke-linecap="round"/>
+  </g>
+</g>`;
+
+// ---------- SHOT A ----------
+put("A-bg-svg", DEFS + `
+  <rect width="1080" height="1920" fill="url(#gSky)"/>
+  <circle cx="540" cy="820" r="420" fill="url(#gTeal)"/>
+  <path d="M0,980 L140,820 L260,900 L420,760 L560,880 L700,780 L860,900 L1080,800 L1080,1200 L0,1200 Z" fill="#141c28"/>
+  <path d="M0,1040 L200,930 L380,1000 L560,920 L760,1010 L940,940 L1080,990 L1080,1200 L0,1200 Z" fill="#101722"/>
+  <rect x="0" y="1170" width="1080" height="750" fill="url(#gRiver)"/>
+  <g id="A-flow"></g>
+  <g id="A-fogFar" filter="url(#blur30)" opacity=".55"><ellipse cx="300" cy="1060" rx="420" ry="60" fill="#5d7f82"/><ellipse cx="900" cy="1100" rx="380" ry="50" fill="#5d7f82"/></g>
+`);
+{ let s = ""; for (let i = 0; i < 26; i++) { const x = rnd() * 1400 - 160, y = 1200 + rnd() * 700, w = 60 + rnd() * 160;
+  s += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="5" rx="3" fill="#ff7a6a" opacity="${(0.15 + rnd() * 0.25).toFixed(2)}"/>`; }
+  put("A-flow", s); }
+
+put("A-mid-svg", DEFS + `
+  <path d="M-60,1150 Q540,1050 1140,1150 L1140,1330 L900,1330 Q540,1010 180,1330 L-60,1330 Z" fill="#2b3039"/>
+  <path d="M-60,1112 Q540,1012 1140,1112 L1140,1152 Q540,1052 -60,1152 Z" fill="#3a404b"/>
+  <path d="M-60,1040 Q540,940 1140,1040" stroke="#4a515d" stroke-width="12" fill="none"/>
+  <g id="A-posts"></g>
+  <path d="M-20,250 Q540,330 1100,250" stroke="#1b1410" stroke-width="4" fill="none"/>
+  ${lantern("A-l1", 110, 268, 1)}${lantern("A-l2", 330, 300, 1.05)}${lantern("A-l3", 750, 300, 1.05)}${lantern("A-l4", 970, 268, 1)}
+  <g transform="translate(860 1080)"><rect x="-100" y="-90" width="200" height="14" fill="#5a3a26"/><rect x="-90" y="-76" width="12" height="76" fill="#4a2f1f"/><rect x="78" y="-76" width="12" height="76" fill="#4a2f1f"/>
+    <g fill="#b8865a"><path d="M-86,-90 l8,-22 h28 l8,22z"/><path d="M-36,-90 l8,-22 h28 l8,22z"/><path d="M14,-90 l8,-22 h28 l8,22z"/><path d="M-62,-112 l8,-22 h28 l8,22z"/><path d="M-12,-112 l8,-22 h28 l8,22z"/></g></g>
+`);
+{ let s = ""; for (let i = 0; i <= 12; i++) { const x = -60 + i * 100; const t = (x + 60) / 1200; const y = (1 - t) * (1 - t) * 1112 + 2 * (1 - t) * t * 1012 + t * t * 1112;
+  s += `<rect x="${x - 7}" y="${(y - 72).toFixed(0)}" width="14" height="74" fill="#4a515d"/>`; } put("A-posts", s); }
+
+put("A-fg-svg", DEFS + `
+  <g transform="translate(600 1066) scale(.82)">${mengpo("A-mp")}</g>
+  <g transform="translate(600 1088) scale(.82)">${pot("A")}</g>
+  ${steam("A", 5, 600, 950, 230, 260)}
+  <g id="A-fogNear" filter="url(#blur30)" opacity=".5"><ellipse cx="200" cy="1250" rx="360" ry="70" fill="#7a9a9a"/><ellipse cx="880" cy="1290" rx="340" ry="60" fill="#7a9a9a"/></g>
+  <g id="A-dust"></g>
+`);
+{ let s = ""; for (let i = 0; i < 40; i++) s += `<circle id="A-d${i}" cx="${(rnd()*1080).toFixed(0)}" cy="${(600+rnd()*1200).toFixed(0)}" r="${(2+rnd()*3).toFixed(1)}" fill="#ffd9a8" opacity="${(0.2+rnd()*0.5).toFixed(2)}"/>`; put("A-dust", s); }
+
+// ---------- SHOT B ----------
+put("B-bg-svg", DEFS + `
+  <rect width="1080" height="1920" fill="url(#gWall)"/>
+  <rect x="0" y="380" width="1080" height="26" fill="#140d0b"/><rect x="0" y="1420" width="1080" height="500" fill="#120c0a"/>
+  <rect x="120" y="0" width="34" height="1420" fill="#140d0b"/><rect x="930" y="0" width="34" height="1420" fill="#140d0b"/>
+  <circle id="B-warm" cx="180" cy="520" r="520" fill="url(#gWarm)"/>
+  <g id="B-shadow" opacity="0" transform="translate(820 1420)">
+    <path d="M-80,0 L-50,-520 Q0,-545 50,-520 L80,0 Z" fill="#070505"/>
+    <rect x="-16" y="-575" width="32" height="40" fill="#070505"/>
+    <circle cx="0" cy="-615" r="50" fill="#070505"/><circle cx="0" cy="-680" r="30" fill="#070505"/>
+    <path d="M-48,-520 Q-90,-430 -70,-330" stroke="#070505" stroke-width="30" stroke-linecap="round" fill="none"/>
+  </g>
+`);
+put("B-mid-svg", DEFS + `${lantern("B-l1", 180, 330, 1.6)}`);
+put("B-fg-svg", DEFS + `
+  <g transform="translate(470 1560) scale(1.75)">${mengpo("B-mp")}</g>
+  <g transform="translate(540 1330)"><g id="B-bowlG">
+    <g id="B-bowl">
+      <path d="M-170,-150 Q-210,-150 -230,-110 L-200,-60" stroke="#e3c4a6" stroke-width="54" stroke-linecap="round" fill="none"/>
+      <path d="M170,-150 Q210,-150 230,-110 L200,-60" stroke="#e3c4a6" stroke-width="54" stroke-linecap="round" fill="none"/>
+      <path d="M-210,-150 Q-200,40 0,40 Q200,40 210,-150 Z" fill="#b8865a"/>
+      <path d="M-210,-150 Q-200,40 0,40 Q-110,10 -150,-150 Z" fill="#9a6e47"/>
+      <ellipse cx="0" cy="-150" rx="210" ry="40" fill="#8a5f3c"/>
+      <ellipse cx="0" cy="-146" rx="186" ry="30" fill="#d7b07a"/>
+      <ellipse cx="-50" cy="-152" rx="70" ry="9" fill="#f0d29e" opacity=".8"/>
+    </g>
+  </g></g>
+  ${steam("B", 4, 540, 1170, 260, 420)}
+  <g id="B-dust"></g>
+`);
+{ let s = ""; for (let i = 0; i < 30; i++) s += `<circle id="B-d${i}" cx="${(rnd()*1080).toFixed(0)}" cy="${(300+rnd()*1300).toFixed(0)}" r="${(2+rnd()*4).toFixed(1)}" fill="#ffd9a8" opacity="${(0.15+rnd()*0.4).toFixed(2)}"/>`; put("B-dust", s); }
+
+// ---------- SHOT C ----------
+put("C-bg-svg", DEFS + `
+  <rect width="1080" height="1920" fill="url(#gSky)"/>
+  <circle cx="540" cy="900" r="520" fill="url(#gTeal)"/>
+  <rect x="0" y="980" width="1080" height="940" fill="url(#gRiver)"/>
+  <g id="C-flow"></g>
+`);
+{ let s = ""; for (let i = 0; i < 22; i++) { const x = rnd() * 1400 - 160, y = 1000 + rnd() * 900, w = 60 + rnd() * 180;
+  s += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="5" rx="3" fill="#ff7a6a" opacity="${(0.15 + rnd() * 0.25).toFixed(2)}"/>`; } put("C-flow", s); }
+put("C-mid-svg", DEFS + `
+  <path d="M470,980 L610,980 L1000,1920 L80,1920 Z" fill="#3a404b"/>
+  <path d="M470,980 L80,1920 L20,1920 L455,980 Z" fill="#2b3039"/><path d="M610,980 L1000,1920 L1060,1920 L625,980 Z" fill="#2b3039"/>
+  <path d="M455,930 L20,1700" stroke="#4a515d" stroke-width="14"/><path d="M625,930 L1060,1700" stroke="#4a515d" stroke-width="14"/>
+  ${lantern("C-l1", 300, 700, .8)}${lantern("C-l2", 780, 700, .8)}
+  <g transform="translate(540 985) scale(.3)">${mengpo("C-mp")}</g>
+  <g transform="translate(540 992) scale(.3)">${pot("C")}</g>
+  ${steam("C", 3, 540, 945, 70, 90)}
+  <g filter="url(#blur30)" opacity=".5"><ellipse cx="540" cy="1000" rx="520" ry="50" fill="#6d8f8f"/></g>
+`);
+put("C-fg-svg", DEFS + `<g transform="translate(540 2050) scale(1.05)">${lan("C-lan")}</g><g id="C-dust"></g>`);
+{ let s = ""; for (let i = 0; i < 30; i++) s += `<circle id="C-d${i}" cx="${(rnd()*1080).toFixed(0)}" cy="${(500+rnd()*1300).toFixed(0)}" r="${(2+rnd()*3).toFixed(1)}" fill="#ffb0a0" opacity="${(0.2+rnd()*0.4).toFixed(2)}"/>`; put("C-dust", s); }
+
+// HUD knots
+document.getElementById("knots").innerHTML = Array.from({ length: 7 }, (_, i) => `<div class="knot" id="k${i}"></div>`).join("");
+
+// ---------- subtitles ----------
+const WORDS = [{"w":"Перед","s":0.62},{"w":"новой","s":1.212},{"w":"жизнью","s":1.805},{"w":"каждому","s":2.472},{"w":"дают","s":3.212},{"w":"суп.","s":3.731},
+  {"w":"Выпьешь,","s":5.019},{"w":"и","s":6.078},{"w":"забудешь","s":6.464},{"w":"всё.","s":7.523},
+  {"w":"Лань","s":9.367},{"w":"отказалась.","s":10.181}];
+const LINES = [[0, 2], [3, 5], [6, 7], [8, 9], [10, 11]];      // кусочки по 2–3 слова
+const LINE_END = [2.45, 4.75, 6.45, 8.9, 11.85];
+const COLOR = { "суп.": "var(--gold)", "всё.": "var(--red)", "Лань": "var(--gold)", "отказалась.": "var(--red)" };
+const subs = document.getElementById("subs");
+LINES.forEach(([a, b], li) => {
+  const words = WORDS.slice(a, b + 1).map((w, k) => `<span class="w" id="w${a + k}" style="color:${COLOR[w.w] || "#fff"}">${w.w}</span>`).join("");
+  subs.insertAdjacentHTML("beforeend", `<div class="line" id="ln${li}">${words}</div>`);
+});
+
+// ---------- timeline ----------
+const tl = gsap.timeline({ paused: true });
+const T = 13.2;
+
+// parallax + camera per shot
+const shots = [["A", 0, 4.75], ["B", 4.75, 4.35], ["C", 9.1, 4.1]];
+shots.forEach(([k, st, d]) => {
+  tl.fromTo(`#${k}-bg`, { scale: 1 }, { scale: 1.04, duration: d, ease: "none" }, st);
+  tl.fromTo(`#${k}-mid`, { scale: 1 }, { scale: 1.07, duration: d, ease: "none" }, st);
+  tl.fromTo(`#${k}-fg`, { scale: 1, x: 0 }, { scale: 1.12, x: -14, duration: d, ease: "none" }, st);
+  tl.fromTo(`#cam${k}`, { scale: 1.06 }, { scale: 1, duration: 0.5, ease: "power3.out" }, st);
+});
+
+// lantern swing + flicker
+["A-l1", "A-l2", "A-l3", "A-l4", "B-l1", "C-l1", "C-l2"].forEach((id, i) => {
+  const amp = 3 + (i % 3);
+  for (let t = 0; t < T; t += 1.6) {
+    tl.to(`#${id}`, { rotation: (Math.floor(t / 1.6) % 2 ? -amp : amp), transformOrigin: "50% 0%", duration: 1.6, ease: "sine.inOut" }, t);
+  }
+  for (let t = 0.13 * i; t < T; t += 0.37 + (i % 4) * 0.07) {
+    tl.set(`#${id} .lglow`, { opacity: 0.65 + ((Math.floor(t * 100) * 7 + i * 13) % 35) / 100 }, t);
+  }
+});
+
+// river flow, fog drift
+tl.fromTo("#A-flow", { x: 0 }, { x: -220, duration: 4.75, ease: "none" }, 0);
+tl.fromTo("#C-flow", { x: 0 }, { x: 160, duration: 4.1, ease: "none" }, 9.1);
+tl.fromTo("#A-fogFar", { x: -40 }, { x: 60, duration: 4.75, ease: "none" }, 0);
+tl.fromTo("#A-fogNear", { x: 50 }, { x: -90, duration: 4.75, ease: "none" }, 0);
+
+// steam loops
+const steamLoop = (p, n, st, end, rise) => {
+  for (let i = 0; i < n; i++) {
+    for (let t = st + i * 0.33; t < end; t += 1.5) {
+      tl.fromTo(`#${p}-st${i}`, { y: 0, opacity: 0, scaleY: 0.8 }, { y: -rise, opacity: 0.55, scaleY: 1.1, duration: 0.75, ease: "sine.out" }, t);
+      tl.to(`#${p}-st${i}`, { y: -rise * 1.9, opacity: 0, duration: 0.75, ease: "sine.in" }, t + 0.75);
+    }
+  }
+};
+steamLoop("A", 5, 0, 4.75, 90); steamLoop("B", 4, 4.75, 9.1, 140); steamLoop("C", 3, 9.1, 13.2, 30);
+
+// dust drift
+const dust = (p, n, st, d) => { for (let i = 0; i < n; i++) tl.fromTo(`#${p}-d${i}`, { y: 0, x: 0 }, { y: -60 - (i % 5) * 25, x: ((i % 3) - 1) * 30, duration: d, ease: "none" }, st); };
+dust("A", 40, 0, 4.75); dust("B", 30, 4.75, 4.35); dust("C", 30, 9.1, 4.1);
+
+// Мэн По breathing / head tilt
+tl.fromTo("#A-mp-head", { rotation: 0 }, { rotation: 3, transformOrigin: "50% 100%", duration: 2.2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0.2);
+tl.fromTo("#B-mp-head", { rotation: -2 }, { rotation: 3, transformOrigin: "50% 100%", duration: 4.3, ease: "sine.inOut" }, 4.75);
+tl.fromTo("#B-bowlG", { y: 60 }, { y: -40, duration: 1.4, ease: "power2.out" }, 4.8);
+tl.fromTo("#B-bowl", { scale: 1 }, { scale: 1.12, transformOrigin: "50% 50%", duration: 3, ease: "none" }, 6.0);
+// eyes open on "забудешь"
+tl.set("#B-mp-eyes", { scaleY: 1 }, 4.75);
+tl.to("#B-mp-eyes", { scaleY: -1, transformOrigin: "50% 50%", duration: 0.15 }, 6.45);
+// young-girl shadow reveal on "всё"
+tl.to("#B-shadow", { opacity: 0.6, duration: 0.6, ease: "power2.out" }, 7.5);
+tl.fromTo("#B-warm", { opacity: 0.8 }, { opacity: 1, duration: 0.2, yoyo: true, repeat: 7 }, 4.75);
+
+// Лань: head turn, arm raise on "отказалась"
+tl.fromTo("#C-lan-head", { x: 0, rotation: 0 }, { x: -10, rotation: -4, transformOrigin: "50% 100%", duration: 1, ease: "sine.inOut" }, 9.2);
+tl.fromTo("#C-lan-armL", { rotation: 0, svgOrigin: "-150 -760" }, { rotation: 50, svgOrigin: "-150 -760", duration: 0.45, ease: "back.out(1.6)" }, 10.15);
+tl.fromTo("#C-lan-threadGlow", { opacity: 0.5, scale: 1 }, { opacity: 1, scale: 1.6, transformOrigin: "50% 50%", duration: 0.4, ease: "power2.out" }, 10.18);
+// punch + shake + flash
+tl.fromTo("#camC", { scale: 1 }, { scale: 1.07, duration: 0.18, ease: "power4.out" }, 10.18);
+[6, -5, 4, -3, 2, 0].forEach((x, i) => tl.to("#camC", { x, duration: 0.05, ease: "none" }, 10.2 + i * 0.05));
+tl.fromTo("#flash", { opacity: 0.35 }, { opacity: 0, duration: 0.5, ease: "power2.out" }, 10.18);
+
+// HUD
+tl.fromTo("#hud .plaque", { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.1 }, 0.15);
+tl.to(".knot", { scale: 1.5, duration: 0.12, yoyo: true, repeat: 1, stagger: 0.04 }, 10.25);
+tl.to("#hud", { opacity: 0, duration: 0.3 }, 11.6);
+
+// poll
+tl.fromTo("#poll", { x: 900, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 1.0);
+tl.to("#bar-yes", { scaleX: 0.31, duration: 0.9, ease: "power2.out" }, 1.4);
+tl.to("#bar-no", { scaleX: 0.69, duration: 1.0, ease: "power2.out" }, 1.5);
+tl.to(["#p-yes", "#p-no"], { opacity: 1, duration: 0.25, stagger: 0.1 }, 2.3);
+tl.to("#poll", { x: -900, opacity: 0, duration: 0.4, ease: "power3.in" }, 4.35);
+
+// subtitles: слова выскакивают, текущее подсвечено
+LINES.forEach(([a, b], li) => {
+  tl.set(`#ln${li}`, { opacity: 1 }, WORDS[a].s - 0.02);
+  for (let i = a; i <= b; i++) {
+    tl.fromTo(`#w${i}`, { opacity: 0, scale: 0.6, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.22, ease: "back.out(2.5)" }, WORDS[i].s);
+  }
+  tl.to(`#ln${li}`, { opacity: 0, duration: 0.12 }, LINE_END[li]);
+});
+
+// title card
+tl.fromTo("#title", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 11.9);
+tl.fromTo("#title .s1", { scale: 1.15 }, { scale: 1, duration: 0.8, ease: "power3.out" }, 11.9);
+
+// film grain
+for (let t = 0, k = 1; t < T; t += 1 / 12, k++) tl.set("#turb", { attr: { seed: k } }, t);
+
+tl.set({}, {}, T);
+window.__timelines = window.__timelines || {};
+window.__timelines["main"] = tl;
+tl.seek(0);
+</script>
+</body>
+</html>
