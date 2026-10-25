@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<!-- Оформление канала «Тень истории»: brand.html?k=avatar | cover1 | banner
+     Рисует теми же персонажами, что и серия (window.MP из ep1/assets/lib.js). -->
+<script src="../ep1/assets/lib.js"></script>
+<style>
+  @font-face { font-family: "Inter"; src: url("../ep1/assets/Inter-ExtraBold.otf"); font-weight: 800; }
+  @font-face { font-family: "TitleSerif"; src: url("../ep1/assets/LiberationSerif-Bold.ttf"); font-weight: 700; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #07080b; overflow: hidden; }
+  #stage { position: relative; overflow: hidden; }
+  #stage > svg, #stage > .ov { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+  .ov { font-family: "TitleSerif", serif; color: #f4efe6; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const { DEFS, S, lantern, mengpo, pot, uchan } = window.MP;
+const k = new URLSearchParams(location.search).get("k") || "avatar";
+const stage = document.getElementById("stage");
+const size = { avatar: [1024, 1024], cover1: [1080, 1920], banner: [2560, 1440], trailerEnd: [1080, 1920] }[k];
+stage.style.width = size[0] + "px"; stage.style.height = size[1] + "px";
+const svg = (body, vb) => `<svg viewBox="${vb || `0 0 ${size[0]} ${size[1]}`}" xmlns="http://www.w3.org/2000/svg">${DEFS}${body}</svg>`;
+
+// тень-силуэт человека (стоит под фонарём, тает книзу)
+const ghost = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})" fill="url(#gGhost)">
+  <circle cx="0" cy="0" r="52"/><rect x="-18" y="40" width="36" height="34"/>
+  <path d="M-62,70 Q0,52 62,70 L120,420 L-120,420 Z"/></g>`;
+const ghostDefs = `<defs><linearGradient id="gGhost" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#9fe3d6" stop-opacity=".85"/><stop offset=".55" stop-color="#5fb8ac" stop-opacity=".45"/>
+  <stop offset="1" stop-color="#5fb8ac" stop-opacity="0"/></linearGradient></defs>`;
+
+if (k === "avatar") {
+  // всё важное внутри круга r≈430, без текста
+  stage.innerHTML = svg(`${ghostDefs}
+    <rect width="1024" height="1024" fill="#07080b"/>
+    <circle cx="512" cy="640" r="420" fill="url(#gTeal)"/>
+    <circle cx="512" cy="330" r="360" fill="url(#gLant)"/>
+    <ellipse cx="512" cy="905" rx="250" ry="34" fill="#5fb8ac" opacity=".18" filter="url(#blur14)"/>
+    ${ghost(512, 560, 0.95)}
+    ${lantern("av-l", 512, 175, 2.15)}`);
+}
+
+if (k === "cover1") {
+  // кадр «Мэн По протягивает чашу» + номер и название серии
+  const sc = S.mpClose("cv", { push: 1 });
+  stage.innerHTML = svg(sc.bg) + svg(sc.mid) + svg(sc.fg) + `
+    <div class="ov">
+      <div style="position:absolute;inset:0;background:linear-gradient(#07080bee 0,#07080b99 22%,#0000 38%,#0000 66%,#07080bcc 100%)"></div>
+      <div style="position:absolute;top:210px;width:100%;text-align:center;font-size:220px;line-height:1;letter-spacing:.02em;text-shadow:0 10px 0 #0009,0 0 60px #000">
+        <span style="color:#ff4d55">1</span> · СУП</div>
+      <div style="position:absolute;top:470px;width:100%;text-align:center;font-family:Inter;font-weight:800;font-size:40px;letter-spacing:.35em;color:#f2c14e;opacity:.9">НЕ ПЕЙ СУП</div>
+      <div style="position:absolute;top:1450px;left:50%;transform:translateX(-50%);background:#d1323b;padding:22px 54px;border-radius:22px;
+        font-family:Inter;font-weight:800;font-size:76px;letter-spacing:.04em;color:#fff;white-space:nowrap;box-shadow:0 14px 40px #000a">ОНА ОТКАЗАЛАСЬ</div>
+    </div>`;
+  stage.querySelectorAll("[id^=cv-st]").forEach((e) => e.setAttribute("opacity", ".3"));
+  stage.querySelector("#cv-l1").style.display = "none";
+}
+
+if (k === "banner") {
+  // 2560×1440; на компьютере видна полоса 2560×423 (y 508–931), на телефоне — центр 1546×423
+  // верх настила — квадратичная кривая (300,930)–(1280,670)–(2260,930); столбики перил стоят на ней
+  const deckY = (t) => (1 - t) * (1 - t) * 930 + 2 * t * (1 - t) * 670 + t * t * 930;
+  const posts = Array.from({ length: 27 }, (_, i) => { const t = (i + 0.5) / 27, x = 300 + 1960 * t, y = deckY(t); return `<rect x="${(x - 6).toFixed(0)}" y="${(y - 62).toFixed(0)}" width="12" height="64" fill="#4a515d"/>`; }).join("");
+  const lamps = [560, 800, 1040, 1520, 1760, 2000].map((x, i) => lantern(`bn-l${i}`, x, 470 + Math.sin(i * 1.3) * 8, 0.55)).join("");
+  stage.innerHTML = svg(`${ghostDefs}
+    <rect width="2560" height="1440" fill="url(#gSky)"/>
+    <circle cx="1280" cy="760" r="760" fill="url(#gTeal)"/>
+    <path d="M0,820 L260,660 L480,760 L760,600 L1020,740 L1280,640 L1540,740 L1800,600 L2080,760 L2300,660 L2560,820 L2560,1000 L0,1000 Z" fill="#141c28"/>
+    <path d="M0,880 L320,770 L640,840 L960,760 L1280,830 L1600,760 L1920,840 L2240,770 L2560,880 L2560,1000 L0,1000 Z" fill="#101722"/>
+    <rect x="0" y="930" width="2560" height="510" fill="url(#gRiver)"/>
+    <path d="M300,430 Q1280,520 2260,430" stroke="#1b1410" stroke-width="5" fill="none"/>
+    ${lamps}
+    <path d="M300,930 Q1280,670 2260,930 L2260,1060 L2080,1060 Q1280,820 480,1060 L300,1060 Z" fill="#2b3039"/>
+    <path d="M300,930 Q1280,670 2260,930 L2260,958 Q1280,698 300,958 Z" fill="#3a404b"/>
+    ${posts}<path d="M300,868 Q1280,608 2260,868" stroke="#4a515d" stroke-width="10" fill="none"/>
+    <g transform="translate(520 ${deckY(0.112).toFixed(0)}) scale(.25)">${uchan("bn-W", true)}</g>
+    <g transform="translate(635 ${deckY(0.17).toFixed(0)}) scale(.25)">${uchan("bn-B", false)}</g>
+    <g transform="translate(2080 ${deckY(0.908).toFixed(0)}) scale(.6)">${mengpo("bn")}</g><g transform="translate(2080 ${(deckY(0.908) + 14).toFixed(0)}) scale(.6)">${pot("bn")}</g>
+    <g filter="url(#blur30)" opacity=".55"><ellipse cx="500" cy="960" rx="700" ry="70" fill="#6d8f8f"/><ellipse cx="2100" cy="980" rx="680" ry="60" fill="#6d8f8f"/></g>
+    <rect width="2560" height="1440" fill="url(#gEdge)"/>
+    <defs><linearGradient id="gEdge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#07080b"/><stop offset=".12" stop-color="#07080b" stop-opacity="0"/>
+      <stop offset=".88" stop-color="#07080b" stop-opacity="0"/><stop offset="1" stop-color="#07080b"/></linearGradient></defs>`) + `
+    <div class="ov">
+      <div style="position:absolute;top:585px;width:100%;text-align:center;font-size:124px;line-height:1;letter-spacing:.04em;text-shadow:0 8px 0 #0009,0 0 50px #000">
+        <span style="color:#ff4d55">ТЕНЬ</span> ИСТОРИИ</div>
+      <div style="position:absolute;top:735px;width:100%;text-align:center;font-family:Inter;font-weight:800;font-size:38px;letter-spacing:.06em;opacity:.85;text-shadow:0 0 20px #000">
+        Мифы о мире мёртвых · новая серия каждые 2 дня</div>
+    </div>`;
+}
+if (k === "trailerEnd") {
+  // последний кадр трейлера
+  stage.innerHTML = svg(`<rect width="1080" height="1920" fill="#07080b"/>
+    <circle cx="540" cy="760" r="520" fill="url(#gLant)"/><circle cx="540" cy="1300" r="600" fill="url(#gTeal)" opacity=".6"/>
+    ${lantern("te-l", 540, 470, 2.2)}`) + `
+    <div class="ov">
+      <div style="position:absolute;top:1040px;width:100%;text-align:center;font-size:150px;line-height:1.05;text-shadow:0 10px 0 #0009,0 0 60px #000">НЕ ПЕЙ<br><span style="color:#ff4d55">СУП</span></div>
+      <div style="position:absolute;top:1400px;width:100%;text-align:center;font-family:Inter;font-weight:800;font-size:46px;letter-spacing:.08em;color:#f2c14e">СЕРИЯ 1 — В ПРОФИЛЕ</div>
+    </div>`;
+}
+document.fonts.ready.then(() => document.body.dataset.ready = "1");
+</script>
+</body>
+</html>

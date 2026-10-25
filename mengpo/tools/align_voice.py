@@ -69,6 +69,23 @@ for i, t in enumerate(times):
     times[i] = (s0 + step * (j + 0.5), s0 + step * (j + 1.5))
 print(f"совпало слов: {len(known)}/{len(script)}")
 
+# начало реплики — к ближайшему началу речи после паузы (интерполированные первые слова часто раньше)
+rms = np.sqrt(np.convolve(audio ** 2, np.ones(160) / 160, "same"))[::160] > 10 ** (-38 / 20)
+onsets, quiet = [], 0
+for f, voiced in enumerate(rms):
+    if voiced and quiet >= 25:
+        onsets.append(f / 100)
+    quiet = 0 if voiced else quiet + 1
+first = {}
+for i, (l, _, _) in enumerate(script):
+    first.setdefault(l, i)
+for l, i in first.items():
+    s0, e0 = times[i]
+    nxt = times[i + 1][0] if i + 1 < len(script) and script[i + 1][0] == l else e0
+    near = [o for o in onsets if s0 < o <= min(s0 + 0.7, nxt)]
+    if near:
+        times[i] = (near[0], max(e0, near[0] + 0.1))
+
 lines = []
 for li, s in enumerate(shots):
     ws = [(w, c, times[i]) for i, (l, w, c) in enumerate(script) if l == li]
