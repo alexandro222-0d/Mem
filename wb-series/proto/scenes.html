@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<style>
+  :root{--bg:#EDE6DA;--ink:#1F1F1F;--green:#2E6B57;--red:#C8463D;--hood:#7B4BB7;--card:#FFFFFF;--muted:#8A8478}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{width:1920px;height:1080px;overflow:hidden;font-family:Inter,sans-serif;color:var(--ink);
+       background:radial-gradient(ellipse at center,#F3EEE5 40%,#D9D1C3 100%)}
+  .scene{display:none;width:1920px;height:1080px;position:relative}
+  .scene.on{display:block}
+  .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .eyebrow{font-size:26px;font-weight:700;letter-spacing:.18em;color:#555}
+  .big{font-size:150px;font-weight:900;letter-spacing:-.02em;line-height:1}
+  .sub{font-size:44px;color:#666;margin-top:8px}
+  .budget{position:absolute;left:110px;bottom:120px;width:560px}
+  .budget small{font-size:20px;letter-spacing:.1em;color:#777}
+  .budget b{display:block;font-size:44px;margin:4px 0 12px}
+  .bar{height:26px;border:3px solid #444;border-radius:14px;overflow:hidden;background:#F7F3EC}
+  .bar i{display:block;height:100%;background:var(--green)}
+  .pill{position:absolute;background:#2B2B2B;color:#fff;font-weight:800;font-size:34px;padding:10px 28px;border-radius:40px}
+  .label{position:absolute;background:#F7F3EC;border:3px solid #333;border-radius:40px;font-weight:700;font-size:34px;padding:10px 30px}
+  .bubble{position:absolute;background:#fff;border:3px solid #222;border-radius:14px;font-weight:700;font-size:36px;padding:18px 26px;line-height:1.25}
+  .bubble:after{content:"";position:absolute;left:40px;bottom:-22px;border:12px solid transparent;border-top:14px solid #222}
+  .rows{width:1100px;font-size:46px}
+  .rows div{display:flex;justify-content:space-between;padding:14px 0;font-weight:600}
+  .rows .tot{border-top:4px solid #333;margin-top:12px;font-size:58px;font-weight:900}
+  .g{color:var(--green);font-weight:800}.r{color:var(--red);font-weight:800}
+  .stamp{position:absolute;right:250px;bottom:80px;transform:rotate(-8deg);border:6px solid var(--red);color:var(--red);
+         font-weight:900;font-size:64px;padding:6px 26px;border-radius:10px;opacity:.9}
+  .handle{position:absolute;right:40px;bottom:28px;font-size:24px;color:#777;font-weight:600}
+</style></head><body>
+
+<!-- 1. Заставка проблемы -->
+<section class="scene" id="s1">
+  <div class="center">
+    <div class="eyebrow">СЕЗОН 1 · ДЕНЬ 3</div>
+    <svg width="120" height="120" viewBox="0 0 120 120" style="margin:26px 0 10px">
+      <rect x="18" y="38" width="84" height="66" rx="6" fill="#C9A77A" stroke="#222" stroke-width="5"/>
+      <path d="M18 38 L60 18 L102 38" fill="#B48F60" stroke="#222" stroke-width="5" stroke-linejoin="round"/>
+      <line x1="60" y1="38" x2="60" y2="104" stroke="#222" stroke-width="4"/>
+    </svg>
+    <div class="big">ПРОБЛЕМА 1</div>
+    <div class="sub">Ниша</div>
+  </div>
+  <div class="budget"><small>БЮДЖЕТ</small><b>300 000 ₽</b><div class="bar"><i style="width:100%"></i></div>
+    <small style="display:block;margin-top:8px">из 300 000 ₽</small></div>
+  <div class="handle">@твой_ник</div>
+</section>
+
+<!-- 2. Сцена с героем -->
+<section class="scene" id="s2">
+  <svg width="1920" height="1080" style="position:absolute;inset:0">
+    <!-- стена и пол -->
+    <rect width="1920" height="760" fill="#E9E2D6"/><rect y="760" width="1920" height="320" fill="#D8CFC0"/>
+    <line x1="0" y1="760" x2="1920" y2="760" stroke="#B9AE9C" stroke-width="4"/>
+    <!-- окно -->
+    <rect x="1180" y="120" width="560" height="420" fill="#BFD3E2" stroke="#7E8A93" stroke-width="10"/>
+    <g fill="#9FB4C6"><rect x="1220" y="300" width="120" height="240"/><rect x="1360" y="240" width="140" height="300"/><rect x="1530" y="330" width="170" height="210"/></g>
+    <g fill="#F2C14E"><rect x="1250" y="330" width="20" height="20"/><rect x="1400" y="290" width="20" height="20"/><rect x="1560" y="370" width="20" height="20"/></g>
+    <line x1="1460" y1="120" x2="1460" y2="540" stroke="#7E8A93" stroke-width="8"/>
+    <!-- коробки -->
+    <g stroke="#222" stroke-width="5" stroke-linejoin="round">
+      <rect x="1240" y="700" width="200" height="160" fill="#C9A77A"/><rect x="1450" y="720" width="170" height="140" fill="#BF9B6B"/>
+      <rect x="1300" y="570" width="170" height="130" fill="#D1B184"/>
+    </g>
+    <g font-family="Inter" font-weight="800" font-size="26" fill="#3a2e1e"><text x="1280" y="790">ТОВАР</text><text x="1475" y="800">ТОВАР</text></g>
+    <!-- стол + ноутбук -->
+    <rect x="560" y="660" width="560" height="26" fill="#6B6B6B" stroke="#222" stroke-width="5"/>
+    <rect x="600" y="686" width="480" height="190" fill="#7A7A7A" stroke="#222" stroke-width="5"/>
+    <path d="M760 660 L790 560 L960 560 L990 660 Z" fill="#3B3B3B" stroke="#222" stroke-width="5" stroke-linejoin="round"/>
+    <!-- герой -->
+    <g transform="translate(330,330)">
+      <line x1="60" y1="330" x2="50" y2="540" stroke="#1E2A3A" stroke-width="16" stroke-linecap="round"/>
+      <line x1="110" y1="330" x2="120" y2="540" stroke="#1E2A3A" stroke-width="16" stroke-linecap="round"/>
+      <ellipse cx="44" cy="546" rx="26" ry="10" fill="#222"/><ellipse cx="128" cy="546" rx="26" ry="10" fill="#222"/>
+      <path d="M20 170 Q85 140 150 170 L160 340 L10 340 Z" fill="var(--hood)" stroke="#222" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M40 160 Q85 210 130 160" fill="#6A3EA3" stroke="#222" stroke-width="5"/>
+      <rect x="45" y="260" width="80" height="44" rx="8" fill="#6A3EA3" stroke="#222" stroke-width="4"/>
+      <circle cx="0" cy="330" r="14" fill="#fff" stroke="#222" stroke-width="4"/><circle cx="170" cy="330" r="14" fill="#fff" stroke="#222" stroke-width="4"/>
+      <path d="M22 175 Q10 120 50 140 L120 140 Q160 120 148 175 Z" fill="#6A3EA3" stroke="#222" stroke-width="5" stroke-linejoin="round"/>
+      <circle cx="85" cy="80" r="82" fill="#fff" stroke="#222" stroke-width="6"/>
+      <circle cx="62" cy="78" r="7" fill="#222"/><circle cx="108" cy="78" r="7" fill="#222"/>
+      <path d="M68 112 Q85 104 102 112" fill="none" stroke="#222" stroke-width="5" stroke-linecap="round"/>
+      <path d="M50 52 L74 60 M96 60 L120 52" stroke="#222" stroke-width="5" stroke-linecap="round"/>
+    </g>
+  </svg>
+  <div class="label" style="left:80px;top:60px">ДЕНЬ 3 · съёмная однушка</div>
+  <div class="bubble" style="left:470px;top:170px">Двести единиц товара.<br>Ноль продаж.</div>
+  <div class="handle">@твой_ник</div>
+</section>
+
+<!-- 3. Финансовая карточка -->
+<section class="scene" id="s3">
+  <div class="pill" style="left:50%;top:150px;transform:translateX(-50%)">ЮНИТ-ЭКОНОМИКА · 1 ШТ</div>
+  <div class="center"><div class="rows" style="margin-top:80px">
+    <div><span>Цена на витрине</span><span>1 490 ₽</span></div>
+    <div><span>Комиссия WB</span><span class="r">−372 ₽</span></div>
+    <div><span>Логистика + хранение</span><span class="r">−160 ₽</span></div>
+    <div><span>Закупка + доставка из Китая</span><span class="r">−520 ₽</span></div>
+    <div><span>Налог</span><span class="r">−90 ₽</span></div>
+    <div class="tot"><span>Прибыль</span><span class="g">348 ₽</span></div>
+  </div></div>
+  <div class="stamp">23% МАРЖА</div>
+  <div class="handle">@твой_ник</div>
+</section>
+
+<script>const id=new URLSearchParams(location.search).get('s')||'s1';document.getElementById(id).classList.add('on')</script>
+</body></html>
