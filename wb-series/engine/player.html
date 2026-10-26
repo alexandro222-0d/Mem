@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<style>
+  :root{--ink:#1F1F1F;--green:#2E6B57;--red:#C8463D;--yellow:#D9A21B}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:#EDE6DA;font-family:Inter,sans-serif;color:var(--ink)}
+  #stage{position:absolute;inset:0;transform-origin:50% 45%}
+  .bg{position:absolute;inset:0}
+  .full{position:absolute;inset:0;background:radial-gradient(ellipse at center,#F3EEE5 35%,#D9D1C3 100%)}
+  .full.dark{background:radial-gradient(ellipse at center,#2A2C31 30%,#16171A 100%);color:#fff}
+  .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 70px}
+  .eyebrow{font-size:34px;font-weight:700;letter-spacing:.16em;color:#666;margin-bottom:24px}
+  .dark .eyebrow{color:#aaa}
+  .title{font-size:132px;font-weight:900;letter-spacing:-.02em;line-height:1}
+  .sub{font-size:52px;color:#6a6a6a;margin-top:22px;font-weight:500}
+  .dark .sub{color:#bbb}
+  .mega{font-size:150px;font-weight:900;letter-spacing:-.03em;line-height:1.05}
+  .budget{position:absolute;left:90px;right:90px;bottom:430px}
+  .budget small{display:block;font-size:28px;letter-spacing:.1em;color:#777}
+  .budget b{display:block;font-size:64px;margin:6px 0 16px}
+  .bar{height:34px;border:4px solid #444;border-radius:20px;overflow:hidden;background:#F7F3EC;margin-bottom:10px}
+  .bar i{display:block;height:100%;background:var(--green)}
+  .label{position:absolute;background:#F7F3EC;border:4px solid #333;border-radius:44px;font-weight:700;font-size:40px;padding:12px 32px}
+  .badge{position:absolute;left:50%;transform:translateX(-50%);background:#2B2B2B;color:#fff;font-weight:800;font-size:44px;padding:12px 36px;border-radius:44px;white-space:nowrap}
+  .bubble{position:absolute;background:#fff;border:4px solid #222;border-radius:18px;font-weight:700;font-size:46px;padding:24px 32px;line-height:1.25}
+  .bubble:after{content:"";position:absolute;bottom:-40px;border:20px solid transparent;border-top:24px solid #222}
+  .bubble.tail-left:after{left:60px}.bubble.tail-right:after{right:60px}
+  .thought{position:absolute;background:#fff;border:4px solid #222;border-radius:60px;font-weight:900;font-size:72px;padding:20px 50px;color:var(--green)}
+  .thought i{position:absolute;background:#fff;border:4px solid #222;border-radius:50%}
+  .thought i:nth-of-type(1){width:34px;height:34px;left:40px;bottom:-46px}
+  .thought i:nth-of-type(2){width:20px;height:20px;left:20px;bottom:-78px}
+  .pill{background:#2B2B2B;color:#fff;font-weight:800;font-size:40px;padding:14px 36px;border-radius:44px;margin-bottom:50px}
+  .rows{width:900px;font-size:48px;text-align:left}
+  .rows div{display:flex;justify-content:space-between;padding:16px 0;font-weight:600;gap:30px}
+  .rows .tot{border-top:5px solid #333;margin-top:14px;font-size:62px;font-weight:900}
+  .g{color:var(--green);font-weight:800}.r{color:var(--red);font-weight:800}.y{color:var(--yellow);font-weight:800}
+  .stamp{margin-top:60px;transform:rotate(-8deg);border:8px solid;font-weight:900;font-size:84px;padding:6px 34px;border-radius:12px}
+  .stamp.r{color:var(--red)}.stamp.g{color:var(--green)}
+  .card{background:#fff;border:4px solid #222;border-radius:28px;padding:56px 60px;box-shadow:0 14px 0 rgba(0,0,0,.08);width:900px}
+  .card-t{font-size:56px;font-weight:800}
+  .card-v{font-size:110px;font-weight:900;margin-top:16px;letter-spacing:-.02em}
+  .card-n{font-size:40px;color:#777;margin-top:14px}
+  .moral{font-size:72px;font-weight:800;line-height:1.2;margin:20px 0}
+  .moral.g{color:#7FC7A6}
+  .choice{display:flex;align-items:center;gap:36px;width:900px;background:#fff;border:4px solid #222;border-radius:28px;padding:40px 46px;margin:20px 0;text-align:left}
+  .choice b{flex:none;width:110px;height:110px;border-radius:50%;background:#2B2B2B;color:#fff;font-size:70px;display:flex;align-items:center;justify-content:center}
+  .choice span{font-size:58px;font-weight:800}
+  .strike{position:relative;color:#888}
+  .strike:after{content:"";position:absolute;left:-10px;right:-10px;top:52%;height:12px;background:var(--red);transform:rotate(-6deg)}
+  .handle{position:absolute;left:0;right:0;top:70px;text-align:center;font-size:30px;color:#8a8a8a;opacity:.6;font-weight:700}
+</style></head><body>
+<div id="stage"></div>
+<div class="handle">Селлер с нуля</div>
+<script src="lib.js"></script>
+<script>
+  const ep = new URLSearchParams(location.search).get('ep') || 's01e01';
+  document.write(`<script src="../episodes/${ep}.js"><\/script>`);
+</script>
+<script>
+  // Тайминги по умолчанию — оценка по длине текста; render.js подменяет их реальными длительностями озвучки.
+  const estimate = (text) => Math.max(1.8, text.length / 13 + 0.5);
+  window.TIMINGS = EPISODE.lines.map(l => estimate(l.text) + (l.scene.tail || 0));
+  window.totalDuration = () => TIMINGS.reduce((a, b) => a + b, 0);
+
+  const ease = (p) => 1 - Math.pow(1 - p, 3);
+  const clamp = (v) => Math.max(0, Math.min(1, v));
+  let current = -1;
+  const stage = document.getElementById('stage');
+
+  window.renderAt = (t) => {
+    let i = 0, start = 0;
+    while (i < TIMINGS.length - 1 && t >= start + TIMINGS[i]) { start += TIMINGS[i]; i++; }
+    if (i !== current) {
+      stage.innerHTML = EPISODE.lines[i].scene.html;
+      current = i;
+    }
+    const lt = t - start, dur = TIMINGS[i];
+    stage.style.transform = `scale(${1 + 0.03 * clamp(lt / dur)})`;
+    stage.querySelectorAll('.a').forEach(el => {
+      const p = ease(clamp((lt - parseFloat(el.dataset.d || 0)) / 0.35));
+      el.style.opacity = p;
+      if (el instanceof SVGElement) return;
+      const base = el.classList.contains('badge') ? 'translateX(-50%) ' : '';
+      if (el.classList.contains('pop')) el.style.transform = `rotate(-8deg) scale(${1.8 - 0.8 * p})`;
+      else el.style.transform = `${base}translateY(${(1 - p) * 26}px)`;
+    });
+    stage.querySelectorAll('[data-count]').forEach(el => {
+      const host = el.closest('.a');
+      const d = host ? parseFloat(host.dataset.d || 0) : 0;
+      const p = ease(clamp((lt - d) / 0.8));
+      el.textContent = Math.round(+el.dataset.count * p).toLocaleString('ru-RU').replace(/ /g, ' ');
+    });
+    return i;
+  };
+  renderAt(parseFloat(new URLSearchParams(location.search).get('t') || '0.9'));
+</script>
+</body></html>
